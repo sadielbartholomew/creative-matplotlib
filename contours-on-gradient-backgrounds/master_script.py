@@ -1,9 +1,9 @@
-import numpy as np
-import matplotlib.pyplot as plt
-
 """
 Designs for contours on gradient backgrounds, created by Sadie Bartholomew.
 """
+
+import numpy as np
+import matplotlib.pyplot as plt
 
 
 """ Define data for all contour-on-gradient designs in a single dictionary.
@@ -240,6 +240,7 @@ DESIGNS = {
         ),
 }
 
+
 # Define a chosen design to plot and unpack its data to use.
 design_choice = "13_interlocking"
 (contour_function, background_function, grid_resolution, axes_limits,
@@ -251,6 +252,7 @@ x, y = np.meshgrid(
     np.linspace(*axes_limits[:2], num=grid_resolution),
     np.linspace(*axes_limits[-2:], num=grid_resolution)
 )
+
 plt.xticks([])
 plt.yticks([])
 plt.axis(view_limits)
@@ -270,5 +272,7 @@ plt.contour(
     cmap=contour_colourmap
 )
 
-# Show the overall figure to display the chosen design.
+# Save and display the overall figure i.e. the full design in high resolution.
+plt.savefig(
+    '%s.png' % design_choice, format='png', bbox_inches='tight', dpi=1000)
 plt.show()
