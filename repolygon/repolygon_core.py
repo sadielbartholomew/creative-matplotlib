@@ -14,17 +14,26 @@ Version 0.1:
         further examples making use of these extra modules.
 """
 
+import copy
 from itertools import product as iproduct
 from matplotlib import patches as mpatches, path as mpath, pyplot as plt
 import numpy as np
 
 from repolygon_example_designs import (
-    REPOLYGON_EXAMPLES,
-    REPOLYGON_EXAMPLES_COLOURS,
     NO_COLOURING_DARK,
     NO_COLOURING_MID,
     NO_COLOURING_LIGHT,
-    NO_COLOURING_TRANSPARENT
+    NO_COLOURING_TRANSPARENT,
+    FULL_COLOUR_EXAMPLES_COLOURS,
+    MINIMAL_TONE_EXAMPLES_SPEC,
+    FULL_COLOUR_EXAMPLES_SPEC,
+)
+
+NO_COLOURING_SCHEME = (
+    NO_COLOURING_DARK,
+    NO_COLOURING_MID,
+    NO_COLOURING_LIGHT,
+    NO_COLOURING_TRANSPARENT,
 )
 
 
@@ -85,7 +94,7 @@ class tileLayer():
 class plottedDesign():
     """ Plots sets of tiled (repeated) polygon layers on a single canvas. """
 
-    def __init__(self, all_tile_layers):
+    def __init__(self, all_tile_layers, colour_scheme=None):
         fig, ax = plt.subplots()
         self.fig = fig
         self.ax = ax
@@ -94,36 +103,94 @@ class plottedDesign():
         plt.yticks([])
 
         self.all_tile_layers = all_tile_layers
+        self.colour_scheme = colour_scheme
 
     @staticmethod
-    def get_all_tile_data(tile_layer_set):
+    def colour_intersection(
+            patch_1, patch_2, intersection_colour, new_zorder=-100):
+        """ TODO. """
+        # Create copies of each patch. Colour one, leaving other transparent.
+        intersection_patch = copy.copy(patch_2)
+        intersection_patch.set_facecolor(intersection_colour)
+        clip_patch = copy.copy(patch_1)
+        clip_patch.set_fill(False)
+
+        # Set the zorder so that intersection patch is on top of the original:
+        zorder_orig = intersection_patch.get_zorder()
+        intersection_patch.set_zorder(zorder_orig + new_zorder)
+        return (intersection_patch, clip_patch)
+
+    def get_all_tile_data(self, tile_layer_set):
         """ Extract data (geometry & style) for all tiled polygon layers. """
         all_points = []
         for tile_layer in tile_layer_set:
             tile_coors, tile_style = tile_layer
+            if self.colour_scheme:
+                use_style = list(tile_style)
+                if (len(tile_style) > 2 and
+                        tile_style[2] not in NO_COLOURING_SCHEME):
+                    use_style[2] = self.colour_scheme[tile_style[2]]
+                if (len(tile_style) > 3 and
+                        tile_style[3] not in NO_COLOURING_SCHEME):
+                    use_style[3] = self.colour_scheme[tile_style[3]]
+            else:
+                use_style = tile_style
             tile_design = tileLayer(*tile_coors)
-            all_points.append(tile_design.ngon_layer_coors(*tile_style))
+            all_points.append(
+                tile_design.ngon_layer_coors(*use_style))
         return all_points
 
-    def draw_all_tiles(self, filename, cutoffs, facecolour=NO_COLOURING_DARK):
+    def draw_all_tiles(
+            self, filename, cutoffs, facecolour=NO_COLOURING_DARK,
+            col_int=None):
         """ Plot all layers on a single canvas of set region and colour. """
         # Set-up the matplotlib canvas according to preferences.
         self.ax.set_aspect(1)
+        if self.colour_scheme and facecolour not in NO_COLOURING_SCHEME:
+            facecolour = self.colour_scheme[facecolour]
         self.ax.set_facecolor(facecolour)
         plt.axis(cutoffs)
 
         # Draw all tile layers in the design polygon patch by polygon patch.
-        for tile_layer_patches in self.get_all_tile_data(self.all_tile_layers):
+        all_stuff = self.get_all_tile_data(self.all_tile_layers)
+
+        if not col_int:
+            col_int = []
+        for col_i in col_int:
+            for index, tile_layer in enumerate(all_stuff):
+                # Colour intersections:
+                if index == col_i[0]:
+                    save_patch_0 = tile_layer
+                if index == col_i[1]:
+                    save_patch_1 = tile_layer
+            for patch_0, patch_1 in zip(save_patch_0, save_patch_1):
+                # if col_int only:
+                if self.colour_scheme:
+                    use_colour = self.colour_scheme[col_i[2]]
+                self.ax.add_patch(
+                    self.colour_intersection(
+                        patch_0, patch_1, use_colour, col_i[3])[0])
+
+        for tile_layer_patches in all_stuff:
             for tile_layer_patch in tile_layer_patches:
                 self.ax.add_patch(tile_layer_patch)
 
         # Save and display the overall design on the canvas.
-        self.fig.savefig('designs/' + filename, format='png',
-                         bbox_inches='tight', transparent=False, dpi=1000)
+        self.fig.savefig(
+            'designs/' + filename + '.png', format='png',
+            bbox_inches='tight', transparent=False, dpi=1000
+        )
         plt.show()
 
 
-for example_name, example_data in REPOLYGON_EXAMPLES.items():
-    filename = example_name + '.png'
+for example_name, example_data in MINIMAL_TONE_EXAMPLES_SPEC.items():
+    filename = example_name + '_minimal_tone'
     plottedDesign(example_data[0]).draw_all_tiles(
         filename, *example_data[1])
+
+for example_name, example_data in FULL_COLOUR_EXAMPLES_SPEC.items():
+    filename = example_name + '_full_colour'
+    plot_comp_0, plot_comp_1, plot_comp_2 = example_data
+    plottedDesign(
+        plot_comp_0, FULL_COLOUR_EXAMPLES_COLOURS[example_name]
+    ).draw_all_tiles(filename, *plot_comp_2, col_int=plot_comp_1)
