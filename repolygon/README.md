@@ -26,7 +26,7 @@ scheme and motif, mainly to demonstrate the basic capability of the
 <img src="https://raw.githubusercontent.com/sadielbartholomew/creative-mini-projects/master/repolygon/designs/repolygon_design_11_minimal_tone.png" width="400" height="400">  |
 
 
-### Example designs in full colour
+### Example designs in full colour [in progress]
 
 :heavy_exclamation_mark: **Note:** the logic for custom colouring of designs
 is currently under refactor, so most of the designs (all except 10 & 11) are
@@ -46,3 +46,8 @@ part of the overall design:
 <img src="https://raw.githubusercontent.com/sadielbartholomew/creative-mini-projects/master/repolygon/designs/repolygon_design_7_full_colour.png" width="400" height="400">  |  <img src="https://raw.githubusercontent.com/sadielbartholomew/creative-mini-projects/master/repolygon/designs/repolygon_design_8_full_colour.png" width="400" height="400">
 <img src="https://raw.githubusercontent.com/sadielbartholomew/creative-mini-projects/master/repolygon/designs/repolygon_design_9_full_colour.png" width="400" height="400">  | <img src="https://raw.githubusercontent.com/sadielbartholomew/creative-mini-projects/master/repolygon/designs/repolygon_design_10_full_colour.png" width="400" height="400">
 <img src="https://raw.githubusercontent.com/sadielbartholomew/creative-mini-projects/master/repolygon/designs/repolygon_design_11_full_colour.png" width="400" height="400">  |
+
+
+### Final designs [prototypes]
+
+Text...
