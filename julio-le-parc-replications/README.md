@@ -19,7 +19,7 @@ below.
 
 Reconstruction of Le Parc's Mutation of Forms (1959), described for example
 on the
-[site of the The Metropolitan Museum of Art](https://www.metmuseum.org/art/collction/search/815337).
+[site of the The Metropolitan Museum of Art](https://www.metmuseum.org/art/collection/search/815337).
 
 *Note*: this is unfinished, namely the inner pairs of wedges need adjusting
 for angular extent and alignment, though the outermost wedge pairs are

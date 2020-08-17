@@ -127,7 +127,8 @@ def plot_mutation_of_forms(axes):
 fig, ax = plt.subplots(figsize=(6, 6))
 plot_mutation_of_forms(ax)
 fig.set_canvas(plt.gcf().canvas)
-fig.patch.set_facecolor(COLOURS["MUTATION OF FORMS"]["OFF WHITE"])
+background_colour = COLOURS["MUTATION OF FORMS"]["OFF WHITE"]  # needed below
+fig.patch.set_facecolor(background_colour)
 limits = (
     number_points_per_side - padding_per_side,
     number_points_per_side + padding_per_side
@@ -141,5 +142,10 @@ plt.yticks([])
 plt.tight_layout()
 
 # Plot, save and show. Done!
-plt.savefig('img/mutation_of_forms.png', format='png', bbox_inches='tight')
+plt.savefig(
+    'img/mutation_of_forms.png',
+    format='png',
+    bbox_inches='tight',
+    facecolor=background_colour,
+)
 plt.show()
