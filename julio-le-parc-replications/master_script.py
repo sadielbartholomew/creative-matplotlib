@@ -23,7 +23,7 @@ padding_per_side = 2
 pad_points = 2
 
 
-def create_angles_array(return_red=False, return_blue=False):
+def create_linspaced_angles(return_red=False, return_blue=False):
     """ TODO. """
     # NOTE: angles start pointing downwards i.e. 0 degs is south in PyPlot.
     # So red wedges are constrained to -135 to +45, blues to +45 to +225.
@@ -68,6 +68,17 @@ def create_angles_array(return_red=False, return_blue=False):
     elif return_blue:
         return list(blue_linspace_thetas)
 
+def create_angles_array(base_angle):
+    """ TODO. """
+    angles_array = np.full(
+        (number_points_per_side, number_points_per_side),
+        base_angle,
+        dtype=(float, 2)
+    )
+    print(angles_array)
+    ###red_spaced_thetas = create_linspaced_angles(return_red=True)
+    ###blue_spaced_thetas = create_linspaced_angles(return_blue=True)
+    return angles_array
 
 def plot_wedges(position, red_wedge_thetas, blue_wedge_thetas):
     """ TODO. """
@@ -91,29 +102,10 @@ def plot_mutation_of_forms(axes):
     """ TODO. """
 
     grid_indices = range(number_points_per_side)
-    red_spaced_thetas = create_angles_array(return_red=True)
-    blue_spaced_thetas = create_angles_array(return_blue=True)
     for i, j in itertools.product(grid_indices, grid_indices):
         # Defaults for now while get the angles defined and in right places:
-        red_thetas = (-90, 0)
-        blue_thetas = (90, 180)
-
-        # Process just outer-most positioned wedges to check angle processing.
-        # TODO: consolidate this logic with the inner angle processing once
-        # that is in.
-        maximum_position = number_points_per_side - 1
-        if i == 0:
-            red_thetas = red_spaced_thetas[j]
-            blue_thetas = blue_spaced_thetas[::-1][j]
-        elif j == 0:
-            red_thetas = red_spaced_thetas[i]
-            blue_thetas = blue_spaced_thetas[::-1][i]
-        elif i == maximum_position:
-            red_thetas = red_spaced_thetas[::-1][j]
-            blue_thetas = blue_spaced_thetas[j]
-        elif j == maximum_position:
-            red_thetas = red_spaced_thetas[::-1][i]
-            blue_thetas = blue_spaced_thetas[i]
+        red_thetas = create_angles_array((-90, 0),)[i][j]
+        blue_thetas = create_angles_array((90, 180),)[i][j]
 
         # Now create and plot the wedges onto the canvas:
         position_xy = (pad_points + i, pad_points + j)
