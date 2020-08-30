@@ -7,6 +7,10 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 
+# For MUTATION OF FORMS
+# See: https://www.metmuseum.org/art/collection/search/815337
+
+
 COLOURS = {
     "MUTATION OF FORMS": {
         "OFF WHITE": "#FAEFDD",
@@ -15,15 +19,11 @@ COLOURS = {
     }
 }
 
-
-# For MUTATION OF FORMS
-# See: https://www.metmuseum.org/art/collection/search/815337
 number_points_per_side = 10
-padding_per_side = 2
-pad_points = 2
+grid_indices = range(number_points_per_side)
 
 
-def create_linspaced_angles(return_red=False, return_blue=False):
+def create_linspaced_angles(max_coverage, min_coverage):
     """ TODO. """
     # NOTE: angles start pointing downwards i.e. 0 degs is south in PyPlot.
     # So red wedges are constrained to -135 to +45, blues to +45 to +225.
@@ -43,42 +43,47 @@ def create_linspaced_angles(return_red=False, return_blue=False):
 
     # Define max and min angular coverages for the wedges:
     # * red wedges go from -135 <- -45 -> +45
-    max_coverage_red = (-135, 45)
-    min_coverage_red = -45
     # * blue wedges go from +45 <- +135 -> +225
-    max_coverage_blue = (45, 225)
-    min_coverage_blue = 135
 
-    # Use linspace to get 1D arrays of angles evenly spaced across coverage
-    red_theta1_min_to_max = np.linspace(
-        max_coverage_red[0], min_coverage_red, num=number_points_per_side)
-    red_theta2_min_to_max = np.linspace(
-        max_coverage_red[1], min_coverage_red, num=number_points_per_side)
-    blue_theta1_min_to_max = np.linspace(
-        max_coverage_blue[0], min_coverage_blue, num=number_points_per_side)
-    blue_theta2_min_to_max = np.linspace(
-        max_coverage_blue[1], min_coverage_blue, num=number_points_per_side)
+    # Use linspace to get 1D arrays of angles evenly spaced across coverage:
+    theta1_min_to_max = np.linspace(
+        max_coverage[0], min_coverage[0], num=number_points_per_side)
+    theta2_min_to_max = np.linspace(
+        max_coverage[1], min_coverage[1], num=number_points_per_side)
 
-    # Zip up theta{1, 2} into an iterator to provide list of angle tuples later
-    red_linspace_thetas = zip(red_theta1_min_to_max, red_theta2_min_to_max)
-    blue_linspace_thetas = zip(blue_theta1_min_to_max, blue_theta2_min_to_max)
+    return np.column_stack((theta1_min_to_max, theta2_min_to_max))
 
-    if return_red:
-        return list(red_linspace_thetas)
-    elif return_blue:
-        return list(blue_linspace_thetas)
 
-def create_angles_array(base_angle):
+def create_angles_array(is_red=True):
     """ TODO. """
-    angles_array = np.full(
+    angles_array = np.zeros(
         (number_points_per_side, number_points_per_side),
-        base_angle,
         dtype=(float, 2)
     )
-    print(angles_array)
-    ###red_spaced_thetas = create_linspaced_angles(return_red=True)
-    ###blue_spaced_thetas = create_linspaced_angles(return_blue=True)
+
+    if is_red:
+        index = 1
+        spaced_thetas = create_linspaced_angles(
+            max_coverage=(-135, 45), min_coverage=(-45, -45))
+    else:
+        index = -1
+        spaced_thetas = create_linspaced_angles(
+            max_coverage=(45, 225), min_coverage=(135, 135))
+
+    # 1. Make first and last column correct:
+    for j in grid_indices:
+        angles_array[0][j] = spaced_thetas[::index][j]
+        angles_array[-1][j] = spaced_thetas[::index][-j-1]
+    # 2. Create rows linearly-spaced based on first and last columns:
+    for i in grid_indices:
+        row_angles = create_linspaced_angles(
+            max_coverage=angles_array[0][i],
+            min_coverage=angles_array[-1][i],
+        )
+        angles_array[i] = row_angles
+
     return angles_array
+
 
 def plot_wedges(position, red_wedge_thetas, blue_wedge_thetas):
     """ TODO. """
@@ -100,12 +105,11 @@ def plot_wedge(centre, theta1, theta2, colour):
 
 def plot_mutation_of_forms(axes):
     """ TODO. """
-
-    grid_indices = range(number_points_per_side)
+    pad_points = 2
     for i, j in itertools.product(grid_indices, grid_indices):
         # Defaults for now while get the angles defined and in right places:
-        red_thetas = create_angles_array((-90, 0),)[i][j]
-        blue_thetas = create_angles_array((90, 180),)[i][j]
+        red_thetas = create_angles_array(is_red=True)[i][j]
+        blue_thetas = create_angles_array(is_red=False)[i][j]
 
         # Now create and plot the wedges onto the canvas:
         position_xy = (pad_points + i, pad_points + j)
@@ -121,10 +125,13 @@ plot_mutation_of_forms(ax)
 fig.set_canvas(plt.gcf().canvas)
 background_colour = COLOURS["MUTATION OF FORMS"]["OFF WHITE"]  # needed below
 fig.patch.set_facecolor(background_colour)
+
+padding_per_side = 2
 limits = (
     number_points_per_side - padding_per_side,
     number_points_per_side + padding_per_side
 )
+
 ax.set_xlim(*limits)
 ax.set_ylim(*limits)
 plt.axis('equal')
