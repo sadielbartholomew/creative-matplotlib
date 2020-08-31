@@ -7,16 +7,48 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 
-# For MUTATION OF FORMS
-# See: https://www.metmuseum.org/art/collection/search/815337
+"""
+References (all from The Metropolitan Museum of Art)
 
+* Mutation of Forms (1959):
+    https://www.metmuseum.org/art/collection/search/815337
+* Rotations (1959):
+    https://www.metmuseum.org/art/collection/search/815346
+* Rotation of Fractioned Circles (1959):
+    https://www.metmuseum.org/art/collection/search/815341
+* Rotation in Red and Black (1959):
+    https://www.metmuseum.org/art/collection/search/815338
+
+See also the Le Parc's website:
+    http://www.julioleparc.org/
+"""
 
 COLOURS = {
     "MUTATION OF FORMS": {
         "OFF WHITE": "#FAEFDD",
         "RED": "#CB0B22",
         "BLUE": "#1D119B",
-    }
+    },
+    "ROTATIONS": {
+        "OFF WHITE": "#F9F2E9",
+        "OFF BLACK": "#161815",
+    },
+    "ROTATION OF FRACTIONED CIRCLES": {
+        "OFF WHITE": "#F5EFE3",
+        "LIGHT GREY": "#D3D2D0",
+        "DARK GREY": "#63676B",
+    },
+    "ROTATION IN RED AND BLACK": {
+        "OFF WHITE": "#F2ECE0",
+        "OFF BLACK": "#100F0D",
+        "RED": "A41425",  # 983134 is a nice red,
+    },
+}
+NUMBER_GRIDPOINTS_PER_SIDE = {
+    "MUTATION OF FORMS": 10,
+    "ROTATIONS": 13,
+    "ROTATION OF FRACTIONED CIRCLES": 9,
+    "ROTATION IN RED AND BLACK": 10,
 }
 
 number_points_per_side = 10
@@ -119,32 +151,45 @@ def plot_mutation_of_forms(axes):
         axes.add_patch(blue_wedge)
 
 
-# Format canvas to centre on image and remove all axes and related markings
-fig, ax = plt.subplots(figsize=(6, 6))
-plot_mutation_of_forms(ax)
-fig.set_canvas(plt.gcf().canvas)
-background_colour = COLOURS["MUTATION OF FORMS"]["OFF WHITE"]  # needed below
-fig.patch.set_facecolor(background_colour)
+def format_canvas(design_name):
+    """ TODO. """
+    # Format canvas to centre on image and remove all axes and related markings
+    fig, ax = plt.subplots(figsize=(6, 6))
+    plot_mutation_of_forms(ax)
+    fig.set_canvas(plt.gcf().canvas)
+    background_colour = COLOURS[design_name]["OFF WHITE"]  # needed for savefig
+    fig.patch.set_facecolor(background_colour)
 
-padding_per_side = 2
-limits = (
-    number_points_per_side - padding_per_side,
-    number_points_per_side + padding_per_side
-)
+    padding_per_side = 2
+    limits = (
+        NUMBER_GRIDPOINTS_PER_SIDE[design_name] - padding_per_side,
+        NUMBER_GRIDPOINTS_PER_SIDE[design_name] + padding_per_side
+    )
 
-ax.set_xlim(*limits)
-ax.set_ylim(*limits)
-plt.axis('equal')
-plt.axis('off')
-plt.xticks([])
-plt.yticks([])
-plt.tight_layout()
+    ax.set_xlim(*limits)
+    ax.set_ylim(*limits)
+    plt.axis('equal')
+    plt.axis('off')
+    plt.xticks([])
+    plt.yticks([])
+    plt.tight_layout()
 
-# Plot, save and show. Done!
+    return background_colour  # pass through for savefig
+
+
+# 1. Plot Mutation of Forms:
+background_col = format_canvas("MUTATION OF FORMS")
 plt.savefig(
     'img/mutation_of_forms/replication_of_original.png',
     format='png',
     bbox_inches='tight',
-    facecolor=background_colour,
+    facecolor=background_col,
 )
 plt.show()
+
+# 2. Plot Rotations:
+# ...
+# 3. Plot Rotation of Fractioned Circles:
+# ...
+# 4. Plot Rotation in Red and Black:
+# ...
