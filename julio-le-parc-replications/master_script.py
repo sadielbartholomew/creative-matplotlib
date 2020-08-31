@@ -142,7 +142,7 @@ plt.tight_layout()
 
 # Plot, save and show. Done!
 plt.savefig(
-    'img/mutation_of_forms.png',
+    'img/mutation_of_forms/replication_of_original.png',
     format='png',
     bbox_inches='tight',
     facecolor=background_colour,
