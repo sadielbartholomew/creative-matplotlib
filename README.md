@@ -1,2 +1,3 @@
-# creative-mini-projects
-Store of assorted personal creative coding scripts &amp; outputs
+# creative-matplotlib
+
+## Assorted creative coding scripts & outputs using `matplotlib`
