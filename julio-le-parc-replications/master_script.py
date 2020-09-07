@@ -1,8 +1,9 @@
 import itertools
 
+import matplotlib.pyplot as plt
 import matplotlib.path as mpath
 import matplotlib.patches as mpatches
-import matplotlib.pyplot as plt
+import matplotlib.transforms as mtransforms
 
 import numpy as np
 
@@ -30,7 +31,7 @@ COLOURS = {
         "BLUE": "#1D119B",
     },
     "ROTATIONS": {
-        "OFF WHITE": "#F9F2E9",
+        "OFF WHITE": "#F4EDE5",
         "OFF BLACK": "#161815",
     },
     "ROTATION OF FRACTIONED CIRCLES": {
@@ -52,12 +53,11 @@ NUMBER_GRIDPOINTS_PER_SIDE = {
 }
 
 
-pad_points = 2
-number_points_per_side = 10
-grid_indices = range(number_points_per_side)
+IMAGE_PAD_POINTS = 2
 
 
-def create_linspaced_angles(max_coverage, min_coverage):
+def create_mutations_linspaced_angles(
+        max_coverage, min_coverage, number_points_per_side):
     """ TODO. """
     # NOTE: angles start pointing downwards i.e. 0 degs is south in PyPlot.
     # So red wedges are constrained to -135 to +45, blues to +45 to +225.
@@ -88,7 +88,8 @@ def create_linspaced_angles(max_coverage, min_coverage):
     return np.column_stack((theta1_min_to_max, theta2_min_to_max))
 
 
-def create_mutation_angles_array(grid_indices, is_red=True):
+def create_mutation_angles_array(
+        grid_indices, is_red=True, number_points_per_side=5):
     """ TODO. """
     angles_array = np.zeros(
         (number_points_per_side, number_points_per_side),
@@ -97,12 +98,16 @@ def create_mutation_angles_array(grid_indices, is_red=True):
 
     if is_red:
         index = 1
-        spaced_thetas = create_linspaced_angles(
-            max_coverage=(-135, 45), min_coverage=(-45, -45))
+        spaced_thetas = create_mutations_linspaced_angles(
+            max_coverage=(-135, 45), min_coverage=(-45, -45),
+            number_points_per_side=number_points_per_side,
+        )
     else:
         index = -1
-        spaced_thetas = create_linspaced_angles(
-            max_coverage=(45, 225), min_coverage=(135, 135))
+        spaced_thetas = create_mutations_linspaced_angles(
+            max_coverage=(45, 225), min_coverage=(135, 135),
+            number_points_per_side=number_points_per_side,
+        )
 
     # 1. Make first and last column correct:
     for j in grid_indices:
@@ -110,9 +115,36 @@ def create_mutation_angles_array(grid_indices, is_red=True):
         angles_array[-1][j] = spaced_thetas[::index][-j-1]
     # 2. Create rows linearly-spaced based on first and last columns:
     for i in grid_indices:
-        row_angles = create_linspaced_angles(
+        row_angles = create_mutations_linspaced_angles(
             max_coverage=angles_array[0][i],
             min_coverage=angles_array[-1][i],
+            number_points_per_side=number_points_per_side,
+        )
+        angles_array[i] = row_angles
+
+    return angles_array
+
+
+def create_rotations_angles_array(
+        grid_indices, number_points_per_side=5):
+    """ TODO. """
+    angles_array = np.zeros(
+        (number_points_per_side, number_points_per_side),
+        dtype=float
+    )
+
+    spaced_thetas = np.linspace(0, 180, number_points_per_side)
+    # +/- signs are to achieve clockwise angle changes as per the design
+    # 1. Make first and last column correct:
+    for j in grid_indices:
+        angles_array[0][j] = spaced_thetas[j]
+        angles_array[-1][j] = spaced_thetas[-j-1]
+    # 2. Create rows linearly-spaced based on first and last columns:
+    for i in grid_indices:
+        row_angles = np.linspace(
+            -angles_array[0][i],
+            angles_array[-1][i],
+            number_points_per_side,
         )
         angles_array[i] = row_angles
 
@@ -136,11 +168,29 @@ def plot_mutations_wedge(centre, theta1, theta2, colour):
     )
 
 
-def plot_rotations_patch(centre, colour):
+def plot_rotations_patch(
+        centre, rect_angle, foreground_colour, background_colour, ax):
     """ TODO. """
-    return mpatches.Circle(
-        centre, 0.475, color=colour
+    # These parameters are adapted to match the original design:
+    radius = 0.45
+    offset_amount = 0.3
+    padding = 0.03
+
+    # Note: get a very thin but still visible edge line on circle even if set
+    # linewidth to zero, so to workaround make edgecolour background colour.
+    patch = mpatches.Circle(
+        centre, radius, facecolor=foreground_colour,
+        edgecolor=background_colour,
     )
+    # The clipping rectangle, rotated appropriately (no need to rotate circle!)
+    clip_patch = mpatches.Rectangle(
+        (centre[0] + offset_amount, centre[1] - radius),
+        radius - offset_amount + padding,
+        2 * radius, color=background_colour,
+        transform=mtransforms.Affine2D().rotate_deg_around(
+            *centre, rect_angle) + ax.transData
+    )
+    return (patch, clip_patch)
 
 
 def plot_fractioned_circle_patch(centre, colour):
@@ -171,15 +221,20 @@ def plot_simple_cross(centre, base_theta, colour_1, colour_2):
 def plot_mutation_of_forms(axes):
     """ TODO. """
     design_name = "MUTATION OF FORMS"
-    grid_points = range(NUMBER_GRIDPOINTS_PER_SIDE[design_name])
+    points = NUMBER_GRIDPOINTS_PER_SIDE[design_name]
+    grid_points = range(points)
     for i, j in itertools.product(grid_points, grid_points):
         red_thetas = create_mutation_angles_array(
-            is_red=True, grid_indices=grid_points)[i][j]
+            is_red=True, grid_indices=grid_points,
+            number_points_per_side=points
+        )[i][j]
         blue_thetas = create_mutation_angles_array(
-            is_red=False, grid_indices=grid_points)[i][j]
+            is_red=False, grid_indices=grid_points,
+            number_points_per_side=points
+        )[i][j]
 
         # Now create and plot the wedges onto the canvas:
-        position_xy = (pad_points + i, pad_points + j)
+        position_xy = (IMAGE_PAD_POINTS + i, IMAGE_PAD_POINTS + j)
         red_wedge, blue_wedge = plot_mutations_wedges(
             position_xy, red_thetas, blue_thetas,
             colour_1=COLOURS[design_name]["RED"],
@@ -192,14 +247,24 @@ def plot_mutation_of_forms(axes):
 def plot_rotations(axes):
     """ TODO. """
     design_name = "ROTATIONS"
-    grid_points = range(NUMBER_GRIDPOINTS_PER_SIDE[design_name])
+    points = NUMBER_GRIDPOINTS_PER_SIDE[design_name]
+    grid_points = range(points)
+    angles_array = create_rotations_angles_array(
+        grid_points,
+        number_points_per_side=points
+    )
     for i, j in itertools.product(grid_points, grid_points):
-        # Now create and plot the wedges onto the canvas:
-        position_xy = (pad_points + i, pad_points + j)
-        axes.add_patch(plot_rotations_patch(
+        position_xy = (IMAGE_PAD_POINTS + i, IMAGE_PAD_POINTS + j)
+        circle, clipping_rectangle = plot_rotations_patch(
             position_xy,
-            colour=COLOURS[design_name]["OFF BLACK"],
-        ))
+            angles_array[i][j],
+            COLOURS[design_name]["OFF BLACK"],
+            COLOURS[design_name]["OFF WHITE"],
+            axes,
+        )
+        axes.add_patch(circle)
+        clipping_rectangle.set_clip_path(circle)
+        axes.add_patch(clipping_rectangle)
 
 
 def plot_rotation_of_fractioned_circles(axes):
@@ -208,7 +273,7 @@ def plot_rotation_of_fractioned_circles(axes):
     grid_points = range(NUMBER_GRIDPOINTS_PER_SIDE[design_name])
     for i, j in itertools.product(grid_points, grid_points):
         # Now create and plot the wedges onto the canvas:
-        position_xy = (pad_points + i, pad_points + j)
+        position_xy = (IMAGE_PAD_POINTS + i, IMAGE_PAD_POINTS + j)
         axes.add_patch(plot_fractioned_circle_patch(
             position_xy, colour=COLOURS[design_name]["LIGHT GREY"]))
 
@@ -220,7 +285,7 @@ def plot_rotation_in_red_and_black(axes):
         NUMBER_GRIDPOINTS_PER_SIDE[design_name])
     for i, j in itertools.product(grid_points, grid_points):
         # Now create and plot the wedges onto the canvas:
-        position_xy = (pad_points + i, pad_points + j)
+        position_xy = (IMAGE_PAD_POINTS + i, IMAGE_PAD_POINTS + j)
         red_line, black_line = plot_simple_cross(
             position_xy, 0,
             COLOURS[design_name]["RED"],
@@ -258,6 +323,8 @@ def format_canvas(design_name, patch_creation_func):
 
 def plot_and_save_design(design_name, plot_func, save_dir):
     background_col = format_canvas(design_name, plot_func)
+
+    import uuid
     plt.savefig(
         'img/{}/replication_of_original.png'.format(save_dir),
         format='png',
@@ -267,10 +334,12 @@ def plot_and_save_design(design_name, plot_func, save_dir):
 
 
 # Plot all four designs
-# TODO: note that only 1 is complete, 3-4 are yet to be fully coded up
+# TODO: note that only 1 and 2 complete; 3 and 4 are under development,
+# hence commented out for the moment.
 plot_and_save_design(
     "MUTATION OF FORMS", plot_mutation_of_forms, "mutation_of_forms")
 plot_and_save_design("ROTATIONS", plot_rotations, "rotations")
+"""
 plot_and_save_design(
     "ROTATION OF FRACTIONED CIRCLES", plot_rotation_of_fractioned_circles,
     "rotation_of_fractioned_circles"
@@ -279,5 +348,6 @@ plot_and_save_design(
     "ROTATION IN RED AND BLACK", plot_rotation_in_red_and_black,
     "rotation_in_red_and_black"
 )
+"""
 
 plt.show()
