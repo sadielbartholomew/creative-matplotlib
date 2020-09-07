@@ -15,7 +15,7 @@ incrementally coded up and added to the gallery below.
 
 ## Outputs Gallery
 
-### Mutation of Forms
+### 1. Mutation of Forms
 
 #### Replication of original
 
@@ -61,3 +61,39 @@ with Le Parc's style):
 |            |    |
 :-------------------------:|:-------------------------:
 <img src="img/mutation_of_forms/variations_wo_one_colour/mutation_of_forms_15.png" width="400" height="400">  |  <img src="img/mutation_of_forms/variations_wo_one_colour/mutation_of_forms_16.png" width="400" height="400">
+
+
+### 2. Rotations
+
+#### Replication of original
+
+Reconstruction of Le Parc's Rotations (1959), described for example
+on the
+[site of the The Metropolitan Museum of Art](https://www.metmuseum.org/art/collection/search/815346).
+
+![Mutation of Forms Replication](img/rotations/replication_of_original.png)
+
+#### Variations on the original
+
+
+Outputs resulting from...
+
+
+1. Changing the pattern of rotational angles:
+
+|            |    |
+:-------------------------:|:-------------------------:
+<img src="img/rotations/variations_on_rotation_angles/001.png" width="400" height="400">  |  <img src="img/rotations/variations_on_rotation_angles/002.png" width="400" height="400">
+<img src="img/rotations/variations_on_rotation_angles/003.png" width="400" height="400">  |  <img src="img/rotations/variations_on_rotation_angles/004.png" width="400" height="400">
+<img src="img/rotations/variations_on_rotation_angles/005.png" width="400" height="400">  |  <img src="img/rotations/variations_on_rotation_angles/006.png" width="400" height="400">
+<img src="img/rotations/variations_on_rotation_angles/007.png" width="400" height="400">  |  <img src="img/rotations/variations_on_rotation_angles/008.png" width="400" height="400">
+<img src="img/rotations/variations_on_rotation_angles/009.png" width="400" height="400">  |  <img src="img/rotations/variations_on_rotation_angles/010.png" width="400" height="400">
+<img src="img/rotations/variations_on_rotation_angles/011.png" width="400" height="400">  |  <img src="img/rotations/variations_on_rotation_angles/012.png" width="400" height="400">
+<img src="img/rotations/variations_on_rotation_angles/013.png" width="400" height="400">  |  <img src="img/rotations/variations_on_rotation_angles/014.png" width="400" height="400">
+<img src="img/rotations/variations_on_rotation_angles/015.png" width="400" height="400">  |  <img src="img/rotations/variations_on_rotation_angles/016.png" width="400" height="400">
+<img src="img/rotations/variations_on_rotation_angles/017.png" width="400" height="400">  |  <img src="img/rotations/variations_on_rotation_angles/018.png" width="400" height="400">
+<img src="img/rotations/variations_on_rotation_angles/019.png" width="400" height="400">  |  <img src="img/rotations/variations_on_rotation_angles/020.png" width="400" height="400">
+<img src="img/rotations/variations_on_rotation_angles/021.png" width="400" height="400">  |  <img src="img/rotations/variations_on_rotation_angles/022.png" width="400" height="400">
+<img src="img/rotations/variations_on_rotation_angles/023.png" width="400" height="400">  |  <img src="img/rotations/variations_on_rotation_angles/024.png" width="400" height="400">
+<img src="img/rotations/variations_on_rotation_angles/025.png" width="400" height="400">  |  <img src="img/rotations/variations_on_rotation_angles/026.png" width="400" height="400">
+<img src="img/rotations/variations_on_rotation_angles/027.png" width="400" height="400">  |  <img src="img/rotations/variations_on_rotation_angles/028.png" width="400" height="400">
