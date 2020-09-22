@@ -160,6 +160,36 @@ def create_rotations_angles_array(
     return angles_array
 
 
+def create_fractioned_angles_array(
+        grid_indices, number_points_per_side):
+    """ TODO. """
+    angles_array = np.zeros(
+        (number_points_per_side, number_points_per_side),
+        dtype=float
+    )
+
+    # --- # for top row correct, use 290, 430 with code as above for pure rots!
+    spaced_thetas = np.linspace(290, 430, number_points_per_side)
+    ###spaced_thetas_2 = np.linspace(60, 240, number_points_per_side)
+    # 1. Make first and last column correct:
+    for j in grid_indices:
+        angles_array[0][j] = spaced_thetas[::-1][j]
+        angles_array[-1][j] = spaced_thetas[::-1][-j-1]
+    # 2. Create rows linearly-spaced based on first and last columns:
+    for i in grid_indices:
+        # Minus sign is to achieve clockwise angle changes as per the design.
+        # Without it the angles would move from the first to the last angles
+        # in an anti-clockwise direction:
+        row_angles = np.linspace(
+            -1 * angles_array[0][i],  # see above regarding -1 factor
+            -1 * angles_array[-1][i],
+            number_points_per_side,
+        )
+        angles_array[i] = row_angles
+
+    return angles_array
+
+
 def plot_mutations_wedges(
         position, wedge_1_thetas, wedge_2_thetas, colour_1, colour_2):
     """ TODO. """
@@ -319,7 +349,7 @@ def plot_rotation_of_fractioned_circles(axes):
     points = NUMBER_GRIDPOINTS_PER_SIDE[design_name]
     grid_points = range(points)
 
-    angles_array = create_rotations_angles_array(
+    angles_array = create_fractioned_angles_array(
         grid_points,
         number_points_per_side=points
     )
@@ -386,9 +416,13 @@ def format_canvas(design_name, patch_creation_func):
 def plot_and_save_design(design_name, plot_func, save_dir):
     background_col = format_canvas(design_name, plot_func)
 
+    # For creating unique names to save generated variations whilst trying
+    # to get the angles the same as the original!
     import uuid
     plt.savefig(
         'img/{}/replication_of_original.png'.format(save_dir),
+        #'img/rotation_of_fractioned_circles/variations_on_rotation_angles/'
+        #'{}.png'.format(uuid.uuid4()),
         format='png',
         bbox_inches='tight',
         facecolor=background_col,
