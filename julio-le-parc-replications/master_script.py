@@ -163,31 +163,29 @@ def create_rotations_angles_array(
 def create_fractioned_angles_array(
         grid_indices, number_points_per_side):
     """ TODO. """
+
     angles_array = np.zeros(
         (number_points_per_side, number_points_per_side),
         dtype=float
     )
 
-    # --- # for top row correct, use 290, 430 with code as above for pure rots!
-    spaced_thetas = np.linspace(290, 430, number_points_per_side)
-    ###spaced_thetas_2 = np.linspace(60, 240, number_points_per_side)
+    first_col_thetas = np.linspace(-70, 70, number_points_per_side)
+    last_col_thetas = np.linspace(70, 3 * 360 + 290, number_points_per_side)
+
     # 1. Make first and last column correct:
     for j in grid_indices:
-        angles_array[0][j] = spaced_thetas[::-1][j]
-        angles_array[-1][j] = spaced_thetas[::-1][-j-1]
+        angles_array[0][j] = first_col_thetas[j]
+        angles_array[-1][j] = last_col_thetas[j]
     # 2. Create rows linearly-spaced based on first and last columns:
     for i in grid_indices:
-        # Minus sign is to achieve clockwise angle changes as per the design.
-        # Without it the angles would move from the first to the last angles
-        # in an anti-clockwise direction:
         row_angles = np.linspace(
-            -1 * angles_array[0][i],  # see above regarding -1 factor
-            -1 * angles_array[-1][i],
+            angles_array[0][i],
+            angles_array[-1][i],
             number_points_per_side,
         )
         angles_array[i] = row_angles
 
-    return angles_array
+    return -1 * np.flip(angles_array, axis=1)
 
 
 def plot_mutations_wedges(
@@ -417,12 +415,12 @@ def plot_and_save_design(design_name, plot_func, save_dir):
     background_col = format_canvas(design_name, plot_func)
 
     # For creating unique names to save generated variations whilst trying
-    # to get the angles the same as the original!
-    import uuid
+    # to get the angles the same as the original(!):
+    # # import uuid
     plt.savefig(
         'img/{}/replication_of_original.png'.format(save_dir),
-        #'img/rotation_of_fractioned_circles/variations_on_rotation_angles/'
-        #'{}.png'.format(uuid.uuid4()),
+        # # 'img/rotation_of_fractioned_circles/variations_on_rotation_angles/'
+        # # '{}.png'.format(uuid.uuid4()),
         format='png',
         bbox_inches='tight',
         facecolor=background_col,
@@ -430,13 +428,11 @@ def plot_and_save_design(design_name, plot_func, save_dir):
 
 
 # Plot all four designs
-# TODO: note that only 1 and 2 complete; 3 and 4 are under development,
+# TODO: note that only 1, 2 and 3 are complete; 4 is under development,
 # hence commented out for the moment.
-"""
 plot_and_save_design(
     "MUTATION OF FORMS", plot_mutation_of_forms, "mutation_of_forms")
 plot_and_save_design("ROTATIONS", plot_rotations, "rotations")
-"""
 plot_and_save_design(
     "ROTATION OF FRACTIONED CIRCLES", plot_rotation_of_fractioned_circles,
     "rotation_of_fractioned_circles"
