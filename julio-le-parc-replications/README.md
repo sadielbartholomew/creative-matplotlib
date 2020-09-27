@@ -157,4 +157,4 @@ a) Changing the pattern of rotational angles:
 <img src="img/rotation_of_fractioned_circles/variations_on_rotation_angles/071.png" width="400" height="400">  |  <img src="img/rotation_of_fractioned_circles/variations_on_rotation_angles/072.png" width="400" height="400">
 <img src="img/rotation_of_fractioned_circles/variations_on_rotation_angles/073.png" width="400" height="400">  |  <img src="img/rotation_of_fractioned_circles/variations_on_rotation_angles/074.png" width="400" height="400">
 <img src="img/rotation_of_fractioned_circles/variations_on_rotation_angles/075.png" width="400" height="400">  |  <img src="img/rotation_of_fractioned_circles/variations_on_rotation_angles/076.png" width="400" height="400">
-<img src="img/rotation_of_fractioned_circles/variations_on_rotation_angles/077.png" width="400" height="400">  |  <img src="img/rotation_of_fractioned_circles/variations_on_rotation_angles/078.png" width="400" height="400">
+<img src="img/rotation_of_fractioned_circles/variations_on_rotation_angles/077.png" width="400" height="400">  |
