@@ -268,22 +268,37 @@ def plot_fractioned_circle_patch(
     return (dark_patch, light_patch, clip_patch)
 
 
-def plot_simple_cross(centre, base_theta, colour_1, colour_2):
+def create_cross_line(ax, centre, length, width, colour, angle):
     """ TODO. """
-    # Define two lines perpendicular to each other as patches
-    length = 0.7
-    width = 0.05
-    cen_1, cen_2 = centre[0], centre[1]
+    lines = []
+    for theta in (angle, angle + 180):  # two parallel half-lines from centre
+        lines.append(
+            mpatches.Rectangle(
+                (centre[0] - width, centre[1] - (width / 2.0)),  # normalised
+                length, width, color=colour,
+                transform=mtransforms.Affine2D().rotate_deg_around(
+                    *centre, theta) + ax.transData,
+            )
+        )
+    return lines
 
-    # Adding and subtracting some width/length so central despite any width:
-    line_1 = mpatches.Rectangle(
-        (cen_1 - width, cen_2 + (length-width) / 2.0),
-        length, width, base_theta, color=colour_1)
-    line_2 = mpatches.Rectangle(
-        (cen_1 + (length-width) / 2.0, cen_2),
-        length, width, base_theta + 90, color=colour_2
+
+def plot_simple_cross(centre, base_theta, colour_1, colour_2, ax):
+    """ TODO. """
+    half_length = 0.5
+    width = 0.05
+
+    # Define two lines perpendicular to each other as patches
+    cross_lines = (
+        create_cross_line(
+            ax, centre, half_length, width, colour_1, base_theta) +
+        create_cross_line(
+            ax, centre, half_length, width, colour_2,
+            base_theta + 90
+        )
     )
-    return line_1, line_2
+
+    return cross_lines
 
 
 def plot_mutation_of_forms(axes):
@@ -371,18 +386,25 @@ def plot_rotation_of_fractioned_circles(axes):
 def plot_rotation_in_red_and_black(axes):
     """ TODO. """
     design_name = "ROTATION IN RED AND BLACK"
-    grid_points = range(
-        NUMBER_GRIDPOINTS_PER_SIDE[design_name])
+    points = NUMBER_GRIDPOINTS_PER_SIDE[design_name]
+    grid_points = range(points)
+
+    # TODO: using RoFC angles array as a placeholder. Find actual!
+    angles_array = create_fractioned_angles_array(
+        grid_points,
+        number_points_per_side=points
+    )
     for i, j in itertools.product(grid_points, grid_points):
         # Now create and plot the wedges onto the canvas:
         position_xy = (IMAGE_PAD_POINTS + i, IMAGE_PAD_POINTS + j)
-        red_line, black_line = plot_simple_cross(
-            position_xy, 0,
+        line_patches = plot_simple_cross(
+            position_xy, angles_array[i][j],
             COLOURS[design_name]["RED"],
             COLOURS[design_name]["OFF BLACK"],
+            axes
         )
-        axes.add_patch(red_line)
-        axes.add_patch(black_line)
+        for line in line_patches:
+            axes.add_patch(line)
 
 
 def format_canvas(design_name, patch_creation_func):
@@ -419,7 +441,7 @@ def plot_and_save_design(design_name, plot_func, save_dir):
     # # import uuid
     plt.savefig(
         'img/{}/replication_of_original.png'.format(save_dir),
-        # # 'img/rotation_of_fractioned_circles/variations_on_rotation_angles/'
+        # # 'img/rotation_in_red_and_black/misc_variations/'
         # # '{}.png'.format(uuid.uuid4()),
         format='png',
         bbox_inches='tight',
@@ -428,8 +450,7 @@ def plot_and_save_design(design_name, plot_func, save_dir):
 
 
 # Plot all four designs
-# TODO: note that only 1, 2 and 3 are complete; 4 is under development,
-# hence commented out for the moment.
+"""
 plot_and_save_design(
     "MUTATION OF FORMS", plot_mutation_of_forms, "mutation_of_forms")
 plot_and_save_design("ROTATIONS", plot_rotations, "rotations")
@@ -442,6 +463,5 @@ plot_and_save_design(
     "ROTATION IN RED AND BLACK", plot_rotation_in_red_and_black,
     "rotation_in_red_and_black"
 )
-"""
 
 plt.show()
