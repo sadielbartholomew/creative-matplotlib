@@ -188,6 +188,41 @@ def create_fractioned_angles_array(
     return -1 * np.flip(angles_array, axis=1)
 
 
+def create_red_and_black_angles_array(
+        grid_indices, number_points_per_side):
+    """ TODO. """
+
+    angles_array = np.zeros(
+        (number_points_per_side, number_points_per_side),
+        dtype=float
+    )
+
+    # Alternate between +45 and -45, but with a different start point for each:
+    first_col_thetas = np.full((number_points_per_side), 45)
+    first_col_thetas[1::2] = -45  # starts with 45 (then -45 is next, etc.)
+    last_col_thetas = np.full((number_points_per_side), 45)
+    last_col_thetas[::2] = -45  # starts with -45
+
+    # 1. Make first and last column correct:
+    angles_array[0] = first_col_thetas
+    angles_array[-1] = last_col_thetas
+
+    # 2. Create rows linearly-spaced based on first and last columns. In this
+    #    case, a cycle factor sets how many rotations from angles A to B.
+    for i in grid_indices:
+        use_cycle_factor = (i // 2) + 7
+        normalised_angles_a = angles_array[0][i]
+        normalised_angles_b = angles_array[-1][i] + 360 * use_cycle_factor
+        row_angles = np.linspace(
+            normalised_angles_a,
+            normalised_angles_b,
+            number_points_per_side,
+        )
+        angles_array[:, i] = row_angles
+
+    return angles_array
+
+
 def plot_mutations_wedges(
         position, wedge_1_thetas, wedge_2_thetas, colour_1, colour_2):
     """ TODO. """
@@ -268,7 +303,7 @@ def plot_fractioned_circle_patch(
     return (dark_patch, light_patch, clip_patch)
 
 
-def create_cross_line(ax, centre, length, width, colour, angle):
+def create_cross_line(ax, centre, length, width, colour, angle, zorder):
     """ TODO. """
     lines = []
     for theta in (angle, angle + 180):  # two parallel half-lines from centre
@@ -277,7 +312,7 @@ def create_cross_line(ax, centre, length, width, colour, angle):
                 (centre[0] - width, centre[1] - (width / 2.0)),  # normalised
                 length, width, color=colour,
                 transform=mtransforms.Affine2D().rotate_deg_around(
-                    *centre, theta) + ax.transData,
+                    *centre, theta) + ax.transData, zorder=zorder
             )
         )
     return lines
@@ -289,12 +324,15 @@ def plot_simple_cross(centre, base_theta, colour_1, colour_2, ax):
     width = 0.05
 
     # Define two lines perpendicular to each other as patches
+    reference_zorder = 1
     cross_lines = (
         create_cross_line(
-            ax, centre, half_length, width, colour_1, base_theta) +
+            ax, centre, half_length, width, colour_1, base_theta,
+            reference_zorder
+        ) +
         create_cross_line(
-            ax, centre, half_length, width, colour_2,
-            base_theta + 90
+            ax, centre, half_length, width, colour_2, base_theta + 90,
+            reference_zorder - 10  # i.e. this line is shown on top
         )
     )
 
@@ -390,7 +428,7 @@ def plot_rotation_in_red_and_black(axes):
     grid_points = range(points)
 
     # TODO: using RoFC angles array as a placeholder. Find actual!
-    angles_array = create_fractioned_angles_array(
+    angles_array = create_red_and_black_angles_array(
         grid_points,
         number_points_per_side=points
     )
@@ -450,7 +488,6 @@ def plot_and_save_design(design_name, plot_func, save_dir):
 
 
 # Plot all four designs
-"""
 plot_and_save_design(
     "MUTATION OF FORMS", plot_mutation_of_forms, "mutation_of_forms")
 plot_and_save_design("ROTATIONS", plot_rotations, "rotations")
@@ -458,7 +495,6 @@ plot_and_save_design(
     "ROTATION OF FRACTIONED CIRCLES", plot_rotation_of_fractioned_circles,
     "rotation_of_fractioned_circles"
 )
-"""
 plot_and_save_design(
     "ROTATION IN RED AND BLACK", plot_rotation_in_red_and_black,
     "rotation_in_red_and_black"
