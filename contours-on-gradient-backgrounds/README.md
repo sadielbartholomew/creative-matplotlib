@@ -1,6 +1,6 @@
 # Designs for contours on gradient backgrounds
 
-### Contour plots of products &/or quotients of trigonometric functions on simple gradient backgrounds, generated in *Python* using *matplotlib*.
+### Contour plots of products and/or quotients of trigonometric functions on simple gradient backgrounds.
 
 #### Created by Sadie Bartholomew, June 2016 - May 2017 *
 

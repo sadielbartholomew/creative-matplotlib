@@ -1,7 +1,7 @@
 # Ellsworth Kelly Replications
 
 
-### Replication of selected artworks by Ellsworth Kelly with NumPy arrays
+### Replication of, and variations on, selected artworks by Ellsworth Kelly
 
 
 #### Created by Sadie Bartholomew, 2019

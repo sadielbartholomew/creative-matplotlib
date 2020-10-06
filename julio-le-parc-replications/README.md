@@ -1,7 +1,7 @@
 # Julio Le Parc Replications
 
 
-### Replication of selected artworks by Julio Le Parc
+### Replication of, and variations on, selected artworks by Julio Le Parc
 
 
 #### Created by Sadie Bartholomew, 2020+

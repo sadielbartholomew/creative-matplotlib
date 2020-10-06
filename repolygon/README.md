@@ -1,6 +1,6 @@
 # repolygon
 
-### Create intricate tiling designs from *re*peated *polygon* *matplotlib* patches.
+### Intricate tiling designs from *re*peated *polygon* *matplotlib* patches.
 
 #### Core code & designs created by Sadie Bartholomew, June - October 2017 *
 
