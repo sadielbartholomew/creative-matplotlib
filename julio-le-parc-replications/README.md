@@ -158,3 +158,71 @@ a) Changing the pattern of rotational angles:
 <img src="img/rotation_of_fractioned_circles/variations_on_rotation_angles/073.png" width="400" height="400">  |  <img src="img/rotation_of_fractioned_circles/variations_on_rotation_angles/074.png" width="400" height="400">
 <img src="img/rotation_of_fractioned_circles/variations_on_rotation_angles/075.png" width="400" height="400">  |  <img src="img/rotation_of_fractioned_circles/variations_on_rotation_angles/076.png" width="400" height="400">
 <img src="img/rotation_of_fractioned_circles/variations_on_rotation_angles/077.png" width="400" height="400">  |
+
+
+### 4. Rotation in Red and Black
+
+#### Replication of original
+
+Reconstruction of Le Parc's Rotation in Red and Black (1959), described for
+example on the
+[site of the The Metropolitan Museum of Art](https://www.metmuseum.org/art/collection/search/815338).
+
+![Rotation in Red and Black Replication](img/rotation_in_red_and_black/replication_of_original.png)
+
+#### Variations on the original
+
+
+Outputs resulting from...
+
+
+a) Changing the pattern of rotational angles:
+
+|            |    |
+:-------------------------:|:-------------------------:
+<img src="img/rotation_in_red_and_black/variations_on_rotation_angles/001.png" width="400" height="400">  |  <img src="img/rotation_in_red_and_black/variations_on_rotation_angles/002.png" width="400" height="400">
+<img src="img/rotation_in_red_and_black/variations_on_rotation_angles/003.png" width="400" height="400">  |  <img src="img/rotation_in_red_and_black/variations_on_rotation_angles/004.png" width="400" height="400">
+<img src="img/rotation_in_red_and_black/variations_on_rotation_angles/005.png" width="400" height="400">  |  <img src="img/rotation_in_red_and_black/variations_on_rotation_angles/006.png" width="400" height="400">
+<img src="img/rotation_in_red_and_black/variations_on_rotation_angles/007.png" width="400" height="400">  |  <img src="img/rotation_in_red_and_black/variations_on_rotation_angles/008.png" width="400" height="400">
+<img src="img/rotation_in_red_and_black/variations_on_rotation_angles/009.png" width="400" height="400">  |  <img src="img/rotation_in_red_and_black/variations_on_rotation_angles/010.png" width="400" height="400">
+<img src="img/rotation_in_red_and_black/variations_on_rotation_angles/011.png" width="400" height="400">  |  <img src="img/rotation_in_red_and_black/variations_on_rotation_angles/012.png" width="400" height="400">
+<img src="img/rotation_in_red_and_black/variations_on_rotation_angles/013.png" width="400" height="400">  |  <img src="img/rotation_in_red_and_black/variations_on_rotation_angles/014.png" width="400" height="400">
+<img src="img/rotation_in_red_and_black/variations_on_rotation_angles/015.png" width="400" height="400">  |  <img src="img/rotation_in_red_and_black/variations_on_rotation_angles/016.png" width="400" height="400">
+<img src="img/rotation_in_red_and_black/variations_on_rotation_angles/017.png" width="400" height="400">  |  <img src="img/rotation_in_red_and_black/variations_on_rotation_angles/018.png" width="400" height="400">
+<img src="img/rotation_in_red_and_black/variations_on_rotation_angles/019.png" width="400" height="400">  |  <img src="img/rotation_in_red_and_black/variations_on_rotation_angles/020.png" width="400" height="400">
+<img src="img/rotation_in_red_and_black/variations_on_rotation_angles/021.png" width="400" height="400">  |  <img src="img/rotation_in_red_and_black/variations_on_rotation_angles/022.png" width="400" height="400">
+<img src="img/rotation_in_red_and_black/variations_on_rotation_angles/023.png" width="400" height="400">  |  <img src="img/rotation_in_red_and_black/variations_on_rotation_angles/024.png" width="400" height="400">
+<img src="img/rotation_in_red_and_black/variations_on_rotation_angles/025.png" width="400" height="400">  |  <img src="img/rotation_in_red_and_black/variations_on_rotation_angles/026.png" width="400" height="400">
+<img src="img/rotation_in_red_and_black/variations_on_rotation_angles/027.png" width="400" height="400">  |  <img src="img/rotation_in_red_and_black/variations_on_rotation_angles/028.png" width="400" height="400">
+<img src="img/rotation_in_red_and_black/variations_on_rotation_angles/029.png" width="400" height="400">  |  <img src="img/rotation_in_red_and_black/variations_on_rotation_angles/030.png" width="400" height="400">
+<img src="img/rotation_in_red_and_black/variations_on_rotation_angles/031.png" width="400" height="400">  |  <img src="img/rotation_in_red_and_black/variations_on_rotation_angles/032.png" width="400" height="400">
+<img src="img/rotation_in_red_and_black/variations_on_rotation_angles/033.png" width="400" height="400">  |  <img src="img/rotation_in_red_and_black/variations_on_rotation_angles/034.png" width="400" height="400">
+<img src="img/rotation_in_red_and_black/variations_on_rotation_angles/035.png" width="400" height="400">  |  <img src="img/rotation_in_red_and_black/variations_on_rotation_angles/036.png" width="400" height="400">
+<img src="img/rotation_in_red_and_black/variations_on_rotation_angles/037.png" width="400" height="400">  |  <img src="img/rotation_in_red_and_black/variations_on_rotation_angles/038.png" width="400" height="400">
+<img src="img/rotation_in_red_and_black/variations_on_rotation_angles/039.png" width="400" height="400">  |  <img src="img/rotation_in_red_and_black/variations_on_rotation_angles/040.png" width="400" height="400">
+<img src="img/rotation_in_red_and_black/variations_on_rotation_angles/041.png" width="400" height="400">  |  <img src="img/rotation_in_red_and_black/variations_on_rotation_angles/042.png" width="400" height="400">
+<img src="img/rotation_in_red_and_black/variations_on_rotation_angles/043.png" width="400" height="400">  |  <img src="img/rotation_in_red_and_black/variations_on_rotation_angles/044.png" width="400" height="400">
+<img src="img/rotation_in_red_and_black/variations_on_rotation_angles/045.png" width="400" height="400">  |  <img src="img/rotation_in_red_and_black/variations_on_rotation_angles/046.png" width="400" height="400">
+<img src="img/rotation_in_red_and_black/variations_on_rotation_angles/047.png" width="400" height="400">  |  <img src="img/rotation_in_red_and_black/variations_on_rotation_angles/048.png" width="400" height="400">
+<img src="img/rotation_in_red_and_black/variations_on_rotation_angles/049.png" width="400" height="400">  |  <img src="img/rotation_in_red_and_black/variations_on_rotation_angles/050.png" width="400" height="400">
+<img src="img/rotation_in_red_and_black/variations_on_rotation_angles/051.png" width="400" height="400">  |  <img src="img/rotation_in_red_and_black/variations_on_rotation_angles/052.png" width="400" height="400">
+<img src="img/rotation_in_red_and_black/variations_on_rotation_angles/053.png" width="400" height="400">  |  <img src="img/rotation_in_red_and_black/variations_on_rotation_angles/054.png" width="400" height="400">
+<img src="img/rotation_in_red_and_black/variations_on_rotation_angles/055.png" width="400" height="400">  |  <img src="img/rotation_in_red_and_black/variations_on_rotation_angles/056.png" width="400" height="400">
+<img src="img/rotation_in_red_and_black/variations_on_rotation_angles/057.png" width="400" height="400">  |  <img src="img/rotation_in_red_and_black/variations_on_rotation_angles/058.png" width="400" height="400">
+<img src="img/rotation_in_red_and_black/variations_on_rotation_angles/059.png" width="400" height="400">  |  <img src="img/rotation_in_red_and_black/variations_on_rotation_angles/060.png" width="400" height="400">
+<img src="img/rotation_in_red_and_black/variations_on_rotation_angles/061.png" width="400" height="400">  |  <img src="img/rotation_in_red_and_black/variations_on_rotation_angles/062.png" width="400" height="400">
+<img src="img/rotation_in_red_and_black/variations_on_rotation_angles/063.png" width="400" height="400">  |
+
+b) Changing both the style and the angular coverage pattern ("loose" variations):
+
+|            |    |
+:-------------------------:|:-------------------------:
+<img src="img/rotation_in_red_and_black/loose_variations/001.png" width="400" height="400">  |  <img src="img/rotation_in_red_and_black/loose_variations/002.png" width="400" height="400">
+<img src="img/rotation_in_red_and_black/loose_variations/003.png" width="400" height="400">  |  <img src="img/rotation_in_red_and_black/loose_variations/004.png" width="400" height="400">
+<img src="img/rotation_in_red_and_black/loose_variations/005.png" width="400" height="400">  |  <img src="img/rotation_in_red_and_black/loose_variations/006.png" width="400" height="400">
+<img src="img/rotation_in_red_and_black/loose_variations/007.png" width="400" height="400">  |  <img src="img/rotation_in_red_and_black/loose_variations/008.png" width="400" height="400">
+<img src="img/rotation_in_red_and_black/loose_variations/009.png" width="400" height="400">  |  <img src="img/rotation_in_red_and_black/loose_variations/010.png" width="400" height="400">
+<img src="img/rotation_in_red_and_black/loose_variations/011.png" width="400" height="400">  |  <img src="img/rotation_in_red_and_black/loose_variations/012.png" width="400" height="400">
+<img src="img/rotation_in_red_and_black/loose_variations/013.png" width="400" height="400">  |  <img src="img/rotation_in_red_and_black/loose_variations/014.png" width="400" height="400">
+<img src="img/rotation_in_red_and_black/loose_variations/015.png" width="400" height="400">  |  <img src="img/rotation_in_red_and_black/loose_variations/016.png" width="400" height="400">
+<img src="img/rotation_in_red_and_black/loose_variations/017.png" width="400" height="400">  |
