@@ -31,7 +31,8 @@ scheme and motif, mainly to demonstrate the basic capability of the
 :heavy_exclamation_mark: **Note:** the logic for custom colouring of designs
 is currently under refactor, so most of the designs (all except 10 & 11) are
 shown with incomplete (but in some ways representative) colouring pending the
-finalisation of that code. :heavy_exclamation_mark:
+finalisation of that code. See the section below for impressions of the
+colours that will be used after the refactor. :heavy_exclamation_mark:
 
 These ~~are~~ [will be (see note above)] the final designs. For every case, the
 individual colour scheme & mapping of it onto the set of intersecting polygons
@@ -48,6 +49,17 @@ part of the overall design:
 <img src="https://raw.githubusercontent.com/sadielbartholomew/creative-mini-projects/master/repolygon/designs/repolygon_design_11_full_colour.png" width="400" height="400">  |
 
 
-### Final designs [prototypes]
+### Prototypes for the colouring of the final designs
 
-Text...
+These are the final designs as produced in minimal tones or outlines and then
+coloured using fill tools in a graphics editor. They show what the final
+designs will look like when the refactor of the colouring module is complete.
+
+|            |    |
+:-------------------------:|:-------------------------:
+<img src="https://raw.githubusercontent.com/sadielbartholomew/creative-mini-projects/master/repolygon/designs/prototypes-for-colours/repolygon_design_1_colour_prototype.png" width="400" height="400">  |  <img src="https://raw.githubusercontent.com/sadielbartholomew/creative-mini-projects/master/repolygon/designs/prototypes-for-colours/repolygon_design_2_colour_prototype.png" width="400" height="400">
+<img src="https://raw.githubusercontent.com/sadielbartholomew/creative-mini-projects/master/repolygon/designs/prototypes-for-colours/repolygon_design_3_colour_prototype.png" width="400" height="400">  | <img src="https://raw.githubusercontent.com/sadielbartholomew/creative-mini-projects/master/repolygon/designs/prototypes-for-colours/repolygon_design_4_colour_prototype.png" width="400" height="400">
+<img src="https://raw.githubusercontent.com/sadielbartholomew/creative-mini-projects/master/repolygon/designs/prototypes-for-colours/repolygon_design_5_colour_prototype.png" width="400" height="400">  |  <img src="https://raw.githubusercontent.com/sadielbartholomew/creative-mini-projects/master/repolygon/designs/prototypes-for-colours/repolygon_design_6_colour_prototype.png" width="400" height="400">
+<img src="https://raw.githubusercontent.com/sadielbartholomew/creative-mini-projects/master/repolygon/designs/prototypes-for-colours/repolygon_design_7_colour_prototype.png" width="400" height="400">  |  <img src="https://raw.githubusercontent.com/sadielbartholomew/creative-mini-projects/master/repolygon/designs/prototypes-for-colours/repolygon_design_8_colour_prototype.png" width="400" height="400">
+<img src="https://raw.githubusercontent.com/sadielbartholomew/creative-mini-projects/master/repolygon/designs/prototypes-for-colours/repolygon_design_9_colour_prototype.png" width="400" height="400">  | <img src="https://raw.githubusercontent.com/sadielbartholomew/creative-mini-projects/master/repolygon/designs/prototypes-for-colours/repolygon_design_10_colour_prototype.png" width="400" height="400">
+<img src="https://raw.githubusercontent.com/sadielbartholomew/creative-mini-projects/master/repolygon/designs/prototypes-for-colours/repolygon_design_11_colour_prototype.png" width="400" height="400">  |
