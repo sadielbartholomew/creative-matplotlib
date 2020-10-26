@@ -63,3 +63,21 @@ designs will look like when the refactor of the colouring module is complete.
 <img src="https://raw.githubusercontent.com/sadielbartholomew/creative-mini-projects/master/repolygon/designs/prototypes-for-colours/repolygon_design_7_colour_prototype.png" width="400" height="400">  |  <img src="https://raw.githubusercontent.com/sadielbartholomew/creative-mini-projects/master/repolygon/designs/prototypes-for-colours/repolygon_design_8_colour_prototype.png" width="400" height="400">
 <img src="https://raw.githubusercontent.com/sadielbartholomew/creative-mini-projects/master/repolygon/designs/prototypes-for-colours/repolygon_design_9_colour_prototype.png" width="400" height="400">  | <img src="https://raw.githubusercontent.com/sadielbartholomew/creative-mini-projects/master/repolygon/designs/prototypes-for-colours/repolygon_design_10_colour_prototype.png" width="400" height="400">
 <img src="https://raw.githubusercontent.com/sadielbartholomew/creative-mini-projects/master/repolygon/designs/prototypes-for-colours/repolygon_design_11_colour_prototype.png" width="400" height="400">  |
+
+
+### Prototypes for the designs incorporating 
+
+These are prototypes for designs which incorporate custom patches using
+[`matplotlib.path.Path`](https://matplotlib.org/api/path_api.html#matplotlib.path.Path),
+which often make use of curved lines via Bezier curves to join points in the
+patches (formed via `CURVE3` and `CURVE4` codes as described in the `Path`
+object API reference as linked) together. These patches aren't strictly
+polygons as per the project name, as the lines aren't all straight, but
+this flexibility allows further very interesting designs to be made.
+
+As in the above section, the outlines have been coded using `repolygon` but
+the colours were, for now, added manually using an external graphcs editor.
+
+|            |    |
+:-------------------------:|:-------------------------:
+<img src="https://raw.githubusercontent.com/sadielbartholomew/creative-mini-projects/master/repolygon/designs/curved-prototypes/repolygon_design_12.png" width="400" height="400">  |  <img src="https://raw.githubusercontent.com/sadielbartholomew/creative-mini-projects/master/repolygon/designs/curved-prototypes/repolygon_design_13.png" width="400" height="400">
