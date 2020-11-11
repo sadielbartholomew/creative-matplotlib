@@ -1,3 +1,4 @@
+from abc import ABCMeta, abstractmethod
 import itertools
 
 import matplotlib.pyplot as plt
@@ -28,27 +29,44 @@ See also the Le Parc's website:
 IMAGE_PAD_POINTS = 2
 
 
-class LeParcDesign:
+class LeParcDesign(metaclass=ABCMeta):
     """ TODO.
     """
 
     def __init__(self, design_name, gridpoints, colours):
-        self.axes = None  # to be set
         self.design_name = design_name
         self.gridpoints = gridpoints
+        self.grid_indices = range(self.gridpoints)
         self.colours = colours
-        self.background_colour = "antiquewhite"  # sensible pan-design default
+        self.background_colour = None
 
-    def create_design():
+        self.axes = None
+
+        self.angles_array = self.create_design_angles_array()
+
+        self.ABC_error_msg = "Designs must be created by subclassing."
+
+    @abstractmethod
+    def create_design_patches_per_gridpoint(self):
         """ TODO. """
-        raise NotImplementedError("Designs must be created by subclassing.")
+        raise NotImplementedError(self.ABC_error_msg)
+
+    @abstractmethod
+    def create_design_angles_array(self):
+        """ TODO. """
+        raise NotImplementedError(self.ABC_error_msg)
+
+    @abstractmethod
+    def create_design(self):
+        """ TODO. """
+        raise NotImplementedError(self.ABC_error_msg)
 
     def format_canvas(self):
         """ Format canvas to centre on image with no visible axes markings. """
         fig, ax = plt.subplots(figsize=(6, 6))
         self.axes = ax
         self.create_design()
-        
+
         fig.set_canvas(plt.gcf().canvas)
         self.background_colour = self.colours["OFF WHITE"]
         fig.patch.set_facecolor(self.background_colour)
@@ -58,8 +76,8 @@ class LeParcDesign:
             self.gridpoints + padding_per_side
         )
 
-        ax.set_xlim(*limits)
-        ax.set_ylim(*limits)
+        self.axes.set_xlim(*limits)
+        self.axes.set_ylim(*limits)
 
         plt.axis('equal')
         plt.axis('off')
@@ -89,17 +107,40 @@ class Mutations(LeParcDesign):
     """
 
     def __init__(self):
-        self.design_name = "MUTATION OF FORMS"
-        self.gridpoints = 10
-        self.colours = {
-            "OFF WHITE": "#FAEFDD",
-            "RED": "#CB0B22",
-            "BLUE": "#1D119B",
-        }
+        super().__init__(
+            "MUTATION OF FORMS",
+            10,
+            {
+                "OFF WHITE": "#FAEFDD",
+                "RED": "#CB0B22",
+                "BLUE": "#1D119B",
+            }
+        )
+
+        self.red_angles_array = self.angles_array  # from parent LeParcDesign
+        self.blue_angles_array = self.create_design_angles_array(is_red=False)
 
     @staticmethod
-    def create_mutations_linspaced_angles(
-            max_coverage, min_coverage, number_points_per_side):
+    def plot_mutations_wedge(centre, theta1, theta2, colour):
+        """ TODO. """
+        # 0.5 radius means the circles containing the wedges just touch their
+        # neighbours. Use 0.475 to provide a small gap as per the design.
+        return mpatches.Wedge(
+            centre, 0.475, theta1, theta2, color=colour
+        )
+
+    def create_design_patches_per_gridpoint(
+            self, position, wedge_1_thetas, wedge_2_thetas, colour_1,
+            colour_2
+    ):
+        """ TODO. """
+        wedge_1 = self.plot_mutations_wedge(
+            position, *wedge_1_thetas, colour_1)
+        wedge_2 = self.plot_mutations_wedge(
+            position, *wedge_2_thetas, colour_2)
+        return wedge_1, wedge_2
+
+    def create_mutations_linspaced_angles(self, max_coverage, min_coverage):
         """ TODO.
 
         NOTE: angles start pointing downwards i.e. 0 degs is south in PyPlot.
@@ -123,36 +164,15 @@ class Mutations(LeParcDesign):
         * blue wedges go from +45 <- +135 -> +225
         """
 
-        # Use linspace to get 1D arrays of angles evenly spaced across coverage:
+        # Use linspace for 1D arrays of angles evenly spaced across coverage.
         theta1_min_to_max = np.linspace(
-            max_coverage[0], min_coverage[0], num=number_points_per_side)
+            max_coverage[0], min_coverage[0], num=self.gridpoints)
         theta2_min_to_max = np.linspace(
-            max_coverage[1], min_coverage[1], num=number_points_per_side)
+            max_coverage[1], min_coverage[1], num=self.gridpoints)
 
         return np.column_stack((theta1_min_to_max, theta2_min_to_max))
 
-    @staticmethod
-    def plot_mutations_wedge(centre, theta1, theta2, colour):
-        """ TODO. """
-        # 0.5 radius means the circles containing the wedges just touch their
-        # neighbours. Use 0.475 radius to provide a small gap as per the design.
-        return mpatches.Wedge(
-            centre, 0.475, theta1, theta2, color=colour
-        )
-
-    def plot_mutations_wedges(
-            self, position, wedge_1_thetas, wedge_2_thetas, colour_1,
-            colour_2
-    ):
-        """ TODO. """
-        wedge_1 = self.plot_mutations_wedge(
-            position, *wedge_1_thetas, colour_1)
-        wedge_2 = self.plot_mutations_wedge(
-            position, *wedge_2_thetas, colour_2)
-        return wedge_1, wedge_2
-
-    def create_mutation_angles_array(
-            self, grid_indices, is_red=True, number_points_per_side=5):
+    def create_design_angles_array(self, is_red=True):
         """ TODO. """
         red_max = (-135, 45)
         red_min = (-45, -45)
@@ -160,33 +180,30 @@ class Mutations(LeParcDesign):
         blue_min = (135, 135)
 
         angles_array = np.zeros(
-            (number_points_per_side, number_points_per_side),
+            (self.gridpoints, self.gridpoints),
             dtype=(float, 2)
         )
 
         if is_red:
             index = 1  # don't change the spaced_thetas array later (c.f. -1)
             spaced_thetas = self.create_mutations_linspaced_angles(
-                max_coverage=red_max, min_coverage=red_min,
-                number_points_per_side=number_points_per_side,
+                max_coverage=red_max, min_coverage=red_min
             )
         else:
             index = -1  # to reverse the spaced_thetas array later, via [::-1]
             spaced_thetas = self.create_mutations_linspaced_angles(
-                max_coverage=blue_max, min_coverage=blue_min,
-                number_points_per_side=number_points_per_side,
+                max_coverage=blue_max, min_coverage=blue_min
             )
 
         # 1. Make first and last column correct:
-        for j in grid_indices:
+        for j in self.grid_indices:
             angles_array[0][j] = spaced_thetas[::index][j]
             angles_array[-1][j] = spaced_thetas[::index][-j-1]
         # 2. Create rows linearly-spaced based on first and last columns:
-        for i in grid_indices:
+        for i in self.grid_indices:
             row_angles = self.create_mutations_linspaced_angles(
                 max_coverage=angles_array[0][i],
-                min_coverage=angles_array[-1][i],
-                number_points_per_side=number_points_per_side,
+                min_coverage=angles_array[-1][i]
             )
             angles_array[i] = row_angles
 
@@ -194,28 +211,17 @@ class Mutations(LeParcDesign):
 
     def create_design(self):
         """ TODO. """
-        grid_points = range(self.gridpoints)
-
-        # Calculate angles:
-        red_angles_array = self.create_mutation_angles_array(
-            is_red=True, grid_indices=grid_points,
-            number_points_per_side=self.gridpoints
-        )
-        blue_angles_array = self.create_mutation_angles_array(
-            is_red=False, grid_indices=grid_points,
-            number_points_per_side=self.gridpoints
-        )
-        for i, j in itertools.product(grid_points, grid_points):
+        for i, j in itertools.product(self.grid_indices, self.grid_indices):
             # Get angles:
-            red_thetas = red_angles_array[i][j]
-            blue_thetas = blue_angles_array[i][j]
+            red_thetas = self.red_angles_array[i][j]
+            blue_thetas = self.blue_angles_array[i][j]
 
             # Now create and plot the wedges onto the canvas:
             position_xy = (IMAGE_PAD_POINTS + i, IMAGE_PAD_POINTS + j)
-            red_wedge, blue_wedge = self.plot_mutations_wedges(
+            red_wedge, blue_wedge = self.create_design_patches_per_gridpoint(
                 position_xy, red_thetas, blue_thetas,
                 colour_1=self.colours["RED"],
-                colour_2=self.colours["BLUE"],
+                colour_2=self.colours["BLUE"]
             )
             self.axes.add_patch(red_wedge)
             self.axes.add_patch(blue_wedge)
@@ -225,133 +231,98 @@ class Rotations(LeParcDesign):
     """ TODO.
     """
 
-    def __init__(self): 
-        self.design_name = "ROTATIONS"
-        self.gridpoints = 13
-        self.colours = {
-            "OFF WHITE": "#F4EDE5",
-            "OFF BLACK": "#161815",
-        }
-
-    @staticmethod
-    def create_rotations_angles_array(
-            grid_indices, number_points_per_side=5):
-        """ TODO. """
-        angles_array = np.zeros(
-            (number_points_per_side, number_points_per_side),
-            dtype=float
+    def __init__(self):
+        super().__init__(
+            "ROTATIONS",
+            13,
+            {
+                "OFF WHITE": "#F4EDE5",
+                "OFF BLACK": "#161815",
+            }
         )
 
-        spaced_thetas = np.linspace(0, 180, number_points_per_side)
-        # 1. Make first and last column correct:
-        for j in grid_indices:
-            angles_array[0][j] = spaced_thetas[j]
-            angles_array[-1][j] = spaced_thetas[-j-1]
-        # 2. Create rows linearly-spaced based on first and last columns:
-        for i in grid_indices:
-            # Minus sign is to achieve clockwise angle changes as per the design.
-            # Without it the angles would move from the first to the last angles
-            # in an anti-clockwise direction:
-            row_angles = np.linspace(
-                -1 * angles_array[0][i],  # see above regarding -1 factor
-                angles_array[-1][i],
-                number_points_per_side,
-            )
-            angles_array[i] = row_angles
-
-        return angles_array
-
-    @staticmethod
-    def plot_rotations_patch(
-            centre, rect_angle, foreground_colour, background_colour, ax):
+    def create_design_patches_per_gridpoint(
+            self, centre, rect_angle, foreground_colour, background_colour):
         """ TODO. """
         # These parameters are adapted to match the original design:
         radius = 0.45
         offset_amount = 0.3
         padding = 0.03
 
-        # Note: get a very thin but still visible edge line on circle even if set
-        # linewidth to zero, so to workaround make edgecolour background colour.
+        # Note: get a very thin but still visible edge to circle even if set
+        # linewidth to zero, so (workaround) make edgecolour background colour.
         patch = mpatches.Circle(
             centre, radius, facecolor=foreground_colour,
             edgecolor=background_colour,
         )
-        # The clipping rectangle, rotated appropriately (no need to rotate circle!)
+        # The clipping rectangle, rotated appropriately.
         clip_patch = mpatches.Rectangle(
             (centre[0] + offset_amount, centre[1] - radius),
             radius - offset_amount + padding,
             2 * radius, color=background_colour,
             transform=mtransforms.Affine2D().rotate_deg_around(
-                *centre, rect_angle) + ax.transData
+                *centre, rect_angle) + self.axes.transData
         )
         return (patch, clip_patch)
 
+    def create_design_angles_array(self):
+        """ TODO. """
+        angles_array = np.zeros(
+            (self.gridpoints, self.gridpoints),
+            dtype=float
+        )
+
+        spaced_thetas = np.linspace(0, 180, self.gridpoints)
+        # 1. Make first and last column correct:
+        for j in self.grid_indices:
+            angles_array[0][j] = spaced_thetas[j]
+            angles_array[-1][j] = spaced_thetas[-j-1]
+        # 2. Create rows linearly-spaced based on first and last columns:
+        for i in self.grid_indices:
+            # Minus sign is to achieve clockwise angle changes when going from
+            # the first to the last item in the array, as per the design.
+            row_angles = np.linspace(
+                -1 * angles_array[0][i],  # see above regarding -1 factor
+                angles_array[-1][i],
+                self.gridpoints,
+            )
+            angles_array[i] = row_angles
+
+        return angles_array
+
     def create_design(self):
         """ TODO. """
-        grid_points = range(self.gridpoints)
-
-        angles_array = self.create_rotations_angles_array(
-            grid_points,
-            number_points_per_side=self.gridpoints
-        )
-        for i, j in itertools.product(grid_points, grid_points):
+        for i, j in itertools.product(self.grid_indices, self.grid_indices):
             position_xy = (IMAGE_PAD_POINTS + i, IMAGE_PAD_POINTS + j)
-            circle, clipping_rectangle = self.plot_rotations_patch(
+            circle, clip_rectangle = self.create_design_patches_per_gridpoint(
                 position_xy,
-                angles_array[i][j],
+                self.angles_array[i][j],
                 self.colours["OFF BLACK"],
-                self.colours["OFF WHITE"],
-                self.axes,
+                self.colours["OFF WHITE"]
             )
             self.axes.add_patch(circle)
-            clipping_rectangle.set_clip_path(circle)
-            self.axes.add_patch(clipping_rectangle)
+            clip_rectangle.set_clip_path(circle)
+            self.axes.add_patch(clip_rectangle)
 
 
 class Fractioned(LeParcDesign):
     """ TODO.
     """
 
-    def __init__(self): 
-        self.design_name = "ROTATION OF FRACTIONED CIRCLES"
-        self.gridpoints = 9
-        self.colours = {
-            "OFF WHITE": "#F5EFE3",
-            "LIGHT GREY": "#D3D2D0",
-            "DARK GREY": "#63676B",
-        }
-
-    @staticmethod
-    def create_fractioned_angles_array(
-            grid_indices, number_points_per_side):
-        """ TODO. """
-
-        angles_array = np.zeros(
-            (number_points_per_side, number_points_per_side),
-            dtype=float
+    def __init__(self):
+        super().__init__(
+            "ROTATION OF FRACTIONED CIRCLES",
+            9,
+            {
+                "OFF WHITE": "#F5EFE3",
+                "LIGHT GREY": "#D3D2D0",
+                "DARK GREY": "#63676B",
+            }
         )
 
-        first_col_thetas = np.linspace(-70, 70, number_points_per_side)
-        last_col_thetas = np.linspace(70, 3 * 360 + 290, number_points_per_side)
-
-        # 1. Make first and last column correct:
-        for j in grid_indices:
-            angles_array[0][j] = first_col_thetas[j]
-            angles_array[-1][j] = last_col_thetas[j]
-        # 2. Create rows linearly-spaced based on first and last columns:
-        for i in grid_indices:
-            row_angles = np.linspace(
-                angles_array[0][i],
-                angles_array[-1][i],
-                number_points_per_side,
-            )
-            angles_array[i] = row_angles
-
-        return -1 * np.flip(angles_array, axis=1)
-
-    @staticmethod
-    def plot_fractioned_circle_patch(
-            centre, rect_angle, dark_colour, light_colour, background_colour, ax):
+    def create_design_patches_per_gridpoint(
+        self, centre, rect_angle, dark_colour, light_colour, background_colour
+    ):
         """ TODO. """
         # These parameters are adapted to match the original design:
         radius = 0.45
@@ -360,21 +331,21 @@ class Fractioned(LeParcDesign):
         padding = 0.03
         line_size = 0.12
 
-        # Note: get a very thin but still visible edge line on circle even if set
-        # linewidth to zero, so to workaround make edgecolour background colour.
+        # Note: get a very thin but still visible edge to circle even if set
+        # linewidth to zero, so (workaround) make edgecolour background colour.
         light_patch = mpatches.Circle(
             centre, radius, facecolor=light_colour,
             edgecolor=background_colour,
         )
         start_at = (centre[0] + offset_amount, centre[1] - radius)
         clip_alpha = 3
-        # The clipping rectangle, rotated appropriately (no need to rotate circle!)
+        # The clipping rectangle, rotated appropriately.
         clip_patch = mpatches.Rectangle(
             start_at,
             line_size,
             2 * radius, color=background_colour,
             transform=mtransforms.Affine2D().rotate_deg_around(
-                *centre, rect_angle) + ax.transData,
+                *centre, rect_angle) + self.axes.transData,
             alpha=clip_alpha
         )
         dark_patch = mpatches.Rectangle(
@@ -382,29 +353,49 @@ class Fractioned(LeParcDesign):
             radius,
             2 * radius, color=dark_colour,
             transform=mtransforms.Affine2D().rotate_deg_around(
-                *centre, rect_angle) + ax.transData,
+                *centre, rect_angle) + self.axes.transData,
             alpha=clip_alpha - 1,
         )
         return (dark_patch, light_patch, clip_patch)
 
+    def create_design_angles_array(self):
+        """ TODO. """
+
+        angles_array = np.zeros(
+            (self.gridpoints, self.gridpoints),
+            dtype=float
+        )
+
+        first_col_thetas = np.linspace(-70, 70, self.gridpoints)
+        last_col_thetas = np.linspace(70, 3 * 360 + 290, self.gridpoints)
+
+        # 1. Make first and last column correct:
+        for j in self.grid_indices:
+            angles_array[0][j] = first_col_thetas[j]
+            angles_array[-1][j] = last_col_thetas[j]
+        # 2. Create rows linearly-spaced based on first and last columns:
+        for i in self.grid_indices:
+            row_angles = np.linspace(
+                angles_array[0][i],
+                angles_array[-1][i],
+                self.gridpoints,
+            )
+            angles_array[i] = row_angles
+
+        return -1 * np.flip(angles_array, axis=1)
+
     def create_design(self):
         """ TODO. """
-        grid_points = range(self.gridpoints)
-
-        angles_array = self.create_fractioned_angles_array(
-            grid_points,
-            number_points_per_side=self.gridpoints
-        )
-        for i, j in itertools.product(grid_points, grid_points):
+        for i, j in itertools.product(self.grid_indices, self.grid_indices):
             position_xy = (IMAGE_PAD_POINTS + i, IMAGE_PAD_POINTS + j)
-            dark_cir, light_cir, off_white_line = self.plot_fractioned_circle_patch(
+            design_patches = self.create_design_patches_per_gridpoint(
                 position_xy,
-                angles_array[i][j],
+                self.angles_array[i][j],
                 self.colours["DARK GREY"],
                 self.colours["LIGHT GREY"],
-                self.colours["OFF WHITE"],
-                self.axes,
+                self.colours["OFF WHITE"]
             )
+            dark_cir, light_cir, off_white_line = design_patches
             self.axes.add_patch(light_cir)
             dark_cir.set_clip_path(light_cir)
             self.axes.add_patch(dark_cir)
@@ -416,66 +407,19 @@ class RedAndBlack(LeParcDesign):
     """ TODO.
     """
 
-    def __init__(self): 
-        self.design_name = "ROTATION IN RED AND BLACK"
-        self.gridpoints = 10
-        self.colours = {
-            "OFF WHITE": "#F2ECE0",
-            "OFF BLACK": "#100F0D",
-            "RED": "#983134",
-        }
-
-    @staticmethod
-    def create_red_and_black_angles_array(
-            grid_indices, number_points_per_side):
-        """ TODO. """
-
-        angles_array = np.zeros(
-            (number_points_per_side, number_points_per_side),
-            dtype=float
+    def __init__(self):
+        super().__init__(
+            "ROTATION IN RED AND BLACK",
+            10,
+            {
+                "OFF WHITE": "#F2ECE0",
+                "OFF BLACK": "#100F0D",
+                "RED": "#983134",
+            }
         )
 
-        # Alternate between +45 and -45, but with a different start point for each:
-        first_col_thetas = np.full((number_points_per_side), 45)
-        first_col_thetas[1::2] = -45  # starts with 45 (then -45 is next, etc.)
-        last_col_thetas = np.full((number_points_per_side), 45)
-        last_col_thetas[::2] = -45  # starts with -45
-
-        # 1. Make first and last column correct:
-        angles_array[0] = first_col_thetas
-        angles_array[-1] = last_col_thetas
-
-        # 2. Create rows linearly-spaced based on first and last columns. In this
-        #    case, a cycle factor sets how many rotations from angles A to B.
-        for i in grid_indices:
-            use_cycle_factor = (i // 2) + 7
-            normalised_angles_a = angles_array[0][i]
-            normalised_angles_b = angles_array[-1][i] + 360 * use_cycle_factor
-            row_angles = np.linspace(
-                normalised_angles_a,
-                normalised_angles_b,
-                number_points_per_side,
-            )
-            angles_array[:, i] = row_angles
-
-        return angles_array
-
-    @staticmethod
-    def create_cross_line(ax, centre, length, width, colour, angle, zorder):
-        """ TODO. """
-        lines = []
-        for theta in (angle, angle + 180):  # two parallel half-lines from centre
-            lines.append(
-                mpatches.Rectangle(
-                    (centre[0] - width, centre[1] - (width / 2.0)),  # normalised
-                    length, width, color=colour,
-                    transform=mtransforms.Affine2D().rotate_deg_around(
-                        *centre, theta) + ax.transData, zorder=zorder
-                )
-            )
-        return lines
-
-    def plot_simple_cross(self, centre, base_theta, colour_1, colour_2, ax):
+    def create_design_patches_per_gridpoint(
+            self, centre, base_theta, colour_1, colour_2):
         """ TODO. """
         half_length = 0.5
         width = 0.05
@@ -484,34 +428,73 @@ class RedAndBlack(LeParcDesign):
         reference_zorder = 1
         cross_lines = (
             self.create_cross_line(
-                ax, centre, half_length, width, colour_1, base_theta,
+                centre, half_length, width, colour_1, base_theta,
                 reference_zorder
             ) +
             self.create_cross_line(
-                ax, centre, half_length, width, colour_2, base_theta + 90,
+                centre, half_length, width, colour_2, base_theta + 90,
                 reference_zorder - 10  # i.e. this line is shown on top
             )
         )
 
         return cross_lines
 
+    def create_cross_line(self, centre, length, width, colour, angle, zorder):
+        """ TODO. """
+        lines = []
+        for theta in (angle, angle + 180):  # parallel half-lines from centre
+            # Centre is normalised with respect to the gridpoint
+            lines.append(
+                mpatches.Rectangle(
+                    (centre[0] - width, centre[1] - (width / 2.0)),  # as above
+                    length, width, color=colour,
+                    transform=mtransforms.Affine2D().rotate_deg_around(
+                        *centre, theta) + self.axes.transData, zorder=zorder
+                )
+            )
+        return lines
+
+    def create_design_angles_array(self):
+        """ TODO. """
+        angles_array = np.zeros(
+            (self.gridpoints, self.gridpoints),
+            dtype=float
+        )
+
+        # Alternate between +45 and -45 but with a different start point
+        first_col_thetas = np.full((self.gridpoints), 45)
+        first_col_thetas[1::2] = -45  # starts with 45 (then -45 is next, etc.)
+        last_col_thetas = np.full((self.gridpoints), 45)
+        last_col_thetas[::2] = -45  # starts with -45
+
+        # 1. Make first and last column correct:
+        angles_array[0] = first_col_thetas
+        angles_array[-1] = last_col_thetas
+
+        # 2. Create rows linearly-spaced based on first and last columns,
+        #    where a cycle factor sets how many rotations from angles A to B.
+        for i in self.grid_indices:
+            use_cycle_factor = (i // 2) + 7
+            normalised_angles_a = angles_array[0][i]
+            normalised_angles_b = angles_array[-1][i] + 360 * use_cycle_factor
+            row_angles = np.linspace(
+                normalised_angles_a,
+                normalised_angles_b,
+                self.gridpoints,
+            )
+            angles_array[:, i] = row_angles
+
+        return angles_array
+
     def create_design(self):
         """ TODO. """
-        grid_points = range(self.gridpoints)
-
-        # TODO: using RoFC angles array as a placeholder. Find actual!
-        angles_array = self.create_red_and_black_angles_array(
-            grid_points,
-            number_points_per_side=self.gridpoints
-        )
-        for i, j in itertools.product(grid_points, grid_points):
+        for i, j in itertools.product(self.grid_indices, self.grid_indices):
             # Now create and plot the wedges onto the canvas:
             position_xy = (IMAGE_PAD_POINTS + i, IMAGE_PAD_POINTS + j)
-            line_patches = self.plot_simple_cross(
-                position_xy, angles_array[i][j],
+            line_patches = self.create_design_patches_per_gridpoint(
+                position_xy, self.angles_array[i][j],
                 self.colours["RED"],
-                self.colours["OFF BLACK"],
-                self.axes
+                self.colours["OFF BLACK"]
             )
             for line in line_patches:
                 self.axes.add_patch(line)
