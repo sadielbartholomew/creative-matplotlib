@@ -1,6 +1,7 @@
 from abc import ABCMeta, abstractmethod
 import itertools
 
+import matplotlib.animation as animation
 import matplotlib.pyplot as plt
 import matplotlib.path as mpath
 import matplotlib.patches as mpatches
@@ -40,7 +41,14 @@ class LeParcDesign(metaclass=ABCMeta):
         self.colours = colours
         self.background_colour = None
 
-        self.axes = None
+        fig, ax = plt.subplots(figsize=(6, 6))
+        self.fig = fig
+        self.axes = ax
+        self.fig.set_canvas(plt.gcf().canvas)
+        self.format_plt()
+        self.patches = None
+
+        self.save_to_dir = self.design_name.lower().replace(" ", "_")
 
         self.angles_array = self.create_design_angles_array()
 
@@ -63,13 +71,8 @@ class LeParcDesign(metaclass=ABCMeta):
 
     def format_canvas(self):
         """ Format canvas to centre on image with no visible axes markings. """
-        fig, ax = plt.subplots(figsize=(6, 6))
-        self.axes = ax
-        self.create_design()
-
-        fig.set_canvas(plt.gcf().canvas)
         self.background_colour = self.colours["OFF WHITE"]
-        fig.patch.set_facecolor(self.background_colour)
+        self.fig.patch.set_facecolor(self.background_colour)
         padding_per_side = 2
         limits = (
             self.gridpoints - padding_per_side,
@@ -79,26 +82,81 @@ class LeParcDesign(metaclass=ABCMeta):
         self.axes.set_xlim(*limits)
         self.axes.set_ylim(*limits)
 
+    def format_plt(self):
+        """ TODO. """
         plt.axis('equal')
         plt.axis('off')
         plt.xticks([])
         plt.yticks([])
-        plt.tight_layout()
 
     def plot_and_save_design(self):
-        background_colour = self.format_canvas()
+        """ TODO. """
+        self.format_canvas()
+        self.create_design()
+        self.format_plt()
 
-        save_to_dir = self.design_name.lower().replace(" ", "_")
         # For creating unique names to save generated variations whilst trying
         # to get the angles the same as the original(!):
         # # import uuid
         plt.savefig(
-            'img/{}/replication_of_original.png'.format(save_to_dir),
+            'img/{}/replication_of_original.png'.format(self.save_to_dir),
             # # 'img/rotation_in_red_and_black/misc_variations/'
             # # '{}.png'.format(uuid.uuid4()),
             format='png',
             bbox_inches='tight',
             facecolor=self.background_colour,
+        )
+
+    def init_animated_design(self):
+        """ TODO. """
+        self.create_design()
+        self.format_plt()
+
+    def update_angles_array(self, i):
+        """ TODO. """
+        pass
+        """
+        for patch in self.axes.patches:
+            TODO: set angle
+        """
+
+    def update_animation_for_uniform_rotation(self, i):
+        """ TODO. """
+        # !!!
+        # TODO: this code as-is is not at all efficient since it is
+        # re-generating the same patches, but at different collective
+        # rotations, for every single frame. Instead retain the patches
+        # created the first time and continuously update here the rotation
+        # only via setting the relevant properties on those.
+        # !!!
+        self.axes.cla()
+        self.angles_array = (
+            self.create_design_angles_array() +
+            10 * i * np.pi/12
+        )
+        self.create_design()
+        self.format_plt()
+
+    def plot_and_save_animated_design(self):
+        """ TODO. """
+        self.format_canvas()
+
+        # Note: increase *frames* for longer video, decrease *interval* and/or
+        # addition to angles_array to make the video smoother (less choppy)
+        anim = animation.FuncAnimation(
+            self.fig,
+            self.update_animation_for_uniform_rotation,
+            init_func=self.init_animated_design,
+            interval=5, frames=240,
+        )
+        plt.tight_layout()
+
+        # Note (see also above comment): increase *fps* to speed up the video
+        anim.save(
+            'img/{}/animation_with_uniform_rotation.mp4'.format(
+                self.save_to_dir),
+            writer=animation.FFMpegWriter(
+                fps=30, extra_args=['-vcodec', 'libx264'])
         )
 
 
@@ -226,6 +284,24 @@ class Mutations(LeParcDesign):
             self.axes.add_patch(red_wedge)
             self.axes.add_patch(blue_wedge)
 
+    def update_animation_for_uniform_rotation(self, i):
+        """ TODO. """
+        self.axes.cla()
+
+        # In this case there are two angles (red and blue) that need updating
+        angle_addition_per_frame = 10 * i * np.pi/12
+        self.red_angles_array = (
+            self.create_design_angles_array() +
+            angle_addition_per_frame
+        )
+        self.blue_angles_array = (
+            self.create_design_angles_array(is_red=False) +
+            angle_addition_per_frame
+        )
+
+        self.create_design()
+        self.format_plt()
+
 
 class Rotations(LeParcDesign):
     """ TODO.
@@ -290,8 +366,12 @@ class Rotations(LeParcDesign):
 
         return angles_array
 
-    def create_design(self):
+    def create_design(self, angles_array=None):
         """ TODO. """
+        if angles_array is None:
+            angles_array = self.angles_array
+
+        all_patches = []
         for i, j in itertools.product(self.grid_indices, self.grid_indices):
             position_xy = (IMAGE_PAD_POINTS + i, IMAGE_PAD_POINTS + j)
             circle, clip_rectangle = self.create_design_patches_per_gridpoint(
@@ -384,8 +464,11 @@ class Fractioned(LeParcDesign):
 
         return -1 * np.flip(angles_array, axis=1)
 
-    def create_design(self):
+    def create_design(self, angles_array=None):
         """ TODO. """
+        if angles_array is None:
+            angles_array = self.angles_array
+
         for i, j in itertools.product(self.grid_indices, self.grid_indices):
             position_xy = (IMAGE_PAD_POINTS + i, IMAGE_PAD_POINTS + j)
             design_patches = self.create_design_patches_per_gridpoint(
@@ -486,8 +569,11 @@ class RedAndBlack(LeParcDesign):
 
         return angles_array
 
-    def create_design(self):
+    def create_design(self, angles_array=None):
         """ TODO. """
+        if angles_array is None:
+            angles_array = self.angles_array
+
         for i, j in itertools.product(self.grid_indices, self.grid_indices):
             # Now create and plot the wedges onto the canvas:
             position_xy = (IMAGE_PAD_POINTS + i, IMAGE_PAD_POINTS + j)
@@ -500,7 +586,9 @@ class RedAndBlack(LeParcDesign):
                 self.axes.add_patch(line)
 
 
-# Plot and show all four designs
+# Plot and show all four designs as both the static originals and as
+# animated videos where the patches all rotate uniformly:
 for design_class in [Mutations, Rotations, Fractioned, RedAndBlack]:
     design_class().plot_and_save_design()
+    design_class().plot_and_save_animated_design()
 plt.show()
