@@ -84,7 +84,14 @@ class LeParcDesign(metaclass=ABCMeta):
 
     def format_plt(self):
         """ TODO. """
-        plt.axis('equal')
+        # Note: use this instead of plt.axis('equal') since due to the
+        # rotation of outer patches in the animation, 'equal' will vary
+        # somewhat and therefore the whole animation will shift and re-size
+        # slightly otherwise, but want all patches fixed in position.
+        min_point = 1
+        max_point = self.gridpoints + 2  # +2 to pad by 1 on each side
+        plt.axis([min_point, max_point, min_point, max_point])
+
         plt.axis('off')
         plt.xticks([])
         plt.yticks([])
@@ -94,6 +101,8 @@ class LeParcDesign(metaclass=ABCMeta):
         self.format_canvas()
         self.create_design()
         self.format_plt()
+
+        plt.tight_layout()
 
         # For creating unique names to save generated variations whilst trying
         # to get the angles the same as the original(!):
@@ -111,14 +120,6 @@ class LeParcDesign(metaclass=ABCMeta):
         """ TODO. """
         self.create_design()
         self.format_plt()
-
-    def update_angles_array(self, i):
-        """ TODO. """
-        pass
-        """
-        for patch in self.axes.patches:
-            TODO: set angle
-        """
 
     def update_animation_for_uniform_rotation(self, i):
         """ TODO. """
@@ -591,4 +592,5 @@ class RedAndBlack(LeParcDesign):
 for design_class in [Mutations, Rotations, Fractioned, RedAndBlack]:
     design_class().plot_and_save_design()
     design_class().plot_and_save_animated_design()
+
 plt.show()
