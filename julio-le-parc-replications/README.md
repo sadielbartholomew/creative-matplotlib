@@ -1,4 +1,4 @@
-# Julio Le Parc Replications
+# Julio Le Parc Replications and Variations
 
 
 ### Replication of, and variations on, selected artworks by Julio Le Parc
@@ -14,6 +14,28 @@ incrementally coded up and added to the gallery below.
 
 
 ## Outputs Gallery
+
+### 0. Summary (see later sections for details and more)
+
+#### Reconstructions of the original designs:
+
+|            |    |
+:-------------------------:|:-------------------------:
+<img src="img/mutation_of_forms/replication_of_original.png" width="400" height="400">  |  <img src="img/rotations/replication_of_original.png" width="400" height="400">
+<img src="img/rotation_of_fractioned_circles/replication_of_original.png" width="400" height="400">  |  <img src="img/rotation_in_red_and_black/replication_of_original.png" width="400" height="400">
+
+
+#### Animations rotating at uniform angular speed starting with the original designs:
+
+Converted from the output `mp4` video format to animated GIFs so they can
+be shown here using the
+useful website [https://ezgif.com/](https://ezgif.com/):
+
+|            |    |
+:-------------------------:|:-------------------------:
+<img src="img/gif_conversions_of_mp4_animations/mutation_of_forms_uniform.gif" width="400" height="400">  |  <img src="img/gif_conversions_of_mp4_animations/rotations_uniform.gif" width="400" height="400">
+<img src="img/gif_conversions_of_mp4_animations/rotation_of_fractioned_circles_uniform.gif" width="400" height="400">  |  <img src="img/gif_conversions_of_mp4_animations/rotation_in_red_and_black_uniform.gif" width="400" height="400">
+
 
 ### 1. Mutation of Forms
 
@@ -211,7 +233,7 @@ a) Changing the pattern of rotational angles:
 <img src="img/rotation_in_red_and_black/variations_on_rotation_angles/057.png" width="400" height="400">  |  <img src="img/rotation_in_red_and_black/variations_on_rotation_angles/058.png" width="400" height="400">
 <img src="img/rotation_in_red_and_black/variations_on_rotation_angles/059.png" width="400" height="400">  |  <img src="img/rotation_in_red_and_black/variations_on_rotation_angles/060.png" width="400" height="400">
 <img src="img/rotation_in_red_and_black/variations_on_rotation_angles/061.png" width="400" height="400">  |  <img src="img/rotation_in_red_and_black/variations_on_rotation_angles/062.png" width="400" height="400">
-<img src="img/rotation_in_red_and_black/variations_on_rotation_angles/063.png" width="400" height="400">  |
+
 
 b) Changing both the style and the angular coverage pattern ("loose" variations):
 
