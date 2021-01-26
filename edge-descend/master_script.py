@@ -1,0 +1,125 @@
+from itertools import cycle
+import os
+
+import matplotlib.pyplot as plt
+import matplotlib.patches as mpatches
+
+
+# ---------- Design and output parameters ------------
+# ... for container shape, outer to all the other shapes:
+outer_size = 0.5
+outer_centre = (0.5, 0.5)
+
+# ... for the design of inner shapes:
+size_ratio_of_next_inner_shape = 0.07
+number_inner_shapes = 500
+
+# ... for the (cycling) colours of the shapes:
+background_colour = "black"
+# Choose a set of harmonious 'mod' like colours that are bold but not garish
+possible_colours = [
+    "midnightblue",
+    "lavender",
+    "crimson",
+    "dodgerblue",
+    "indianred",
+]
+colour_selector = cycle(possible_colours)
+
+# ... directories to save designs into:
+firs_level_dir = "img"  # second_level_dirs live separately under this dir
+second_level_dirs = [
+    "without-random-edge-alignment",
+    "with-random-edge-alignment",
+]
+# -----------------------------------------
+
+
+def make_shape(centre, size, sides=1):
+    """TODO."""
+    # Could take the (number of) sides -> infinity for sides of a regular
+    # polygon to approximate a circle, but better to use actual circular
+    # matplotlib patch as a special case:
+    if sides == 1:
+        size *= 0.9  # make slightly smaller so relatively in size w/ polygons
+        return mpatches.Circle(centre, size, facecolor=next(colour_selector))
+    elif sides == 2:
+        raise ValueError(
+            "No two-sided regular polygon, choose another 'sides' value!"
+        )
+    else:  # regular polygon patch of specified number of sides
+        if sides == 3:
+            # Make size larger else triangle looks a bit small in relation and
+            # also shift downwards to fit larger shape in the axes boundaries
+            size *= 1.1
+            centre_x, centre_y = centre
+            centre = centre_x, centre_y - 0.1
+        return mpatches.RegularPolygon(
+            centre, sides, size, facecolor=next(colour_selector)
+        )
+
+
+def make_design_patches(sides=1):
+    """TODO."""
+    patch_layers = []
+
+    # zorder managed naturally via plotting largest first, if did in inverse
+    # order would need to use zorder to stop larger shapes covering smaller.
+    new_size = outer_size
+    for _ in range(number_inner_shapes):
+        new_size *= 1 - size_ratio_of_next_inner_shape
+        patch_layers.append(make_shape(outer_centre, new_size, sides))
+
+    return patch_layers
+
+
+def create_design(axes, sides=1):
+    """TODO."""
+    for p in make_design_patches(sides=sides):
+        axes.add_artist(p)
+
+
+def plot_and_save(single=True, use_number_of_sides=1):
+    """TODO."""
+    fig = plt.figure(figsize=(5, 5), facecolor=background_colour)
+
+    if single:
+        ax = fig.add_subplot(111, aspect="equal")
+        create_design(ax, sides=use_number_of_sides)
+    else:
+        # Vary subplot_index prefix appropriate to len(use_number_of_sides)
+        for i, set_sides in enumerate(use_number_of_sides):
+            subplot_index = 2
+            ax = fig.add_subplot(subplot_index, subplot_index, i + 1)
+            ax.set_facecolor(background_colour)
+            create_design(ax, sides=set_sides)
+
+    plt.axis("off")
+
+    if single:
+        name_prefix = f"single_design_with_{use_number_of_sides}_sides"
+    else:
+        name_prefix = "compound_design"
+
+    # Create dirs to store the output designs if they do not exist already
+    os.makedirs(f"{firs_level_dir}", exist_ok=True)
+    for directory in second_level_dirs:
+        os.makedirs(f"{firs_level_dir}/{directory}", exist_ok=True)
+
+    # Now can plot, save and show the final single or compound design
+    plt.savefig(
+        f"{firs_level_dir}/{second_level_dirs[0]}/{name_prefix}.png",
+        format="png",
+        dpi=1000,
+    )
+    plt.show()
+
+
+# List all designs to create
+plot_and_save()
+plot_and_save(use_number_of_sides=3)
+plot_and_save(use_number_of_sides=4)
+plot_and_save(use_number_of_sides=5)
+plot_and_save(use_number_of_sides=7)
+plot_and_save(use_number_of_sides=12)
+plot_and_save(single=False, use_number_of_sides=[1, 4, 3, 5])
