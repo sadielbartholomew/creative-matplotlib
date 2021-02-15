@@ -12,19 +12,33 @@ outer_centre = (0.5, 0.5)
 
 # ... for the design of inner shapes:
 size_ratio_of_next_inner_shape = 0.07
+# For the alternative designs as shown in the README gallery, instead set 0.03
 number_inner_shapes = 500
 
 # ... for the (cycling) colours of the shapes:
 background_colour = "black"
+# For the alternative designs, instead set the above to "white"
 # Choose a set of harmonious 'mod' like colours that are bold but not garish
-possible_colours = [
+stage_one_colours = [
     "midnightblue",
     "lavender",
     "crimson",
     "dodgerblue",
     "indianred",
 ]
-colour_selector = cycle(possible_colours)
+# For the alternative designs in the README gallery, instead set the above to:
+# ["black", "peru", "darkslategrey", "goldenrod", "teal", "wheat"]
+stage_one_colour_selector = cycle(stage_one_colours)
+stage_two_colours = [
+    "darkslategrey",
+    "khaki",
+    "lightseagreen",
+    "azure",
+    "indigo",
+    "powderblue",
+]
+stage_two_colour_selector = cycle(stage_two_colours)
+
 
 # ... directories to save designs into:
 first_level_dir = "img"  # second_level_dirs live separately under this dir
@@ -32,6 +46,7 @@ second_level_dirs = [
     "without-random-edge-alignment",
     "with-random-edge-alignment",
 ]
+# For the alternative designs, add "-alt" to the end of both dirs above
 
 # List all designs to create...
 number_sides_to_plot_compound = [1, 4, 3, 5]  # 3 <-> 4 for overall symmetry
@@ -53,7 +68,8 @@ zoom_in_factors = {
 # -----------------------------------------
 
 
-def make_shape(centre, size, sides=1):
+def make_shape(
+        centre, size, sides=1, colour_selector=stage_one_colour_selector):
     """TODO."""
     # Could take the (number of) sides -> infinity for sides of a regular
     # polygon to approximate a circle, but better to use actual circular
@@ -110,6 +126,7 @@ def plot_and_save(use_number_of_sides=1, single=True, closeup=False):
             subplot_index = 2
             ax = fig.add_subplot(subplot_index, subplot_index, i + 1)
             ax.set_facecolor(background_colour)
+            ax.set_axis_off()
             create_design(ax, sides=set_sides)
 
     plt.axis("off")
@@ -142,6 +159,8 @@ def plot_and_save(use_number_of_sides=1, single=True, closeup=False):
             zoom_in_vals += zoom_in_vals  
         ax.axis(zoom_in_vals)
 
+        # For the alternative designs, add "_alt" to the end of the filename
+        # before the extension to save to the dirs as in the savde repo state:
         plt.savefig(
             f"{directory}-closeups/{name_prefix}_closeup.png",
             format="png",
@@ -150,6 +169,7 @@ def plot_and_save(use_number_of_sides=1, single=True, closeup=False):
         )
         plt.show()
     else:
+        #  For the alternative designs, add "_alt" (see above comment)
         plt.savefig(
             f"{directory}/{name_prefix}.png",
             format="png",
