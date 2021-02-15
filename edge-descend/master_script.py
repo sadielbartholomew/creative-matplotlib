@@ -32,6 +32,24 @@ second_level_dirs = [
     "without-random-edge-alignment",
     "with-random-edge-alignment",
 ]
+
+# List all designs to create...
+number_sides_to_plot_compound = [1, 4, 3, 5]  # 3 <-> 4 for overall symmetry
+number_sides_to_plot_as_single = number_sides_to_plot_compound + [7, 12]
+
+# ... with the (empirically determined) mapping to zoom in to achieve a
+# close-up on the container shape without any of the background showing.
+# Note that the higher the value, the less zoomed in, up to 0.5 which results
+# in no zoom-in relative to the standard designs (with 'closeup=False')
+zoom_in_factors = {
+    1: 0.27,
+    3: 0.18,  # note this is also shifted down by ~0.1 later to re-centralise
+    4: 0.215,
+    5: 0.24,
+    7: 0.25,
+    12: 0.27,
+}
+
 # -----------------------------------------
 
 
@@ -112,12 +130,25 @@ def plot_and_save(use_number_of_sides=1, single=True, closeup=False):
 
     # Now can plot, save and show the final single or compound design
     directory = f"{first_level_dir}/{second_level_dirs[0]}"
-    if closeup:
+    if closeup and single:
+        # Zoom in on single plots if requested
+        zoom_in_factor = zoom_in_factors[use_number_of_sides]
+        zoom_in_vals = (0.5 - zoom_in_factor, 0.5 + zoom_in_factor)  # min, max
+        if use_number_of_sides == 3:
+            shifted_down_zoom_in_vals = (
+                0.405 - zoom_in_factor, 0.405 + zoom_in_factor)
+            zoom_in_vals = zoom_in_vals + shifted_down_zoom_in_vals
+        else:  # x and y axes min and max are the same
+            zoom_in_vals += zoom_in_vals  
+        ax.axis(zoom_in_vals)
+
         plt.savefig(
             f"{directory}-closeups/{name_prefix}_closeup.png",
             format="png",
             dpi=1000,
+            bbox_inches='tight',
         )
+        plt.show()
     else:
         plt.savefig(
             f"{directory}/{name_prefix}.png",
@@ -126,23 +157,12 @@ def plot_and_save(use_number_of_sides=1, single=True, closeup=False):
         )
         plt.show()
 
-# List all designs to create...
-number_sides_to_plot_compound = [1, 4, 3, 5]  # 3 <-> 4 for overall symmetry
-number_sides_to_plot_as_single = number_sides_to_plot_compound + [7, 12]
 
+# Create and plot the designs from...
 # ...without zooming in:
-plot_and_save()
 for number_sides in number_sides_to_plot_as_single:
     plot_and_save(use_number_of_sides=number_sides)
 plot_and_save(single=False, use_number_of_sides=number_sides_to_plot_compound)
-# ... zooming in to create a close up where the shapes fill the entire canvas:
-closeup_kwargs = {'closeup': True}
-plot_and_save(**closeup_kwargs)
+# ... zooming in to create a close-up where the shapes fill the entire canvas:
 for number_sides in number_sides_to_plot_as_single:
-    closeup_kwargs['use_number_of_sides'] = number_sides
-    plot_and_save(**closeup_kwargs)
-plot_and_save(
-    single=False,
-    use_number_of_sides=number_sides_to_plot_compound,
-    closeup=True
-)
+    plot_and_save(use_number_of_sides=number_sides, closeup=True)
