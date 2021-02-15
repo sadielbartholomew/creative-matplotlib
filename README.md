@@ -57,3 +57,11 @@ Status: *early development stage*
 
 Attempts to recreate the side profile of a range of common trees in their
 bare (leafless) form.
+
+
+### [edge-descend](edge-descend)
+
+Status: *partially completed*
+
+Original minimal Op Art designs based around nesting similar shapes to
+give the impression of descending into the image.
