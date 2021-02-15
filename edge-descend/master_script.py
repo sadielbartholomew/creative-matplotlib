@@ -27,7 +27,7 @@ possible_colours = [
 colour_selector = cycle(possible_colours)
 
 # ... directories to save designs into:
-firs_level_dir = "img"  # second_level_dirs live separately under this dir
+first_level_dir = "img"  # second_level_dirs live separately under this dir
 second_level_dirs = [
     "without-random-edge-alignment",
     "with-random-edge-alignment",
@@ -79,7 +79,7 @@ def create_design(axes, sides=1):
         axes.add_artist(p)
 
 
-def plot_and_save(single=True, use_number_of_sides=1):
+def plot_and_save(use_number_of_sides=1, single=True, closeup=False):
     """TODO."""
     fig = plt.figure(figsize=(5, 5), facecolor=background_colour)
 
@@ -102,24 +102,47 @@ def plot_and_save(single=True, use_number_of_sides=1):
         name_prefix = "compound_design"
 
     # Create dirs to store the output designs if they do not exist already
-    os.makedirs(f"{firs_level_dir}", exist_ok=True)
+    os.makedirs(f"{first_level_dir}", exist_ok=True)
     for directory in second_level_dirs:
-        os.makedirs(f"{firs_level_dir}/{directory}", exist_ok=True)
+        os.makedirs(f"{first_level_dir}/{directory}", exist_ok=True)
+        os.makedirs(
+            f"{first_level_dir}/{directory}-closeups",
+            exist_ok=True
+        )
 
     # Now can plot, save and show the final single or compound design
-    plt.savefig(
-        f"{firs_level_dir}/{second_level_dirs[0]}/{name_prefix}.png",
-        format="png",
-        dpi=1000,
-    )
-    plt.show()
+    directory = f"{first_level_dir}/{second_level_dirs[0]}"
+    if closeup:
+        plt.savefig(
+            f"{directory}-closeups/{name_prefix}_closeup.png",
+            format="png",
+            dpi=1000,
+        )
+    else:
+        plt.savefig(
+            f"{directory}/{name_prefix}.png",
+            format="png",
+            dpi=1000,
+        )
+        plt.show()
 
+# List all designs to create...
+number_sides_to_plot_compound = [1, 4, 3, 5]  # 3 <-> 4 for overall symmetry
+number_sides_to_plot_as_single = number_sides_to_plot_compound + [7, 12]
 
-# List all designs to create
+# ...without zooming in:
 plot_and_save()
-plot_and_save(use_number_of_sides=3)
-plot_and_save(use_number_of_sides=4)
-plot_and_save(use_number_of_sides=5)
-plot_and_save(use_number_of_sides=7)
-plot_and_save(use_number_of_sides=12)
-plot_and_save(single=False, use_number_of_sides=[1, 4, 3, 5])
+for number_sides in number_sides_to_plot_as_single:
+    plot_and_save(use_number_of_sides=number_sides)
+plot_and_save(single=False, use_number_of_sides=number_sides_to_plot_compound)
+# ... zooming in to create a close up where the shapes fill the entire canvas:
+closeup_kwargs = {'closeup': True}
+plot_and_save(**closeup_kwargs)
+for number_sides in number_sides_to_plot_as_single:
+    closeup_kwargs['use_number_of_sides'] = number_sides
+    plot_and_save(**closeup_kwargs)
+plot_and_save(
+    single=False,
+    use_number_of_sides=number_sides_to_plot_compound,
+    closeup=True
+)
