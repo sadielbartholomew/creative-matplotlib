@@ -1,8 +1,11 @@
 from itertools import cycle
 import os
+from random import random, choice
 
 import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
+
+from numpy import pi, sin, cos
 
 
 # ---------- Design and output parameters ------------
@@ -11,9 +14,12 @@ outer_size = 0.5
 outer_centre = (0.5, 0.5)
 
 # ... for the design of inner shapes:
-size_ratio_of_next_inner_shape = 0.07
+size_ratio_of_next_inner_shape = 0.09  # 0.07 used for stage one
 # For the alternative designs as shown in the README gallery, instead set 0.03
 number_inner_shapes = 500
+
+# For stage two i.e. 'edge descend', the main designs
+padding_factor_for_edge_descend = .35
 
 # ... for the (cycling) colours of the shapes:
 background_colour = "black"
@@ -67,6 +73,45 @@ zoom_in_factors = {
 
 # -----------------------------------------
 
+def change_centre_variant_2(centre, index):
+    """Used in place of 'change_centre' function to generate '-2' designs.
+
+    Note the 'index' should be added as an input to change_centre in this
+    case to reflect the signature here.
+
+    """
+    identical_coor_val = centre[0]+ 0.0008 * index
+    return (identical_coor_val, identical_coor_val)
+
+
+def change_centre_variant_3(centre):
+    """Used in place of 'change_centre' function to generate '-3' designs."""
+    return (centre[0] * 0.99, centre[1] * 0.96)
+
+
+def change_centre(centre, sides, new_size, old_size):
+    """Used to generate the main, 'edge descend', designs.
+
+    Note 'new_size' and 'old_size' should be added as an input to
+    'change_centre' in this case to reflect the signature here.
+
+    """
+    change_in_size = new_size - old_size
+    move_centre_by = change_in_size * (1 - padding_factor_for_edge_descend)
+    if sides == 1:  # For a circle, the *_size refers to the radii
+        # Shift next circle in a random direction by the radius change
+        shift_angle_rads = 2 * pi * random()
+    else:  # is a RegularPolygon where *_size is distance centre-vertex
+        # Possible shift directions are discretised with the number of sides:
+        possible_shift_rads = [(2 * pi * N)/sides for N in range(sides)]
+        shift_angle_rads = choice(possible_shift_rads)
+
+    new_centre = (
+        centre[0] + move_centre_by * cos(shift_angle_rads),
+        centre[1] + move_centre_by * sin(shift_angle_rads)
+    )
+    return new_centre
+
 
 def make_shape(
         centre, size, sides=1, colour_selector=stage_one_colour_selector):
@@ -93,33 +138,44 @@ def make_shape(
         )
 
 
-def make_design_patches(sides=1):
+def make_design_patches(sides=1, reposition=False):
     """TODO."""
     patch_layers = []
+
+    use_centre = outer_centre  # fixed centre if reposition=False
 
     # zorder managed naturally via plotting largest first, if did in inverse
     # order would need to use zorder to stop larger shapes covering smaller.
     new_size = outer_size
-    for _ in range(number_inner_shapes):
+    for index in range(number_inner_shapes):
+        if reposition:
+            old_size = new_size
         new_size *= 1 - size_ratio_of_next_inner_shape
-        patch_layers.append(make_shape(outer_centre, new_size, sides))
+
+        # Process new centre for edge descend:
+        if reposition:
+            use_centre = change_centre(use_centre, sides, new_size, old_size)
+
+        new_patch = make_shape(use_centre, new_size, sides)
+        patch_layers.append(new_patch)
 
     return patch_layers
 
 
-def create_design(axes, sides=1):
+def create_design(axes, stage_two, sides=1):
     """TODO."""
-    for p in make_design_patches(sides=sides):
+    for p in make_design_patches(sides=sides, reposition=stage_two):
         axes.add_artist(p)
 
 
-def plot_and_save(use_number_of_sides=1, single=True, closeup=False):
+def plot_and_save(
+        use_number_of_sides=1, single=True, closeup=False, stage_two=True):
     """TODO."""
     fig = plt.figure(figsize=(5, 5), facecolor=background_colour)
 
     if single:
         ax = fig.add_subplot(111, aspect="equal")
-        create_design(ax, sides=use_number_of_sides)
+        create_design(ax, sides=use_number_of_sides, stage_two=stage_two)
     else:
         # Vary subplot_index prefix appropriate to len(use_number_of_sides)
         for i, set_sides in enumerate(use_number_of_sides):
@@ -127,7 +183,7 @@ def plot_and_save(use_number_of_sides=1, single=True, closeup=False):
             ax = fig.add_subplot(subplot_index, subplot_index, i + 1)
             ax.set_facecolor(background_colour)
             ax.set_axis_off()
-            create_design(ax, sides=set_sides)
+            create_design(ax, sides=set_sides, stage_two=stage_two)
 
     plt.axis("off")
 
@@ -146,7 +202,9 @@ def plot_and_save(use_number_of_sides=1, single=True, closeup=False):
         )
 
     # Now can plot, save and show the final single or compound design
-    directory = f"{first_level_dir}/{second_level_dirs[0]}"
+    use_subdir = second_level_dirs[int(stage_two)]
+    directory = f"{first_level_dir}/{use_subdir}"
+
     if closeup and single:
         # Zoom in on single plots if requested
         zoom_in_factor = zoom_in_factors[use_number_of_sides]
@@ -186,3 +244,8 @@ plot_and_save(single=False, use_number_of_sides=number_sides_to_plot_compound)
 # ... zooming in to create a close-up where the shapes fill the entire canvas:
 for number_sides in number_sides_to_plot_as_single:
     plot_and_save(use_number_of_sides=number_sides, closeup=True)
+
+# TODO: fix triangular 'edge descend' case, where some inner triangles get
+# positioned slightly outside the previous larger triangle, but should be
+# fully contained. This doesn't seem to be related to the overall shifting
+# since it seems to happen even when the shifting is manually disabled...
