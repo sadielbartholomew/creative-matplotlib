@@ -37,7 +37,7 @@ NO_COLOURING_SCHEME = (
 )
 
 
-class tileLayer():
+class tileLayer:
     """ Determines coordinates for a single tiled (repeated) polygon layer. """
 
     def __init__(self, n_sides, scale, rotation_no, xy_additions, xy_shifts):
@@ -57,41 +57,58 @@ class tileLayer():
     def ngon_vertex(self, xy_increases, vertex_i):
         """ Find coordinates for one vertex ('_i') of the n-gon to tile. """
         # If factorise out np.pi below, get a different result: why!?
-        transform = 2 * vertex_i * np.pi/self.n_sides + np.pi/self.rotation_no
-        ngon_xy = (self.scale * self.transform_coors(transform) +
-                   np.array(xy_increases) * np.array(self.xy_additions) +
-                   np.array(self.xy_shifts))
+        transform = (
+            2 * vertex_i * np.pi / self.n_sides + np.pi / self.rotation_no
+        )
+        ngon_xy = (
+            self.scale * self.transform_coors(transform)
+            + np.array(xy_increases) * np.array(self.xy_additions)
+            + np.array(self.xy_shifts)
+        )
         return ngon_xy
 
     def ngon_coors(self, xy_increases):
         """ Find coordinates for all vertices of the n-gon to tile. """
-        newpath_data = [(self.draw_path.MOVETO,
-                         self.ngon_vertex(xy_increases, 0))]
+        newpath_data = [
+            (self.draw_path.MOVETO, self.ngon_vertex(xy_increases, 0))
+        ]
         # Loop to n_sides *+1* so polygon closes properly, else get small gap:
         for vertex in range(1, self.n_sides + 2):
-            newpath_data.append((
-                self.draw_path.LINETO, self.ngon_vertex(xy_increases, vertex)))
-        newpath_data.append((
-            self.draw_path.CLOSEPOLY,
-            self.ngon_vertex(xy_increases, 0)))
+            newpath_data.append(
+                (self.draw_path.LINETO, self.ngon_vertex(xy_increases, vertex))
+            )
+        newpath_data.append(
+            (self.draw_path.CLOSEPOLY, self.ngon_vertex(xy_increases, 0))
+        )
         return newpath_data
 
     def ngon_layer_coors(
-            self, linewidth=1, linestyling='solid', colour=NO_COLOURING_LIGHT,
-            fill_colour=NO_COLOURING_TRANSPARENT, zorder_var=0, repeats=20):
+        self,
+        linewidth=1,
+        linestyling="solid",
+        colour=NO_COLOURING_LIGHT,
+        fill_colour=NO_COLOURING_TRANSPARENT,
+        zorder_var=0,
+        repeats=20,
+    ):
         """ Find coordinates for all vertices of all the tiled n-gons. """
         patches = []
         for x_inc, y_inc in iproduct(range(repeats), range(repeats)):
             codes, verts = zip(*self.ngon_coors((x_inc, y_inc)))
             specific_draw_path = mpath.Path(verts, codes)
             patch = mpatches.PathPatch(
-                specific_draw_path, linewidth=linewidth, linestyle=linestyling,
-                edgecolor=colour, facecolor=fill_colour, zorder=zorder_var)
+                specific_draw_path,
+                linewidth=linewidth,
+                linestyle=linestyling,
+                edgecolor=colour,
+                facecolor=fill_colour,
+                zorder=zorder_var,
+            )
             patches.append(patch)
         return patches
 
 
-class plottedDesign():
+class plottedDesign:
     """ Plots sets of tiled (repeated) polygon layers on a single canvas. """
 
     def __init__(self, all_tile_layers, colour_scheme=None):
@@ -107,7 +124,8 @@ class plottedDesign():
 
     @staticmethod
     def colour_intersection(
-            patch_1, patch_2, intersection_colour, new_zorder=-100):
+        patch_1, patch_2, intersection_colour, new_zorder=-100
+    ):
         """ TODO. """
         # Create copies of each patch. Colour one, leaving other transparent.
         intersection_patch = copy.copy(patch_2)
@@ -127,22 +145,25 @@ class plottedDesign():
             tile_coors, tile_style = tile_layer
             if self.colour_scheme:
                 use_style = list(tile_style)
-                if (len(tile_style) > 2 and
-                        tile_style[2] not in NO_COLOURING_SCHEME):
+                if (
+                    len(tile_style) > 2
+                    and tile_style[2] not in NO_COLOURING_SCHEME
+                ):
                     use_style[2] = self.colour_scheme[tile_style[2]]
-                if (len(tile_style) > 3 and
-                        tile_style[3] not in NO_COLOURING_SCHEME):
+                if (
+                    len(tile_style) > 3
+                    and tile_style[3] not in NO_COLOURING_SCHEME
+                ):
                     use_style[3] = self.colour_scheme[tile_style[3]]
             else:
                 use_style = tile_style
             tile_design = tileLayer(*tile_coors)
-            all_points.append(
-                tile_design.ngon_layer_coors(*use_style))
+            all_points.append(tile_design.ngon_layer_coors(*use_style))
         return all_points
 
     def draw_all_tiles(
-            self, filename, cutoffs, facecolour=NO_COLOURING_DARK,
-            col_int=None):
+        self, filename, cutoffs, facecolour=NO_COLOURING_DARK, col_int=None
+    ):
         """ Plot all layers on a single canvas of set region and colour. """
         # Set-up the matplotlib canvas according to preferences.
         self.ax.set_aspect(1)
@@ -169,7 +190,9 @@ class plottedDesign():
                     use_colour = self.colour_scheme[col_i[2]]
                 self.ax.add_patch(
                     self.colour_intersection(
-                        patch_0, patch_1, use_colour, col_i[3])[0])
+                        patch_0, patch_1, use_colour, col_i[3]
+                    )[0]
+                )
 
         for tile_layer_patches in all_stuff:
             for tile_layer_patch in tile_layer_patches:
@@ -177,19 +200,21 @@ class plottedDesign():
 
         # Save and display the overall design on the canvas.
         self.fig.savefig(
-            'designs/' + filename + '.png', format='png',
-            bbox_inches='tight', transparent=False, dpi=1000
+            "designs/" + filename + ".png",
+            format="png",
+            bbox_inches="tight",
+            transparent=False,
+            dpi=1000,
         )
         plt.show()
 
 
 for example_name, example_data in MINIMAL_TONE_EXAMPLES_SPEC.items():
-    filename = example_name + '_minimal_tone'
-    plottedDesign(example_data[0]).draw_all_tiles(
-        filename, *example_data[1])
+    filename = example_name + "_minimal_tone"
+    plottedDesign(example_data[0]).draw_all_tiles(filename, *example_data[1])
 
 for example_name, example_data in FULL_COLOUR_EXAMPLES_SPEC.items():
-    filename = example_name + '_full_colour'
+    filename = example_name + "_full_colour"
     plot_comp_0, plot_comp_1, plot_comp_2 = example_data
     plottedDesign(
         plot_comp_0, FULL_COLOUR_EXAMPLES_COLOURS[example_name]

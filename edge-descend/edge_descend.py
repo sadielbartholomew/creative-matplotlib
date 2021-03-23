@@ -19,7 +19,7 @@ size_ratio_of_next_inner_shape = 0.09  # 0.07 used for stage one
 number_inner_shapes = 500
 
 # For stage two i.e. 'edge descend', the main designs
-padding_factor_for_edge_descend = .35
+padding_factor_for_edge_descend = 0.35
 
 # ... for the (cycling) colours of the shapes:
 background_colour = "black"
@@ -73,6 +73,7 @@ zoom_in_factors = {
 
 # -----------------------------------------
 
+
 def change_centre_variant_2(centre, index):
     """Used in place of 'change_centre' function to generate '-2' designs.
 
@@ -80,7 +81,7 @@ def change_centre_variant_2(centre, index):
     case to reflect the signature here.
 
     """
-    identical_coor_val = centre[0]+ 0.0008 * index
+    identical_coor_val = centre[0] + 0.0008 * index
     return (identical_coor_val, identical_coor_val)
 
 
@@ -103,18 +104,19 @@ def change_centre(centre, sides, new_size, old_size):
         shift_angle_rads = 2 * pi * random()
     else:  # is a RegularPolygon where *_size is distance centre-vertex
         # Possible shift directions are discretised with the number of sides:
-        possible_shift_rads = [(2 * pi * N)/sides for N in range(sides)]
+        possible_shift_rads = [(2 * pi * N) / sides for N in range(sides)]
         shift_angle_rads = choice(possible_shift_rads)
 
     new_centre = (
         centre[0] + move_centre_by * cos(shift_angle_rads),
-        centre[1] + move_centre_by * sin(shift_angle_rads)
+        centre[1] + move_centre_by * sin(shift_angle_rads),
     )
     return new_centre
 
 
 def make_shape(
-        centre, size, sides=1, colour_selector=stage_one_colour_selector):
+    centre, size, sides=1, colour_selector=stage_one_colour_selector
+):
     """TODO."""
     # Could take the (number of) sides -> infinity for sides of a regular
     # polygon to approximate a circle, but better to use actual circular
@@ -169,7 +171,8 @@ def create_design(axes, stage_two, sides=1):
 
 
 def plot_and_save(
-        use_number_of_sides=1, single=True, closeup=False, stage_two=True):
+    use_number_of_sides=1, single=True, closeup=False, stage_two=True
+):
     """TODO."""
     fig = plt.figure(figsize=(5, 5), facecolor=background_colour)
 
@@ -196,10 +199,7 @@ def plot_and_save(
     os.makedirs(f"{first_level_dir}", exist_ok=True)
     for directory in second_level_dirs:
         os.makedirs(f"{first_level_dir}/{directory}", exist_ok=True)
-        os.makedirs(
-            f"{first_level_dir}/{directory}-closeups",
-            exist_ok=True
-        )
+        os.makedirs(f"{first_level_dir}/{directory}-closeups", exist_ok=True)
 
     # Now can plot, save and show the final single or compound design
     use_subdir = second_level_dirs[int(stage_two)]
@@ -211,10 +211,12 @@ def plot_and_save(
         zoom_in_vals = (0.5 - zoom_in_factor, 0.5 + zoom_in_factor)  # min, max
         if use_number_of_sides == 3:
             shifted_down_zoom_in_vals = (
-                0.405 - zoom_in_factor, 0.405 + zoom_in_factor)
+                0.405 - zoom_in_factor,
+                0.405 + zoom_in_factor,
+            )
             zoom_in_vals = zoom_in_vals + shifted_down_zoom_in_vals
         else:  # x and y axes min and max are the same
-            zoom_in_vals += zoom_in_vals  
+            zoom_in_vals += zoom_in_vals
         ax.axis(zoom_in_vals)
 
         # For the alternative designs, add "_alt" to the end of the filename
@@ -223,7 +225,7 @@ def plot_and_save(
             f"{directory}-closeups/{name_prefix}_closeup.png",
             format="png",
             dpi=1000,
-            bbox_inches='tight',
+            bbox_inches="tight",
         )
         plt.show()
     else:

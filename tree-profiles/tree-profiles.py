@@ -21,31 +21,39 @@ initial_thickness = 0.1
 
 
 def canopy_fractal_tree(x, y, length, theta):
-    '''Recursive means to form a tree-like profile based on canopy fractal.'''
+    """Recursive means to form a tree-like profile based on canopy fractal."""
     if length >= 1.0:
-       x_new = x + length * np.cos(theta)
-       y_new = y + length * np.sin(theta)
-       thickness = initial_thickness * ((x_new - x)**2 + (y_new - y)**2)**0.5
-       plt.plot(
-           (x, x_new), (y, y_new),
-           color='black', linewidth=thickness, solid_capstyle='round'
-       )
-       new_length = length * length_scaling
-       canopy_fractal_tree(
-           x_new, y_new, new_length, theta + angle_between_segments)
-       canopy_fractal_tree(
-           x_new, y_new, new_length, theta - angle_between_segments)
+        x_new = x + length * np.cos(theta)
+        y_new = y + length * np.sin(theta)
+        thickness = (
+            initial_thickness * ((x_new - x) ** 2 + (y_new - y) ** 2) ** 0.5
+        )
+        plt.plot(
+            (x, x_new),
+            (y, y_new),
+            color="black",
+            linewidth=thickness,
+            solid_capstyle="round",
+        )
+        new_length = length * length_scaling
+        canopy_fractal_tree(
+            x_new, y_new, new_length, theta + angle_between_segments
+        )
+        canopy_fractal_tree(
+            x_new, y_new, new_length, theta - angle_between_segments
+        )
 
 
 def plot_single_tree_profile(index, param_label_name, param_label_value):
-    '''TODO.'''
+    """TODO."""
     # Format overall plot:
     plt.axes().set_aspect(1)
-    plt.axis('off')
+    plt.axis("off")
     canopy_fractal_tree(width, height, initial_length, initial_angle)
     plt.title(
         "Tree {}: parameter {} is '{}'".format(
-            index, param_label_name, param_label_value)
+            index, param_label_name, param_label_value
+        )
     )
     plt.savefig("example-profiles/basic-canopy-fractal-{}.png".format(index))
     plt.show()
@@ -55,5 +63,6 @@ def plot_single_tree_profile(index, param_label_name, param_label_value):
 for value in range(5):
     angle_between_segments
     plot_single_tree_profile(
-        str(value + 1), 'angle_between_segments', angle_between_segments)
+        str(value + 1), "angle_between_segments", angle_between_segments
+    )
     angle_between_segments *= 1.5
