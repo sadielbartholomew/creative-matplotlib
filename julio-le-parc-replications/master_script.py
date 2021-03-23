@@ -3,7 +3,6 @@ import itertools
 
 import matplotlib.animation as animation
 import matplotlib.pyplot as plt
-import matplotlib.path as mpath
 import matplotlib.patches as mpatches
 import matplotlib.transforms as mtransforms
 
@@ -377,7 +376,6 @@ class Rotations(LeParcDesign):
         if angles_array is None:
             angles_array = self.angles_array
 
-        all_patches = []
         for i, j in itertools.product(self.grid_indices, self.grid_indices):
             position_xy = (IMAGE_PAD_POINTS + i, IMAGE_PAD_POINTS + j)
             circle, clip_rectangle = self.create_design_patches_per_gridpoint(
@@ -412,8 +410,6 @@ class Fractioned(LeParcDesign):
         # These parameters are adapted to match the original design:
         radius = 0.45
         offset_amount = 0.02
-        light_offset = 0.5
-        padding = 0.03
         line_size = 0.12
 
         # Note: get a very thin but still visible edge to circle even if set
