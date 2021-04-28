@@ -67,19 +67,26 @@ class tileLayer:
         )
         return ngon_xy
 
-    def ngon_coors(self, xy_increases):
+    def ngon_coors(self, xy_increases, ignore_n_vertices=False):
         """ Find coordinates for all vertices of the n-gon to tile. """
         newpath_data = [
             (self.draw_path.MOVETO, self.ngon_vertex(xy_increases, 0))
         ]
+
+        # Manage how many vertices to plot for each patch, usually all:
+        loop_over_vertices = self.n_sides + 2
+        if ignore_n_vertices:
+            # Add two here and above to cover final vertex and point to close
+            loop_over_vertices -= ignore_n_vertices + 2
         # Loop to n_sides *+1* so polygon closes properly, else get small gap:
-        for vertex in range(1, self.n_sides + 2):
+        for vertex in range(1, loop_over_vertices):
             newpath_data.append(
                 (self.draw_path.LINETO, self.ngon_vertex(xy_increases, vertex))
             )
-        newpath_data.append(
-            (self.draw_path.CLOSEPOLY, self.ngon_vertex(xy_increases, 0))
-        )
+        if not ignore_n_vertices:  # do not close in this case.
+            newpath_data.append(
+                (self.draw_path.CLOSEPOLY, self.ngon_vertex(xy_increases, 0))
+            )
         return newpath_data
 
     def ngon_layer_coors(
@@ -90,11 +97,16 @@ class tileLayer:
         fill_colour=NO_COLOURING_TRANSPARENT,
         zorder_var=0,
         repeats=20,
+        ignore_n_vertices=False,
     ):
         """ Find coordinates for all vertices of all the tiled n-gons. """
         patches = []
         for x_inc, y_inc in iproduct(range(repeats), range(repeats)):
-            codes, verts = zip(*self.ngon_coors((x_inc, y_inc)))
+            codes, verts = zip(
+                *self.ngon_coors(
+                    (x_inc, y_inc), ignore_n_vertices=ignore_n_vertices
+                )
+            )
             specific_draw_path = mpath.Path(verts, codes)
             patch = mpatches.PathPatch(
                 specific_draw_path,
@@ -157,6 +169,7 @@ class plottedDesign:
                     use_style[3] = self.colour_scheme[tile_style[3]]
             else:
                 use_style = tile_style
+
             tile_design = tileLayer(*tile_coors)
             all_points.append(tile_design.ngon_layer_coors(*use_style))
         return all_points
