@@ -92,5 +92,4 @@ film 'The Shining':
 
 |            |    |
 :-------------------------:|:-------------------------:
-<img src="https://raw.githubusercontent.com/sadielbartholomew/creative-mini-projects/master/repolygon/designs/carpet_kubrick_the_shining/carpet_kubrick_the_shining_actual.png" width="400" height="400">
-<img src="https://raw.githubusercontent.com/sadielbartholomew/creative-mini-projects/master/repolygon/designs/carpet_kubrick_the_shining/carpet_kubrick_the_shining_alternative.png" width="400" height="400">
+<img src="https://raw.githubusercontent.com/sadielbartholomew/creative-mini-projects/master/repolygon/designs/carpet_kubrick_the_shining/carpet_kubrick_the_shining_actual.png" width="400" height="400">  |  <img src="https://raw.githubusercontent.com/sadielbartholomew/creative-mini-projects/master/repolygon/designs/carpet_kubrick_the_shining/carpet_kubrick_the_shining_alternative.png" width="400" height="400">
