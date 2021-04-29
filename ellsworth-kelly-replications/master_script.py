@@ -254,7 +254,7 @@ def plot_NS(ns_data):
     for pos_i in range(*range_args):
         for pos_j in range(*range_args):
             image[
-                pos_i: sq_len + pos_i, pos_j: sq_len + pos_j
+                pos_i : sq_len + pos_i, pos_j : sq_len + pos_j
             ] = indiv_square
             indiv_square += 1.0  # increments *all* elements in the array
 
