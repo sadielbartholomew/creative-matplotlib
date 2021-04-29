@@ -8,7 +8,9 @@
 
 ## Design Gallery
 
-Example designs (11).
+Eleven original example designs plus a recreation of, and variant on, the
+iconic carpet from the Kubrick film 'The Shining'.
+
 
 ### Example designs shown in minimal tones
 
@@ -65,7 +67,7 @@ designs will look like when the refactor of the colouring module is complete.
 <img src="https://raw.githubusercontent.com/sadielbartholomew/creative-mini-projects/master/repolygon/designs/prototypes-for-colours/repolygon_design_11_colour_prototype.png" width="400" height="400">  |
 
 
-### Prototypes for the designs incorporating 
+### Prototypes for the designs incorporating curved patches
 
 These are prototypes for designs which incorporate custom patches using
 [`matplotlib.path.Path`](https://matplotlib.org/api/path_api.html#matplotlib.path.Path),
@@ -81,3 +83,14 @@ the colours were, for now, added manually using an external graphcs editor.
 |            |    |
 :-------------------------:|:-------------------------:
 <img src="https://raw.githubusercontent.com/sadielbartholomew/creative-mini-projects/master/repolygon/designs/curved-prototypes/repolygon_design_12.png" width="400" height="400">  |  <img src="https://raw.githubusercontent.com/sadielbartholomew/creative-mini-projects/master/repolygon/designs/curved-prototypes/repolygon_design_13.png" width="400" height="400">
+
+
+### Carpet from The Shining
+
+Recreation and variant on the design of the iconic carpet from the Kubrick
+film 'The Shining':
+
+|            |    |
+:-------------------------:|:-------------------------:
+<img src="https://raw.githubusercontent.com/sadielbartholomew/creative-mini-projects/master/repolygon/designs/carpet_kubrick_the_shining/carpet_kubrick_the_shining_actual.png" width="400" height="400">
+<img src="https://raw.githubusercontent.com/sadielbartholomew/creative-mini-projects/master/repolygon/designs/carpet_kubrick_the_shining/carpet_kubrick_the_shining_alternative.png" width="400" height="400">
