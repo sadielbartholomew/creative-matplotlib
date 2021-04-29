@@ -853,3 +853,97 @@ FULL_COLOUR_EXAMPLES_SPEC = {
         ((0.0, 55.44, 3.5, 57.94), "MAROON"),
     ),
 }
+
+
+"""Define data to recreate the iconic carpet from Kubrick's film 'The Shining'.
+
+Specifically, provide the design and colours to replicate, and to render a
+variation that has different colours and highlights the underlying pattern of,
+the famous hexagonal-based patterned carpet from the Overlook Hotel setting
+in the film 'The Shining', directed and produced by Stanley Kubrick.
+
+See the above docstrings for documentation that describes the meaning of
+the structure and of any values supplied.
+
+"""
+CARPET_KUBRICK_THE_SHINING_COLOURS = {
+    # Actual carpet colours picked out from still of film:
+    "ACTUAL_DESIGN": {
+        "ORANGE": "#B0522E",
+        "BROWN": "#40221A",
+        "MAROON": "#772120",
+    },
+    # Alternatve (much nicer!) colours for an original variant on the design:
+    "ALTERNATIVE_COLOUR_DESIGN": {
+        "DARK NAVY": "#0C0A3E",
+        "BRIGHT MINT GREEN": "#ADF1D2",
+        "DARK MINT GREEN": "#669982",
+        "BRIGHT CERISE": "#D74264",
+        "DARK CERISE": "#7E1B32",
+    },
+}
+# TODO: fix for the colour spec on the final colour (ALT 4 not working? etc.)
+CARPET_KUBRICK_THE_SHINING_SPEC = {
+    "ACTUAL_DESIGN": (
+        [
+            # For the hexagonal underlying grid:
+            (
+                (6, 16, 6, (27.72, 40), (0, 16)),
+                (6.5, "solid", "BROWN", NO_COLOURING_TRANSPARENT, 1, 20, 2),
+            ),
+            (
+                (6, 16, 1.2, (27.72, 40), (13.86, 0)),
+                (6.5, "solid", "BROWN", NO_COLOURING_TRANSPARENT, 0, 20, 2),
+            ),
+            # For the smaller hexagons inside the hexagonal grid:
+            (
+                (6, 7, 6, (27.72, 40), (13.86, 0 + 0.4)),
+                (6.5, "solid", "BROWN", "MAROON", 20),
+            ),
+            (
+                (6, 7, 6, (27.72, 40), (0, 16 - 0.4)),
+                (6.5, "solid", "BROWN", "MAROON", 21),
+            ),
+        ],
+        ((40, 200, 40, 200), "ORANGE"),
+    ),
+    "ALTERNATIVE_COLOUR_DESIGN": (
+        [
+            # For the hexagonal underlying grid:
+            (
+                (6, 16, 6, (27.72, 40), (0, 16)),
+                (
+                    6.5,
+                    "solid",
+                    "BRIGHT MINT GREEN",
+                    NO_COLOURING_TRANSPARENT,
+                    1,
+                    20,
+                    2,
+                ),
+            ),
+            (
+                (6, 16, 1.2, (27.72, 40), (13.86, 0)),
+                (
+                    6.5,
+                    "solid",
+                    "DARK MINT GREEN",
+                    NO_COLOURING_TRANSPARENT,
+                    0,
+                    20,
+                    2,
+                ),
+            ),
+            # For the smaller hexagons inside the hexagonal grid:
+            (
+                (6, 7, 6, (27.72, 40), (13.86, 0 + 0.4)),
+                (6.5, "solid", "BRIGHT MINT GREEN", "BRIGHT CERISE", 20),
+            ),
+            (
+                (6, 7, 6, (27.72, 40), (0, 16 - 0.4)),
+                (6.5, "solid", "DARK MINT GREEN", "DARK CERISE", 21),
+            ),
+        ],
+        ((40, 200, 40, 200), "DARK NAVY"),
+    ),
+}

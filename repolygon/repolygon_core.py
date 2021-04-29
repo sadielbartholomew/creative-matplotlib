@@ -4,10 +4,15 @@
 
 Created by Sadie Bartholomew, 2017; tidied & uploaded to GitHub 2019.
 
-Version 0.1:
+Version 0.2:
     - Includes:
-        core code for creating a (two/three-tone) tiling design with polygons,
-        including eleven example designs generated in turn from the raw code.
+        - core code for creating a (two/three-tone) tiling design with
+          polygons, including eleven example designs generated in turn from
+          the raw code
+        - option to ignore any number of vertices so they are not plotted,
+          giving an open partial polygon as the basic patch to repeat, with an
+          example design which replicates the iconic carpet from Kubrick's
+          film 'The Shining' and produces a variant with different colours.
     - Excludes:
         modules for advanced colouring including according to patch
         intersections, & for incorporating curved variants of polygons, with
@@ -27,6 +32,8 @@ from repolygon_example_designs import (
     FULL_COLOUR_EXAMPLES_COLOURS,
     MINIMAL_TONE_EXAMPLES_SPEC,
     FULL_COLOUR_EXAMPLES_SPEC,
+    CARPET_KUBRICK_THE_SHINING_COLOURS,
+    CARPET_KUBRICK_THE_SHINING_SPEC,
 )
 
 NO_COLOURING_SCHEME = (
@@ -222,6 +229,7 @@ class plottedDesign:
         plt.show()
 
 
+# Render and save a set of original designs:
 for example_name, example_data in MINIMAL_TONE_EXAMPLES_SPEC.items():
     filename = example_name + "_minimal_tone"
     plottedDesign(example_data[0]).draw_all_tiles(filename, *example_data[1])
@@ -232,3 +240,14 @@ for example_name, example_data in FULL_COLOUR_EXAMPLES_SPEC.items():
     plottedDesign(
         plot_comp_0, FULL_COLOUR_EXAMPLES_COLOURS[example_name]
     ).draw_all_tiles(filename, *plot_comp_2, col_int=plot_comp_1)
+
+# Also recreate and save the iconic carpet from the Kubrick film 'The Shining':
+directory = "carpet_kubrick_the_shining"
+spec = CARPET_KUBRICK_THE_SHINING_SPEC
+colours = CARPET_KUBRICK_THE_SHINING_COLOURS
+# Plot actual design as well as an alternative design with different colours
+for design in ("ACTUAL_DESIGN", "ALTERNATIVE_COLOUR_DESIGN"):
+    id_to_append = design.split("_")[0].lower()
+    plottedDesign(spec[design][0], colours[design]).draw_all_tiles(
+        f"{directory}/{directory}_{id_to_append}", *spec[design][1]
+    )
