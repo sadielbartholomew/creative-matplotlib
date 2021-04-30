@@ -2,18 +2,17 @@
 
 Created by Sadie Bartholomew, 2019.
 
-    TODO for this mini-project:
-
-    * refactor to make data procesing code less coupled;
-    * fix minor bug where grid-lines as square borders e.g. for S1_DESIGN
-      are not exactly aligned with the edges of the squares;
-    * fix another minor bug whereby there are small gaps at corners in any
-      borders due to their creation by offset on spines;
-    * to make the images look less artificial:
-      * utilise a function to apply a slight random variation in colour for
-        each square plotted associated with each colour in the scheme;
-      * effective hinton diagram to make squares vary slightly in size: see
-        https://matplotlib.org/examples/specialty_plots/hinton_demo.html.
+TODO for this mini-project:
+  * refactor to make data procesing code less coupled;
+  * fix minor bug where grid-lines as square borders e.g. for S1_DESIGN
+    are not exactly aligned with the edges of the squares;
+  * fix another minor bug whereby there are small gaps at corners in any
+    borders due to their creation by offset on spines;
+  * to make the images look less artificial:
+    * utilise a function to apply a slight random variation in colour for
+      each square plotted associated with each colour in the scheme;
+    * effective hinton diagram to make squares vary slightly in size: see
+      https://matplotlib.org/examples/specialty_plots/hinton_demo.html.
 
 """
 

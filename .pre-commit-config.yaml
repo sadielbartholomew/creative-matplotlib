@@ -40,6 +40,15 @@ repos:
         #   by default).
         args: [--in-place, --blank, --wrap-summaries=72]
 
+  # Check the docstrings conforms to Google docstring format as much as can
+  # be detected by the 'pydocstyle' checker
+  # (see http://www.pydocstyle.org/en/stable/index.html for
+  # docs and see the repo .pydocstyle.ini file for our custom configuration)
+  - repo: https://github.com/pycqa/pydocstyle
+    rev: 5.1.1
+    hooks:
+      - id: pydocstyle
+
   # Additionally validate againt flake8 for other Python style enforcement
   # (see https://flake8.pycqa.org/en/latest/ for documentation and see
   # the repo .flake8 file for our custom flake8 configuration)

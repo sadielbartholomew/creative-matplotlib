@@ -1,3 +1,5 @@
+"""Side profiles of common trees in their bare (leafless) form."""
+
 import matplotlib.pyplot as plt
 import numpy as np
 

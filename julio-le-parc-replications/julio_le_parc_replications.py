@@ -1,18 +1,6 @@
-from abc import ABCMeta, abstractmethod
-import itertools
+"""Replication of, and variations on, works from 1959 by Julio Le Parc.
 
-import matplotlib.animation as animation
-import matplotlib.pyplot as plt
-import matplotlib.patches as mpatches
-import matplotlib.transforms as mtransforms
-
-import numpy as np
-
-
-"""
-Replication of, and variations on, selected 1959 artworks by Julio Le Parc.
-
-Namely, the artworks studied are as referenced below (all references are from
+Namely, the pieces studied are as referenced below (all references are from
 The Metropolitan Museum of Art):
 
 * Mutation of Forms (1959):
@@ -29,6 +17,17 @@ works:
   http://www.julioleparc.org/
 
 """
+
+
+from abc import ABCMeta, abstractmethod
+import itertools
+
+import matplotlib.animation as animation
+import matplotlib.pyplot as plt
+import matplotlib.patches as mpatches
+import matplotlib.transforms as mtransforms
+
+import numpy as np
 
 
 IMAGE_PAD_POINTS = 2

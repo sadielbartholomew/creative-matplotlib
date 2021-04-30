@@ -1,3 +1,6 @@
+"""Original minimal designs based around nesting similar shapes."""
+
+
 from itertools import cycle
 import os
 from random import random, choice
