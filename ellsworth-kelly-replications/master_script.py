@@ -1,9 +1,7 @@
-"""Replication of selected artworks by Ellsworth Kelly with NumPy
-arrays.
+"""Array-based replication of selected artworks by Ellsworth Kelly.
 
 Created by Sadie Bartholomew, 2019.
 
-    ***
     TODO for this mini-project:
 
     * refactor to make data procesing code less coupled;
@@ -12,11 +10,10 @@ Created by Sadie Bartholomew, 2019.
     * fix another minor bug whereby there are small gaps at corners in any
       borders due to their creation by offset on spines;
     * to make the images look less artificial:
-       * utilise a function to apply a slight random variation in colour for
-         each square plotted associated with each colour in the scheme;
-       * effective hinton diagram to make squares vary slightly in size: see
-         https://matplotlib.org/examples/specialty_plots/hinton_demo.html.
-    ***
+      * utilise a function to apply a slight random variation in colour for
+        each square plotted associated with each colour in the scheme;
+      * effective hinton diagram to make squares vary slightly in size: see
+        https://matplotlib.org/examples/specialty_plots/hinton_demo.html.
 
 """
 
@@ -225,8 +222,7 @@ def format_axes(ax, border_params, border_on_sqs_extent=None):
 
 
 def plot_one_image(name, image, cmap, border_params=False):
-    """Create a formatted figure with a single plot in given
-    colourmap."""
+    """Plot a formatted image using a given colourmap."""
     if not border_params:  # the default is no border (including no spines)
         border_params = (0.0, "white")
     fig, ax = plt.subplots()
@@ -279,8 +275,7 @@ def plot_S1(s1_data):
 
 
 def create_by_chance_image(tuning_params, backgr_colour, colours):
-    """Use random sampling to create a 'by chance' design image
-    array."""
+    """Create a 'by chance' design image array using random sampling."""
     # Unpack the data defining each invididual design:
     squares_per_side, circularity_param, offset_param = tuning_params
 
@@ -300,8 +295,7 @@ def create_by_chance_image(tuning_params, backgr_colour, colours):
 
 
 def plot_by_chance(design_choice, plot_four_subplots=True):
-    """Plot the generated replications of the chosen 'by chance'
-    pieces."""
+    """Plot generated replications of the chosen 'by chance' work."""
     # Unpack data:
     tuning, border_grid, backgr_col, col = BY_CHANCE_DESIGNS[design_choice]
     border_width, grid_on = border_grid

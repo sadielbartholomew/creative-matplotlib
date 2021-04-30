@@ -21,8 +21,7 @@ initial_thickness = 0.1
 
 
 def canopy_fractal_tree(x, y, length, theta):
-    """Recursive means to form a tree-like profile based on canopy
-    fractal."""
+    """Recursive formation of a canopy fractal tree-like profile."""
     if length >= 1.0:
         x_new = x + length * np.cos(theta)
         y_new = y + length * np.sin(theta)

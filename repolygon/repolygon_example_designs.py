@@ -1,17 +1,10 @@
-"""
-**Repolygon**: create intricate tiling designs from *re*peated *polygon*
-               matplotlib patches.
+"""**repolygon**: create designs by spatial *re*petition of *polygon*s.
 
 Created by Sadie Bartholomew, 2017; tidied & uploaded to GitHub 2019.
 
-Version 0.2:
-    - Includes:
-      - core code for creating a (two/three-tone) tiling design with polygons,
-        including eleven example designs generated in turn from the raw code.
-      - advanced colouring including according to patch intersections
-    - Excludes:
-      - incorporating curved variants of polygons, with
-        further examples making use of these extra modules.
+This module contains the data that defines the original example designs as
+well as some replications of famous designs.
+
 """
 
 

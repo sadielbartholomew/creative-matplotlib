@@ -1,6 +1,4 @@
-"""
-**Repolygon**: create intricate tiling designs from *re*peated *polygon*
-               matplotlib patches.
+"""**repolygon**: create designs by spatial *re*petition of *polygon*s.
 
 Created by Sadie Bartholomew, 2017; tidied & uploaded to GitHub 2019.
 
@@ -45,10 +43,10 @@ NO_COLOURING_SCHEME = (
 
 
 class tileLayer:
-    """Determines coordinates for a single tiled (repeated) polygon
-    layer."""
+    """Determines coordinates for a single repeated polygon layer."""
 
     def __init__(self, n_sides, scale, rotation_no, xy_additions, xy_shifts):
+        """Set up a new tile layer."""
         self.draw_path = mpath.Path
 
         self.n_sides = n_sides
@@ -63,8 +61,7 @@ class tileLayer:
         return np.array([np.cos(factor), np.sin(factor)])
 
     def ngon_vertex(self, xy_increases, vertex_i):
-        """Find coordinates for one vertex ('_i') of the n-gon to
-        tile."""
+        """Find coordinates for one vertex of the n-gon to repeat."""
         # If factorise out np.pi below, get a different result: why!?
         transform = (
             2 * vertex_i * np.pi / self.n_sides + np.pi / self.rotation_no
@@ -130,10 +127,10 @@ class tileLayer:
 
 
 class plottedDesign:
-    """Plots sets of tiled (repeated) polygon layers on a single
-    canvas."""
+    """Plot sets of repeated polygon layers on a single canvas."""
 
     def __init__(self, all_tile_layers, colour_scheme=None):
+        """Set up a new repolygon plot of repeated polygon layers."""
         fig, ax = plt.subplots()
         self.fig = fig
         self.ax = ax
@@ -161,8 +158,7 @@ class plottedDesign:
         return (intersection_patch, clip_patch)
 
     def get_all_tile_data(self, tile_layer_set):
-        """Extract data (geometry & style) for all tiled polygon
-        layers."""
+        """Get geometry and style for all repeated polygon layers."""
         all_points = []
         for tile_layer in tile_layer_set:
             tile_coors, tile_style = tile_layer
@@ -188,8 +184,7 @@ class plottedDesign:
     def draw_all_tiles(
         self, filename, cutoffs, facecolour=NO_COLOURING_DARK, col_int=None
     ):
-        """Plot all layers on a single canvas of set region and
-        colour."""
+        """Plot all layers on a canvas with given region and colour."""
         # Set-up the matplotlib canvas according to preferences.
         self.ax.set_aspect(1)
         if self.colour_scheme and facecolour not in NO_COLOURING_SCHEME:
