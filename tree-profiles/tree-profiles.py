@@ -45,8 +45,7 @@ def canopy_fractal_tree(x, y, length, theta):
 
 
 def plot_single_tree_profile(index, param_label_name, param_label_value):
-    """TODO."""
-    # Format overall plot:
+    """Plots a single tree profile which is shown and also saved."""
     plt.axes().set_aspect(1)
     plt.axis("off")
     canopy_fractal_tree(width, height, initial_length, initial_angle)

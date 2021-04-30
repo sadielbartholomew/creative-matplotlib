@@ -145,7 +145,7 @@ class plottedDesign:
     def colour_intersection(
         patch_1, patch_2, intersection_colour, new_zorder=-100
     ):
-        """ TODO. """
+        """ Colour the spatial intersection between two given patches. """
         # Create copies of each patch. Colour one, leaving other transparent.
         intersection_patch = copy.copy(patch_2)
         intersection_patch.set_facecolor(intersection_colour)

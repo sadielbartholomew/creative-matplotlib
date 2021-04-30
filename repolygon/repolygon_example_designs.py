@@ -134,7 +134,7 @@ FULL_COLOUR_EXAMPLES_COLOURS = {
 }
 
 
-""" Define data for all example designs in a single dictionary.
+""" Define data for all minimal-tone example designs in a single dictionary.
 
 Dictionary keys are the design identifiers, which are simply labels of
 'repolygon_design_i' for integer 'i'. In general, the higher the label value
@@ -473,7 +473,12 @@ MINIMAL_TONE_EXAMPLES_SPEC = {
 
 
 """
-TODO.
+Define data for all true-colour example designs in a single dictionary.
+
+See the docstring on the previous specification dictionary
+(MINIMAL_TONE_EXAMPLES_SPEC) for details on the structure and the meaning of
+the values within.
+
 """
 FULL_COLOUR_EXAMPLES_SPEC = {
     "repolygon_design_1": (
@@ -882,7 +887,6 @@ CARPET_KUBRICK_THE_SHINING_COLOURS = {
         "DARK CERISE": "#7E1B32",
     },
 }
-# TODO: fix for the colour spec on the final colour (ALT 4 not working? etc.)
 CARPET_KUBRICK_THE_SHINING_SPEC = {
     "ACTUAL_DESIGN": (
         [

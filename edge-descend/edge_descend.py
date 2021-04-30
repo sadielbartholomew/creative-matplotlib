@@ -43,7 +43,7 @@ stage_two_colours = [
     "indigo",
     "powderblue",
 ]
-stage_two_colour_selector = cycle(stage_two_colours)
+stage_two_colour_selector = cycle(stage_two_colours)  # flake8 error skip?
 
 
 # ... directories to save designs into:
@@ -117,7 +117,7 @@ def change_centre(centre, sides, new_size, old_size):
 def make_shape(
     centre, size, sides=1, colour_selector=stage_one_colour_selector
 ):
-    """TODO."""
+    """Make and return a patch defining a positioned polygon to plot."""
     # Could take the (number of) sides -> infinity for sides of a regular
     # polygon to approximate a circle, but better to use actual circular
     # matplotlib patch as a special case:
@@ -141,7 +141,7 @@ def make_shape(
 
 
 def make_design_patches(sides=1, reposition=False):
-    """TODO."""
+    """Make and return a list of positioned patches defining the design."""
     patch_layers = []
 
     use_centre = outer_centre  # fixed centre if reposition=False
@@ -165,7 +165,7 @@ def make_design_patches(sides=1, reposition=False):
 
 
 def create_design(axes, stage_two, sides=1):
-    """TODO."""
+    """Create the design by attaching the underlying patches to some axes."""
     for p in make_design_patches(sides=sides, reposition=stage_two):
         axes.add_artist(p)
 
@@ -173,7 +173,7 @@ def create_design(axes, stage_two, sides=1):
 def plot_and_save(
     use_number_of_sides=1, single=True, closeup=False, stage_two=True
 ):
-    """TODO."""
+    """Plot and save a complete single or compound 'Edge Descend' design."""
     fig = plt.figure(figsize=(5, 5), facecolor=background_colour)
 
     if single:
