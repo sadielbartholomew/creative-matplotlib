@@ -45,7 +45,8 @@ NO_COLOURING_SCHEME = (
 
 
 class tileLayer:
-    """ Determines coordinates for a single tiled (repeated) polygon layer. """
+    """Determines coordinates for a single tiled (repeated) polygon
+    layer."""
 
     def __init__(self, n_sides, scale, rotation_no, xy_additions, xy_shifts):
         self.draw_path = mpath.Path
@@ -58,11 +59,12 @@ class tileLayer:
 
     @staticmethod
     def transform_coors(factor):
-        """ Create a vector for rotating coordinates about the origin. """
+        """Create a vector for rotating coordinates about the origin."""
         return np.array([np.cos(factor), np.sin(factor)])
 
     def ngon_vertex(self, xy_increases, vertex_i):
-        """ Find coordinates for one vertex ('_i') of the n-gon to tile. """
+        """Find coordinates for one vertex ('_i') of the n-gon to
+        tile."""
         # If factorise out np.pi below, get a different result: why!?
         transform = (
             2 * vertex_i * np.pi / self.n_sides + np.pi / self.rotation_no
@@ -75,7 +77,7 @@ class tileLayer:
         return ngon_xy
 
     def ngon_coors(self, xy_increases, ignore_n_vertices=False):
-        """ Find coordinates for all vertices of the n-gon to tile. """
+        """Find coordinates for all vertices of the n-gon to tile."""
         newpath_data = [
             (self.draw_path.MOVETO, self.ngon_vertex(xy_increases, 0))
         ]
@@ -106,7 +108,7 @@ class tileLayer:
         repeats=20,
         ignore_n_vertices=False,
     ):
-        """ Find coordinates for all vertices of all the tiled n-gons. """
+        """Find coordinates for all vertices of all the tiled n-gons."""
         patches = []
         for x_inc, y_inc in iproduct(range(repeats), range(repeats)):
             codes, verts = zip(
@@ -128,7 +130,8 @@ class tileLayer:
 
 
 class plottedDesign:
-    """ Plots sets of tiled (repeated) polygon layers on a single canvas. """
+    """Plots sets of tiled (repeated) polygon layers on a single
+    canvas."""
 
     def __init__(self, all_tile_layers, colour_scheme=None):
         fig, ax = plt.subplots()
@@ -145,7 +148,7 @@ class plottedDesign:
     def colour_intersection(
         patch_1, patch_2, intersection_colour, new_zorder=-100
     ):
-        """ Colour the spatial intersection between two given patches. """
+        """Colour the spatial intersection between two given patches."""
         # Create copies of each patch. Colour one, leaving other transparent.
         intersection_patch = copy.copy(patch_2)
         intersection_patch.set_facecolor(intersection_colour)
@@ -158,7 +161,8 @@ class plottedDesign:
         return (intersection_patch, clip_patch)
 
     def get_all_tile_data(self, tile_layer_set):
-        """ Extract data (geometry & style) for all tiled polygon layers. """
+        """Extract data (geometry & style) for all tiled polygon
+        layers."""
         all_points = []
         for tile_layer in tile_layer_set:
             tile_coors, tile_style = tile_layer
@@ -184,7 +188,8 @@ class plottedDesign:
     def draw_all_tiles(
         self, filename, cutoffs, facecolour=NO_COLOURING_DARK, col_int=None
     ):
-        """ Plot all layers on a single canvas of set region and colour. """
+        """Plot all layers on a single canvas of set region and
+        colour."""
         # Set-up the matplotlib canvas according to preferences.
         self.ax.set_aspect(1)
         if self.colour_scheme and facecolour not in NO_COLOURING_SCHEME:

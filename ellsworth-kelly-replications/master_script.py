@@ -1,5 +1,5 @@
-"""
-Replication of selected artworks by Ellsworth Kelly with NumPy arrays.
+"""Replication of selected artworks by Ellsworth Kelly with NumPy
+arrays.
 
 Created by Sadie Bartholomew, 2019.
 
@@ -175,8 +175,9 @@ BY_CHANCE_DESIGNS = {
 def convert_rgb_tuple(tuple_256):
     """Convert R,G,B Decimal Code from 8-bit integers to [0, 1] floats.
 
-    E.g. (255, 247, 0) -> (1., 0.9686... , 0.) representing
-    a specific yellow colour, namely #FFF700 in Hex(ademical).
+    E.g. (255, 247, 0) -> (1., 0.9686... , 0.) representing a specific
+    yellow colour, namely #FFF700 in Hex(ademical).
+
     """
     return tuple(float(rgb_int) / 255 for rgb_int in tuple_256)
 
@@ -197,6 +198,7 @@ def format_axes(ax, border_params, border_on_sqs_extent=None):
     Notably hide the ticks and tick labels so it looks like a canvas
     rather than a grphical plot. Optionally add a border and/or some
     subtle lines separating each square plotted within the subplot.
+
     """
     ax.set_aspect("equal")
     # Hide labels and ticks but keep grid viewable if desired (border_on_sqs):
@@ -223,7 +225,8 @@ def format_axes(ax, border_params, border_on_sqs_extent=None):
 
 
 def plot_one_image(name, image, cmap, border_params=False):
-    """Create a formatted figure with a single plot in given colourmap."""
+    """Create a formatted figure with a single plot in given
+    colourmap."""
     if not border_params:  # the default is no border (including no spines)
         border_params = (0.0, "white")
     fig, ax = plt.subplots()
@@ -276,7 +279,8 @@ def plot_S1(s1_data):
 
 
 def create_by_chance_image(tuning_params, backgr_colour, colours):
-    """Use random sampling to create a 'by chance' design image array."""
+    """Use random sampling to create a 'by chance' design image
+    array."""
     # Unpack the data defining each invididual design:
     squares_per_side, circularity_param, offset_param = tuning_params
 
@@ -296,7 +300,8 @@ def create_by_chance_image(tuning_params, backgr_colour, colours):
 
 
 def plot_by_chance(design_choice, plot_four_subplots=True):
-    """Plot the generated replications of the chosen 'by chance' pieces."""
+    """Plot the generated replications of the chosen 'by chance'
+    pieces."""
     # Unpack data:
     tuning, border_grid, backgr_col, col = BY_CHANCE_DESIGNS[design_choice]
     border_width, grid_on = border_grid

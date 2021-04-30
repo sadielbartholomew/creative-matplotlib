@@ -75,10 +75,11 @@ zoom_in_factors = {
 
 
 def change_centre_variant_2(centre, index):
-    """Used in place of 'change_centre' function to generate '-2' designs.
+    """Used in place of 'change_centre' function to generate '-2'
+    designs.
 
-    Note the 'index' should be added as an input to change_centre in this
-    case to reflect the signature here.
+    Note the 'index' should be added as an input to change_centre in
+    this case to reflect the signature here.
 
     """
     identical_coor_val = centre[0] + 0.0008 * index
@@ -86,7 +87,8 @@ def change_centre_variant_2(centre, index):
 
 
 def change_centre_variant_3(centre):
-    """Used in place of 'change_centre' function to generate '-3' designs."""
+    """Used in place of 'change_centre' function to generate '-3'
+    designs."""
     return (centre[0] * 0.99, centre[1] * 0.96)
 
 
@@ -141,7 +143,8 @@ def make_shape(
 
 
 def make_design_patches(sides=1, reposition=False):
-    """Make and return a list of positioned patches defining the design."""
+    """Make and return a list of positioned patches defining the
+    design."""
     patch_layers = []
 
     use_centre = outer_centre  # fixed centre if reposition=False
@@ -165,7 +168,8 @@ def make_design_patches(sides=1, reposition=False):
 
 
 def create_design(axes, stage_two, sides=1):
-    """Create the design by attaching the underlying patches to some axes."""
+    """Create the design by attaching the underlying patches to some
+    axes."""
     for p in make_design_patches(sides=sides, reposition=stage_two):
         axes.add_artist(p)
 
@@ -173,7 +177,8 @@ def create_design(axes, stage_two, sides=1):
 def plot_and_save(
     use_number_of_sides=1, single=True, closeup=False, stage_two=True
 ):
-    """Plot and save a complete single or compound 'Edge Descend' design."""
+    """Plot and save a complete single or compound 'Edge Descend'
+    design."""
     fig = plt.figure(figsize=(5, 5), facecolor=background_colour)
 
     if single:

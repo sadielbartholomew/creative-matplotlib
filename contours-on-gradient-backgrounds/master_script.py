@@ -1,6 +1,5 @@
-"""
-Designs for contours on gradient backgrounds, created by Sadie Bartholomew.
-"""
+"""Designs for contours on gradient backgrounds, created by Sadie
+Bartholomew."""
 
 import numpy as np
 import matplotlib.pyplot as plt

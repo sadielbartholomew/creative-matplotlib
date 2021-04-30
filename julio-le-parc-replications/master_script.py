@@ -35,10 +35,11 @@ IMAGE_PAD_POINTS = 2
 
 
 class LeParcDesign(metaclass=ABCMeta):
-    """Abstract Base Class to replicate a Julio Le Parc 1959 rotational design.
+    """Abstract Base Class to replicate a Julio Le Parc 1959 rotational
+    design.
 
     For more detail on the artist Julio Le Parc, see:
-      http://www.julioleparc.org/
+    http://www.julioleparc.org/
 
     """
 
@@ -64,21 +65,25 @@ class LeParcDesign(metaclass=ABCMeta):
 
     @abstractmethod
     def create_design_patches_per_gridpoint(self):
-        """ Create the underlying patches to be rotated at each gridpoint. """
+        """Create the underlying patches to be rotated at each
+        gridpoint."""
         raise NotImplementedError(self.ABC_error_msg)
 
     @abstractmethod
     def create_design_angles_array(self):
-        """ Create the array giving the patch rotation angle per gridpoint. """
+        """Create the array giving the patch rotation angle per
+        gridpoint."""
         raise NotImplementedError(self.ABC_error_msg)
 
     @abstractmethod
     def create_design(self):
-        """ Create a design by positioning and rotating relevant patches. """
+        """Create a design by positioning and rotating relevant
+        patches."""
         raise NotImplementedError(self.ABC_error_msg)
 
     def format_canvas(self):
-        """ Format canvas to centre on image with no visible axes markings. """
+        """Format canvas to centre on image with no visible axes
+        markings."""
         self.background_colour = self.colours["OFF WHITE"]
         self.fig.patch.set_facecolor(self.background_colour)
         padding_per_side = 2
@@ -91,7 +96,8 @@ class LeParcDesign(metaclass=ABCMeta):
         self.axes.set_ylim(*limits)
 
     def format_plt(self):
-        """ Format the plot nicely to centre, pad and hide axes components. """
+        """Format the plot nicely to centre, pad and hide axes
+        components."""
         # Note: use this instead of plt.axis('equal') since due to the
         # rotation of outer patches in the animation, 'equal' will vary
         # somewhat and therefore the whole animation will shift and re-size
@@ -105,7 +111,8 @@ class LeParcDesign(metaclass=ABCMeta):
         plt.yticks([])
 
     def plot_and_save_design(self):
-        """ Plot and save a static replication of a 1959 Le Parc design. """
+        """Plot and save a static replication of a 1959 Le Parc
+        design."""
         self.format_canvas()
         self.create_design()
         self.format_plt()
@@ -125,12 +132,14 @@ class LeParcDesign(metaclass=ABCMeta):
         )
 
     def init_animated_design(self):
-        """ Initiate animation of a Julio Le Parc 1959 rotational design. """
+        """Initiate animation of a Julio Le Parc 1959 rotational
+        design."""
         self.create_design()
         self.format_plt()
 
     def update_animation_for_uniform_rotation(self, i):
-        """ Update the animation frame to rotate the replication uniformly. """
+        """Update the animation frame to rotate the replication
+        uniformly."""
         # !!!
         # TODO: this code as-is is not at all efficient since it is
         # re-generating the same patches, but at different collective
@@ -146,7 +155,7 @@ class LeParcDesign(metaclass=ABCMeta):
         self.format_plt()
 
     def plot_and_save_animated_design(self):
-        """ Plot and save an animated 1959 Le Parc design replication. """
+        """Plot and save an animated 1959 Le Parc design replication."""
         self.format_canvas()
 
         # Note: increase *frames* for longer video, decrease *interval* and/or
@@ -172,7 +181,8 @@ class LeParcDesign(metaclass=ABCMeta):
 
 
 class Mutations(LeParcDesign):
-    """Replicate and animate the Julio Le Parc 1959 piece 'Mutation of Forms'.
+    """Replicate and animate the Julio Le Parc 1959 piece 'Mutation of
+    Forms'.
 
     For more detail on the original piece, see:
       https://www.metmuseum.org/art/collection/search/815337
@@ -195,7 +205,8 @@ class Mutations(LeParcDesign):
 
     @staticmethod
     def plot_mutations_wedge(centre, theta1, theta2, colour):
-        """ Create a single wedge-shaped patch with given angular coverage. """
+        """Create a single wedge-shaped patch with given angular
+        coverage."""
         # 0.5 radius means the circles containing the wedges just touch their
         # neighbours. Use 0.475 to provide a small gap as per the design.
         return mpatches.Wedge(centre, 0.475, theta1, theta2, color=colour)
@@ -203,7 +214,8 @@ class Mutations(LeParcDesign):
     def create_design_patches_per_gridpoint(
         self, position, wedge_1_thetas, wedge_2_thetas, colour_1, colour_2
     ):
-        """ Create the underlying patches to be rotated at each gridpoint. """
+        """Create the underlying patches to be rotated at each
+        gridpoint."""
         wedge_1 = self.plot_mutations_wedge(
             position, *wedge_1_thetas, colour_1
         )
@@ -213,7 +225,8 @@ class Mutations(LeParcDesign):
         return wedge_1, wedge_2
 
     def create_mutations_linspaced_angles(self, max_coverage, min_coverage):
-        """Create a 1D array of evenly-spaced start and end wedge angles.
+        """Create a 1D array of evenly-spaced start and end wedge
+        angles.
 
         The even spacing between the leftmost and rightmost angles for the
         start, and separately, end, wedge angles is achieved using the NumPy
@@ -250,7 +263,8 @@ class Mutations(LeParcDesign):
         return np.column_stack((theta1_min_to_max, theta2_min_to_max))
 
     def create_design_angles_array(self, is_red=True):
-        """ Create the array giving the patch rotation angle per gridpoint. """
+        """Create the array giving the patch rotation angle per
+        gridpoint."""
         red_max = (-135, 45)
         red_min = (-45, -45)
         blue_max = (45, 225)
@@ -286,7 +300,8 @@ class Mutations(LeParcDesign):
         return angles_array
 
     def create_design(self):
-        """ Create a design by positioning and rotating relevant patches. """
+        """Create a design by positioning and rotating relevant
+        patches."""
         for i, j in itertools.product(self.grid_indices, self.grid_indices):
             # Get angles:
             red_thetas = self.red_angles_array[i][j]
@@ -305,7 +320,8 @@ class Mutations(LeParcDesign):
             self.axes.add_patch(blue_wedge)
 
     def update_animation_for_uniform_rotation(self, i):
-        """ Update the animation frame to rotate the replication uniformly. """
+        """Update the animation frame to rotate the replication
+        uniformly."""
         self.axes.cla()
 
         # In this case there are two angles (red and blue) that need updating
@@ -343,7 +359,8 @@ class Rotations(LeParcDesign):
     def create_design_patches_per_gridpoint(
         self, centre, rect_angle, foreground_colour, background_colour
     ):
-        """ Create the underlying patches to be rotated at each gridpoint. """
+        """Create the underlying patches to be rotated at each
+        gridpoint."""
         # These parameters are adapted to match the original design:
         radius = 0.45
         offset_amount = 0.3
@@ -371,7 +388,8 @@ class Rotations(LeParcDesign):
         return (patch, clip_patch)
 
     def create_design_angles_array(self):
-        """ Create the array giving the patch rotation angle per gridpoint. """
+        """Create the array giving the patch rotation angle per
+        gridpoint."""
         angles_array = np.zeros(
             (self.gridpoints, self.gridpoints), dtype=float
         )
@@ -395,7 +413,8 @@ class Rotations(LeParcDesign):
         return angles_array
 
     def create_design(self, angles_array=None):
-        """ Create a design by positioning and rotating relevant patches. """
+        """Create a design by positioning and rotating relevant
+        patches."""
         if angles_array is None:
             angles_array = self.angles_array
 
@@ -413,7 +432,8 @@ class Rotations(LeParcDesign):
 
 
 class Fractioned(LeParcDesign):
-    """Replicate and animate Le Parc's 'Rotation of Fractioned Circles' (1959).
+    """Replicate and animate Le Parc's 'Rotation of Fractioned Circles'
+    (1959).
 
     For more detail on the original piece, see:
       https://www.metmuseum.org/art/collection/search/815341
@@ -434,7 +454,8 @@ class Fractioned(LeParcDesign):
     def create_design_patches_per_gridpoint(
         self, centre, rect_angle, dark_colour, light_colour, background_colour
     ):
-        """ Create the underlying patches to be rotated at each gridpoint. """
+        """Create the underlying patches to be rotated at each
+        gridpoint."""
         # These parameters are adapted to match the original design:
         radius = 0.45
         offset_amount = 0.02
@@ -476,7 +497,8 @@ class Fractioned(LeParcDesign):
         return (dark_patch, light_patch, clip_patch)
 
     def create_design_angles_array(self):
-        """ Create the array giving the patch rotation angle per gridpoint. """
+        """Create the array giving the patch rotation angle per
+        gridpoint."""
         angles_array = np.zeros(
             (self.gridpoints, self.gridpoints), dtype=float
         )
@@ -500,7 +522,8 @@ class Fractioned(LeParcDesign):
         return -1 * np.flip(angles_array, axis=1)
 
     def create_design(self, angles_array=None):
-        """ Create a design by positioning and rotating relevant patches. """
+        """Create a design by positioning and rotating relevant
+        patches."""
         if angles_array is None:
             angles_array = self.angles_array
 
@@ -522,7 +545,8 @@ class Fractioned(LeParcDesign):
 
 
 class RedAndBlack(LeParcDesign):
-    """Replicate and animate Le Parc's 'Rotation in Red and Black' (1959).
+    """Replicate and animate Le Parc's 'Rotation in Red and Black'
+    (1959).
 
     For more detail on the original piece, see:
       https://www.metmuseum.org/art/collection/search/815338
@@ -543,7 +567,8 @@ class RedAndBlack(LeParcDesign):
     def create_design_patches_per_gridpoint(
         self, centre, base_theta, colour_1, colour_2
     ):
-        """ Create the underlying patches to be rotated at each gridpoint. """
+        """Create the underlying patches to be rotated at each
+        gridpoint."""
         half_length = 0.5
         width = 0.05
 
@@ -563,7 +588,8 @@ class RedAndBlack(LeParcDesign):
         return cross_lines
 
     def create_cross_line(self, centre, length, width, colour, angle, zorder):
-        """ Create a single angled line patch to form one half of a cross. """
+        """Create a single angled line patch to form one half of a
+        cross."""
         lines = []
         for theta in (angle, angle + 180):  # parallel half-lines from centre
             # Centre is normalised with respect to the gridpoint
@@ -583,7 +609,8 @@ class RedAndBlack(LeParcDesign):
         return lines
 
     def create_design_angles_array(self):
-        """ Create the array giving the patch rotation angle per gridpoint. """
+        """Create the array giving the patch rotation angle per
+        gridpoint."""
         angles_array = np.zeros(
             (self.gridpoints, self.gridpoints), dtype=float
         )
@@ -614,7 +641,8 @@ class RedAndBlack(LeParcDesign):
         return angles_array
 
     def create_design(self, angles_array=None):
-        """ Create a design by positioning and rotating relevant patches. """
+        """Create a design by positioning and rotating relevant
+        patches."""
         if angles_array is None:
             angles_array = self.angles_array
 
