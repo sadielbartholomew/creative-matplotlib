@@ -1,0 +1,8 @@
+# Minimal .gitignore file to cover relevant files and dirs only
+
+# Python:
+*.py[cod]
+**/__pycache__/
+
+# Jupyter Notebook:
+.ipynb_checkpoints
