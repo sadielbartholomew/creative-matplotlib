@@ -68,6 +68,17 @@ Intricate tiling designs from repeated polygon matplotlib patches.
 | ![repolygon_design_9_colour_prototype](repolygon/designs/prototypes-for-colours/repolygon_design_9_colour_prototype.png) | ![repolygon_design_10_colour_prototype](repolygon/designs/prototypes-for-colours/repolygon_design_10_colour_prototype.png) | ![repolygon_design_11_colour_prototype](repolygon/designs/prototypes-for-colours/repolygon_design_11_colour_prototype.png) |
 
 
+### [spindles](spindles)
+
+Status: *completed*
+
+Polar views of simulated Brownian motion resembling spinning yarn.
+
+|     |     |     |
+|:---:|:---:|:---:|
+| ![Spindle design with parameter set 1](spindles/outputs/parameter_set_1/spindles-instance-in-terrain.png) | ![Spindle design with parameter set 2](spindles/outputs/parameter_set_2/spindles-instance-in-OrRd.png) | ![Spindle design with parameter set 3](spindles/outputs/parameter_set_3/spindles-instance-in-twilight.png) |
+
+
 ### [tree-profiles](tree-profiles)
 
 Status: *early development stage*
