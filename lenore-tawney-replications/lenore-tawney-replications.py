@@ -9,14 +9,23 @@ works:
 import numpy as np
 
 import matplotlib.pyplot as plt
+from matplotlib.ticker import MultipleLocator
 
 
 BACKGROUND_COLOUR = "#FBF4EA"  # beige colour taken from photo of an original
-GRID_COLOUR = "lightsteelblue"
+GRID_COLOUR = "powderblue"
 DEFAULT_LINE_COLOUR = "#1D1616"  # off-black, very dark grey for better effect
 LINEWIDTH = 0.3
 
-FIGSIZE = (11, 17 / 2)  # like landscape A4 (graph-gridded) paper
+FIGSIZE = (11, 6.75)  # like landscape A4 (graph-gridded) paper
+
+# Scale plot limits with the figsize so the grid ends up composed of squares:
+if FIGSIZE[0] < FIGSIZE[1]:
+    plot_limits_x = (0, 100)
+    plot_limits_y = (0, plot_limits_x[1] * FIGSIZE[1] / FIGSIZE[0])
+else:
+    plot_limits_y = (0, 100)
+    plot_limits_x = (0, plot_limits_y[1] * FIGSIZE[0] / FIGSIZE[1])
 
 
 def plot_line_segment(
@@ -46,19 +55,27 @@ def format_grids(ax):
     ax.set_axisbelow(True)
     ax.minorticks_on()
 
-    # Set the spacings
-    # TODO - how?
+    # Set the spacings:
+    # Major dividers every 10 points, minor every 1, on the given axis
+    ax.xaxis.set_major_locator(MultipleLocator(10))
+    ax.yaxis.set_major_locator(MultipleLocator(10))
+    ax.xaxis.set_minor_locator(MultipleLocator(1))
+    ax.yaxis.set_minor_locator(MultipleLocator(1))
 
     # Customize the grids
     ax.grid(
-        which="major", linestyle="-", linewidth=1, color=GRID_COLOUR, alpha=0.6
+        which="major",
+        linestyle="-",
+        linewidth=0.8,
+        color=GRID_COLOUR,
+        alpha=0.5,
     )
     ax.grid(
         which="minor",
         linestyle="-",
         linewidth=0.5,
         color=GRID_COLOUR,
-        alpha=0.6,
+        alpha=0.3,
     )
 
 
@@ -113,14 +130,6 @@ def plot_overall_design(view_axes_labels_as_guide=False):
     post_format_plot(ax, view_axes_labels_as_guide=view_axes_labels_as_guide)
     plt.show()
 
-
-# Scale plot limits with the figsize so the grid ends up composed of squares:
-if FIGSIZE[0] < FIGSIZE[1]:
-    plot_limits_x = (0, 100)
-    plot_limits_y = (0, plot_limits_x[1] * FIGSIZE[1] / FIGSIZE[0])
-else:
-    plot_limits_y = (0, 100)
-    plot_limits_x = (0, plot_limits_y[1] * FIGSIZE[0] / FIGSIZE[1])
 
 # Plot
 plot_overall_design(view_axes_labels_as_guide=True)
