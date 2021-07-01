@@ -15,7 +15,7 @@ from matplotlib.ticker import MultipleLocator
 BACKGROUND_COLOUR = "#FBF4EA"  # beige colour taken from photo of an original
 GRID_COLOUR = "powderblue"
 DEFAULT_LINE_COLOUR = "#1D1616"  # off-black, very dark grey for better effect
-LINEWIDTH = 0.3
+LINEWIDTH = 0.5
 
 FIGSIZE = (11, 6.75)  # like landscape A4 (graph-gridded) paper
 
@@ -119,17 +119,21 @@ def post_format_plot(ax, view_axes_labels_as_guide=False):
     plt.tight_layout()
 
 
-def plot_overall_design(view_axes_labels_as_guide=False):
+def plot_overall_design(line_coors, view_axes_labels_as_guide=False):
     """TODO."""
     fig, ax = pre_format_plot()
 
     # Plot the lines comprising the design
-    plot_straight_line_by_equation(1, 0)
-    plot_line_segment((20, 80), (60, 20))
+    for line_coor in line_coors:
+        plot_line_segment(*line_coor)
 
     post_format_plot(ax, view_axes_labels_as_guide=view_axes_labels_as_guide)
     plt.show()
 
 
 # Plot
-plot_overall_design(view_axes_labels_as_guide=True)
+line_coors = [
+    ((9, 81), (81, 92)),
+    ((81, 92), (150, 81)),
+]
+plot_overall_design(line_coors, view_axes_labels_as_guide=True)
