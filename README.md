@@ -89,6 +89,15 @@ bare (leafless) form.
 [*Preview images to be added when the mini-project is more mature*.]
 
 
+### [lenore-tawney-replications](lenore-tawney-replications)
+
+Status: *early development stage*
+
+Replication of, and variations on, linear drawings by Lenore Tawney.
+
+[*Preview images to be added when the mini-project is more mature*.]
+
+
 ***
 
 ### Repository organisation and status
