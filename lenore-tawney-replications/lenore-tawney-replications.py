@@ -50,6 +50,32 @@ def plot_straight_line_by_equation(
     plt.plot(x_vals, y_vals, color=colour, linewidth=LINEWIDTH)
 
 
+def draw_between_line_segments(
+    line_seg_1,
+    line_seg_2,
+    number_lines_to_draw=50,
+    colour=DEFAULT_LINE_COLOUR,
+):
+    """TODO."""
+    xs = np.linspace(line_seg_1[0], line_seg_1[1], num=number_lines_to_draw)
+    ys = np.linspace(line_seg_2[1], line_seg_2[0], num=number_lines_to_draw)
+    for x, y in zip(xs, ys):
+        print(x, y)
+        plot_line_segment(x, y, colour=colour)
+
+
+def draw_from_point_to_line_segment(
+    point,
+    line_seg,
+    number_lines_to_draw=50,
+    colour=DEFAULT_LINE_COLOUR,
+):
+    """TODO."""
+    ys = np.linspace(line_seg[0], line_seg[1], num=number_lines_to_draw)
+    for y in ys:
+        plot_line_segment(point, y, colour=colour)
+
+
 def format_grids(ax):
     """TODO."""
     ax.set_axisbelow(True)
@@ -127,13 +153,20 @@ def plot_overall_design(line_coors, view_axes_labels_as_guide=False):
     for line_coor in line_coors:
         plot_line_segment(*line_coor)
 
+    # Test a drawing of equally-spaced lines between two segments
+    draw_between_line_segments(line_coors[0], line_coors[3], 75)
+    draw_between_line_segments(line_coors[1], line_coors[2], 75)
+    draw_from_point_to_line_segment((0, 0), line_coors[0], colour="indianred")
+
     post_format_plot(ax, view_axes_labels_as_guide=view_axes_labels_as_guide)
     plt.show()
 
 
 # Plot
 line_coors = [
-    ((9, 81), (81, 92)),
-    ((81, 92), (150, 81)),
+    ((9, 81), (80, 92)),  # 1, join to 4
+    ((80, 92), (150, 80)),  # 2, join to 3
+    ((9, 15), (80, 6)),  # 3, join to 2
+    ((80, 6), (150, 15)),  # 4, join to 1
 ]
 plot_overall_design(line_coors, view_axes_labels_as_guide=True)
