@@ -1,5 +1,7 @@
 """Replication of, and variations on, linear drawings by Lenore Tawney.
 
+All six original drawings that are replicated were completed in 1964.
+
 See also Tawney's website for information about the artist of the original
 works:
   https://lenoretawney.org/
@@ -13,82 +15,132 @@ import matplotlib.pyplot as plt
 from matplotlib.ticker import MultipleLocator
 
 
-BACKGROUND_COLOUR = "#FBF4EA"  # beige colour taken from photo of an original
-GRID_COLOUR = "powderblue"
-DEFAULT_LINE_COLOUR = "#221111"  # dark murky brown
-LINEWIDTH = 0.8
-LINE_ALPHA = 0.5
+# See comments against first item for documentation of these design parameters
+REPLICATION_DESIGN_PARAMETERS = {
+    "The Great Breath": (
+        # Coordinates of start and end points of all lines to draw.
+        [
+            ((9, 81), (80, 92)),
+            ((80, 92), (150, 81)),
+            ((10, 15), (80, 6)),
+            ((80, 6), (150, 15)),
+            ((10, 40), (80, 6)),
+            ((80, 6), (150, 40)),
+        ],
+        # All pairs of lines, identified by (zero-indexed) position in above
+        # line coordinates listing, to be joined together with many lines from
+        # points equally-spaced and sequentially drawn across both lines.
+        [(0, 3), (1, 2), (1, 4), (0, 5)],
+        # Design style, three-tuple of:
+        #   1. figsize;
+        #   2. of lines: line width, line alpha, wiggliness (via rcparams);
+        #   3. colours: line colour, background colour, grid colour.
+        (
+            (11, 6.75),
+            (0.8, 0.5, (0.3, 3, 0.15)),  # these rcparams make lines 'jittery'
+            ("#FBF4EA", "powderblue", "#221111"),
+        ),
+    ),
+    "Wings of the Wind": (
+        [],
+        [],
+        (
+            (),
+            (),
+            (),
+        ),
+    ),
+    "From Its Center": (
+        [],
+        [],
+        (
+            (),
+            (),
+            (),
+        ),
+    ),
+    "Union of Water and Fire II": (
+        [],
+        [],
+        (
+            (),
+            (),
+            (),
+        ),
+    ),
+    "Blue Circle": (
+        [],
+        [],
+        (
+            (),
+            (),
+            (),
+        ),
+    ),
+    "The Eternal Band": (
+        [],
+        [],
+        (
+            (),
+            (),
+            (),
+        ),
+    ),
+}
 
-FIGSIZE = (11, 6.75)  # like landscape A4 (graph-gridded) paper
-
-# Use very slightly squiggly lines for a more 'hand-drawn' look!
-# TODO: this isn't possible ATM (without difficulty and making the code much
-# less clean, at least) for the drawn lines only, it also affects the axes and
-# gridlines etc., but is fun to play around with these parameters to see how
-# it influences the style! Note that the 'xkcd' style uses (1, 100, 2): see
-# https://github.com/matplotlib/matplotlib/blob/master/lib/matplotlib/pyplot.py
-rcParams["path.sketch"] = (0.3, 3, 0.15)  # makes lines seem 'jittery'
-
-# Scale plot limits with the figsize so the grid ends up composed of squares:
-if FIGSIZE[0] < FIGSIZE[1]:
-    plot_limits_x = (0, 100)
-    plot_limits_y = (0, plot_limits_x[1] * FIGSIZE[1] / FIGSIZE[0])
-else:
-    plot_limits_y = (0, 100)
-    plot_limits_x = (0, plot_limits_y[1] * FIGSIZE[0] / FIGSIZE[1])
+VARIATION_DESIGN_PARAMETERS = {}
 
 
 def plot_line_segment(
-    startpoint_coors, endpoint_coors, colour=DEFAULT_LINE_COLOUR, alpha=1.0
+    startpoint_coors, endpoint_coors, colour, linewidth, alpha=1.0
 ):
     """TODO."""
     plt.plot(
         [startpoint_coors[0], endpoint_coors[0]],
         [startpoint_coors[1], endpoint_coors[1]],
         color=colour,
-        linewidth=LINEWIDTH,
+        linewidth=linewidth,
         alpha=alpha,
     )
 
 
-def plot_straight_line_by_equation(
-    gradient, intercept, colour=DEFAULT_LINE_COLOUR
-):
+def plot_straight_line_by_equation(gradient, intercept, colour, linewidth):
     """TODO."""
     axes = plt.gca()
     x_vals = np.array(axes.get_xlim())
     y_vals = intercept + gradient * x_vals
-    plt.plot(x_vals, y_vals, color=colour, linewidth=LINEWIDTH)
+    plt.plot(x_vals, y_vals, color=colour, linewidth=linewidth)
 
 
 def draw_between_line_segments(
     line_seg_1,
     line_seg_2,
+    colour,
+    linewidth,
     number_lines_to_draw=50,
-    colour=DEFAULT_LINE_COLOUR,
     alpha=1.0,
 ):
     """TODO."""
     xs = np.linspace(line_seg_1[0], line_seg_1[1], num=number_lines_to_draw)
     ys = np.linspace(line_seg_2[1], line_seg_2[0], num=number_lines_to_draw)
     for x, y in zip(xs, ys):
-        plot_line_segment(x, y, colour=colour, alpha=alpha)
+        plot_line_segment(
+            x, y, colour=colour, linewidth=linewidth, alpha=alpha
+        )
 
 
 def draw_from_point_to_line_segment(
-    point,
-    line_seg,
-    number_lines_to_draw=50,
-    colour=DEFAULT_LINE_COLOUR,
-    alpha=1.0,
+    point, line_seg, colour, linewidth, number_lines_to_draw=50, alpha=1.0
 ):
     """TODO."""
     ys = np.linspace(line_seg[0], line_seg[1], num=number_lines_to_draw)
     for y in ys:
-        plot_line_segment(point, y, colour=colour, alpha=alpha)
+        plot_line_segment(
+            point, y, colour=colour, linewidth=linewidth, alpha=alpha
+        )
 
 
-def format_grids(ax):
+def format_grids(ax, grid_colour):
     """TODO."""
     ax.set_axisbelow(True)
     ax.minorticks_on()
@@ -105,34 +157,50 @@ def format_grids(ax):
         which="major",
         linestyle="-",
         linewidth=0.8,
-        color=GRID_COLOUR,
+        color=grid_colour,
         alpha=0.5,
     )
     ax.grid(
         which="minor",
         linestyle="-",
         linewidth=0.5,
-        color=GRID_COLOUR,
+        color=grid_colour,
         alpha=0.3,
     )
 
 
-def pre_format_plot():
+def pre_format_plot(figsize, sketch_params, background_colour, grid_colour):
     """TODO."""
-    fig, ax = plt.subplots(figsize=FIGSIZE)
-    fig.set_facecolor(BACKGROUND_COLOUR)
+    # Configure very slightly squiggly lines for a more 'hand-drawn' look!
+    # This doesn't seem possible at the moment (without making the code much
+    # less clean, at least) for the drawn lines only, it also affects the axes and
+    # gridlines etc., but is fun to play around with these parameters to see how
+    # it influences the style! Note that the 'xkcd' style uses (1, 100, 2): see
+    # https://github.com/matplotlib/matplotlib/blob/master/lib/matplotlib/pyplot.py
+    rcParams["path.sketch"] = sketch_params
+
+    fig, ax = plt.subplots(figsize=figsize)
+    fig.set_facecolor(background_colour)
+
+    # Scale plot limits with figsize so the grid ends up composed of squares:
+    if figsize[0] < figsize[1]:
+        plot_limits_x = (0, 100)
+        plot_limits_y = (0, plot_limits_x[1] * figsize[1] / figsize[0])
+    else:
+        plot_limits_y = (0, 100)
+        plot_limits_x = (0, plot_limits_y[1] * figsize[0] / figsize[1])
 
     ax.set_xlim(plot_limits_x)
     ax.set_ylim(plot_limits_y)
 
-    format_grids(ax)
+    format_grids(ax, grid_colour)
 
     return fig, ax
 
 
-def post_format_plot(ax, view_axes_labels_as_guide=False):
+def post_format_plot(ax, background_colour, view_axes_labels_as_guide=False):
     """TODO."""
-    ax.set_facecolor(BACKGROUND_COLOUR)
+    ax.set_facecolor(background_colour)
 
     # Whilst creating a design, we may want to see the axes labels
     if view_axes_labels_as_guide:
@@ -157,39 +225,45 @@ def post_format_plot(ax, view_axes_labels_as_guide=False):
     plt.tight_layout()
 
 
-def plot_overall_design(
-    line_coors, coor_pairs_to_join, view_axes_labels_as_guide=False
-):
+def plot_overall_design(design_to_draw, view_axes_labels_as_guide=False):
     """TODO."""
-    fig, ax = pre_format_plot()
+    # Unpack geometrical parameters
+    line_coors, coor_pairs_to_join = design_to_draw[:2]
+    # Unpack style parameters
+    figsize, line_params, colour_params = design_to_draw[2]
+    linewidth, line_alpha, sketch_rcparams = line_params
+    background_colour, grid_colour, default_line_colour = colour_params
+
+    fig, ax = pre_format_plot(
+        figsize, sketch_rcparams, background_colour, grid_colour
+    )
 
     # Plot the lines comprising the design
     for line_coor in line_coors:
-        plot_line_segment(*line_coor, alpha=LINE_ALPHA)
+        plot_line_segment(
+            *line_coor, default_line_colour, linewidth, line_alpha
+        )
 
-    # Test a drawing of equally-spaced lines between two segments
+    # Drawing of equally-spaced lines between given pairs of segments
     for pairs in coor_pairs_to_join:
         index_1, index_y = pairs
         draw_between_line_segments(
-            line_coors[index_1], line_coors[index_y], 60, alpha=LINE_ALPHA
+            line_coors[index_1],
+            line_coors[index_y],
+            default_line_colour,
+            linewidth,
+            60,
+            alpha=line_alpha,
         )
 
-    post_format_plot(ax, view_axes_labels_as_guide=view_axes_labels_as_guide)
+    post_format_plot(
+        ax,
+        background_colour,
+        view_axes_labels_as_guide=view_axes_labels_as_guide,
+    )
     plt.show()
 
 
-# Plot to recreate LT's work 'The Great Breath, 1964' (see:
-# https://lenoretawney.org/work/the-great-breath/)
-line_coors = [
-    ((9, 81), (80, 92)),  # 1, join to 4
-    ((80, 92), (150, 81)),  # 2, join to 3
-    ((10, 15), (80, 6)),  # 3, join to 2
-    ((80, 6), (150, 15)),  # 4, join to 1
-    ((10, 40), (80, 6)),  # 5, NEW join to 2
-    ((80, 6), (150, 40)),  # 6, NEW join to 1
-]
-# As with 'join' comments above, but minus 1 for zero-based indexing...
-coor_pairs_to_join = [(0, 3), (1, 2), (1, 4), (0, 5)]
-plot_overall_design(
-    line_coors, coor_pairs_to_join, view_axes_labels_as_guide=True
-)
+design_to_draw = REPLICATION_DESIGN_PARAMETERS["The Great Breath"]
+# Plot all designs, both replications of the originals, and my variations:
+plot_overall_design(design_to_draw, view_axes_labels_as_guide=True)
