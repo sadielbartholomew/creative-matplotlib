@@ -8,6 +8,7 @@ works:
 
 import numpy as np
 
+from matplotlib import rcParams
 import matplotlib.pyplot as plt
 from matplotlib.ticker import MultipleLocator
 
@@ -19,6 +20,14 @@ LINEWIDTH = 0.8
 LINE_ALPHA = 0.5
 
 FIGSIZE = (11, 6.75)  # like landscape A4 (graph-gridded) paper
+
+# Use very slightly squiggly lines for a more 'hand-drawn' look!
+# TODO: this isn't possible ATM (without difficulty and making the code much
+# less clean, at least) for the drawn lines only, it also affects the axes and
+# gridlines etc., but is fun to play around with these parameters to see how
+# it influences the style! Note that the 'xkcd' style uses (1, 100, 2): see
+# https://github.com/matplotlib/matplotlib/blob/master/lib/matplotlib/pyplot.py
+rcParams["path.sketch"] = (0.3, 3, 0.15)  # makes lines seem 'jittery'
 
 # Scale plot limits with the figsize so the grid ends up composed of squares:
 if FIGSIZE[0] < FIGSIZE[1]:
@@ -63,7 +72,6 @@ def draw_between_line_segments(
     xs = np.linspace(line_seg_1[0], line_seg_1[1], num=number_lines_to_draw)
     ys = np.linspace(line_seg_2[1], line_seg_2[0], num=number_lines_to_draw)
     for x, y in zip(xs, ys):
-        print(x, y)
         plot_line_segment(x, y, colour=colour, alpha=alpha)
 
 
