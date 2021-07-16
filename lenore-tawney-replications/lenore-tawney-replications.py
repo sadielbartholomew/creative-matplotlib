@@ -35,11 +35,14 @@ REPLICATION_DESIGN_PARAMETERS = {
         #   1. figsize, scaling_factor;
         #   2. of lines: line width, line alpha, wiggliness (via rcparams);
         #   3. colours: background colour, grid colour, line colour.
+        #   4. (optional) change to the number of lines to draw between coors
         (
             ((11, 6.75), 100),
             (0.4, 0.6, False),
             ("#E7DACB", "#9EC3EA", "#2F1E1E"),
         ),
+        # Optional dict to override colour for given coor pair (by index).
+        {},
     ),
     "Wings of the Wind": (
         [
@@ -72,13 +75,18 @@ REPLICATION_DESIGN_PARAMETERS = {
         ),
     ),
     "Union of Water and Fire II": (
-        [],
-        [],
+        [
+            ((20, 130), (140, 130)),
+            ((20, 70), (140, 70)),
+        ],
+        [((80, 40), 0), ((80, 160), 1)],
         (
-            (),
-            (),
-            (),
+            ((5, 6.25), 160),  # 20 by 16 (TODO: thicker half grid lines too)
+            (0.5, 0.4, False),
+            ("#E8E3DD", "#E0A66C", "#464476"),
+            100,
         ),
+        {1: "#E75136"},
     ),
     "Blue Circle": (
         [],
@@ -129,7 +137,7 @@ def draw_between_line_segments(
     line_seg_2,
     colour,
     linewidth,
-    number_lines_to_draw=50,
+    number_lines_to_draw=68,
     alpha=1.0,
 ):
     """TODO."""
@@ -142,7 +150,7 @@ def draw_between_line_segments(
 
 
 def draw_from_point_to_line_segment(
-    point, line_seg, colour, linewidth, number_lines_to_draw=50, alpha=1.0
+    point, line_seg, colour, linewidth, number_lines_to_draw=68, alpha=1.0
 ):
     """TODO."""
     ys = np.linspace(line_seg[0], line_seg[1], num=number_lines_to_draw)
@@ -247,32 +255,51 @@ def plot_overall_design(
     # Unpack geometrical parameters
     line_coors, coor_pairs_to_join = design_to_draw[:2]
     # Unpack style parameters
-    dims, line_params, colour_params = design_to_draw[2]
+    dims, line_params, colour_params, *num_lines_to_draw = design_to_draw[2]
     figsize, scale_factor = dims
     linewidth, line_alpha, sketch_rcparams = line_params
     background_colour, grid_colour, default_line_colour = colour_params
+
+    # Get change of colours for given pairs of coors to join, if specified:
+    change_of_colour = {}
+    if len(design_to_draw) == 4:
+        change_of_colour = design_to_draw[3]
 
     fig, ax = pre_format_plot(
         figsize, scale_factor, sketch_rcparams, background_colour, grid_colour
     )
 
     # Plot the lines comprising the design
-    for line_coor in line_coors:
-        plot_line_segment(
-            *line_coor, default_line_colour, linewidth, line_alpha
-        )
+    for index, line_coor in enumerate(line_coors):
+        colour = default_line_colour
+        if index in change_of_colour.keys():
+            colour = change_of_colour[index]
+
+        plot_line_segment(*line_coor, colour, linewidth, line_alpha)
 
     # Drawing of equally-spaced lines between given pairs of segments
-    for pairs in coor_pairs_to_join:
-        index_1, index_y = pairs
-        draw_between_line_segments(
-            line_coors[index_1],
-            line_coors[index_y],
-            default_line_colour,
-            linewidth,
-            68,
-            alpha=line_alpha,
-        )
+    for index, pairs in enumerate(coor_pairs_to_join):
+        coor_1, coor_2 = pairs
+
+        colour = default_line_colour
+        if index in change_of_colour.keys():
+            colour = change_of_colour[index]
+        kwargs = {"alpha": line_alpha}
+        if num_lines_to_draw:
+            kwargs["number_lines_to_draw"] = num_lines_to_draw[0]
+
+        if isinstance(coor_1, tuple):  # not a line but a single given point
+            draw_from_point_to_line_segment(
+                coor_1, line_coors[coor_2], colour, linewidth, **kwargs
+            )
+        else:
+            draw_between_line_segments(
+                line_coors[coor_1],
+                line_coors[coor_2],
+                colour,
+                linewidth,
+                **kwargs,
+            )
 
     post_format_plot(
         ax,
@@ -293,6 +320,7 @@ for name in [
     "From Its Center",
     "The Great Breath",
     "Wings of the Wind",
+    "Union of Water and Fire II",
 ]:
     design_to_draw = REPLICATION_DESIGN_PARAMETERS[name]
     plot_overall_design(design_to_draw, name.replace(" ", "_").lower())
