@@ -10,8 +10,10 @@ works:
 
 import numpy as np
 
-from matplotlib import rcParams
 import matplotlib.pyplot as plt
+
+from matplotlib.patches import Polygon
+from matplotlib import rcParams
 from matplotlib.ticker import MultipleLocator
 
 
@@ -43,6 +45,10 @@ REPLICATION_DESIGN_PARAMETERS = {
         ),
         # Optional dict to override colour for given coor pair (by index).
         {},
+        # Optional list to plot a regular polygon, as required for some designs
+        # where the 5-tuple gives:
+        # (number of sides, centre position, radius, rotational factor, colour)
+        [],
     ),
     "Wings of the Wind": (
         [
@@ -88,16 +94,45 @@ REPLICATION_DESIGN_PARAMETERS = {
         ),
         {1: "#E75136"},
     ),
-    "Blue Circle": (
-        [],
-        [],
-        (
-            (),
-            (),
-            (),
-        ),
-    ),
     "The Eternal Band": (
+        [
+            ((60, 60), (60.26126851, 99.99914673)),
+            ((60, 60), (28.89030607, 85.14332801)),
+            ((60, 60), (20.94557768, 51.35407047)),
+            ((60, 60), (42.40962587, 24.07537421)),
+            ((60, 60), (77.11958455, 23.8486539)),
+            ((60, 60), (98.93814689, 50.84463455)),
+            ((60, 60), (91.43549043, 84.73479212)),
+        ],
+        [
+            # 6, 0 -> 5 and not 1 -> 6, 0 to give join lines pointing clockwise
+            ((60.26126851, 99.99914673), 6),
+            ((28.89030607, 85.14332801), 0),
+            ((20.94557768, 51.35407047), 1),
+            ((42.40962587, 24.07537421), 2),
+            ((77.11958455, 23.8486539), 3),
+            ((98.93814689, 50.84463455), 4),
+            ((91.43549043, 84.73479212), 5),
+        ],
+        (
+            ((8, 8), 120),  # 20 by 16 (TODO: thicker half grid lines too)
+            (0.5, 0.7, False),
+            # Fake having no gridlines by plotting in background colour!
+            ("#ECEDEF", "#ECEDEF", "#C8431E"),
+            30,
+        ),
+        {},
+        # Second polygon approximates a circle with high enough N of sides
+        [
+            (1000, (60, 60), 40, 1, "#C8431E"),
+            # Use Pythagoras' theorem to have square sides tangential to circle
+            (4, (60, 60), np.sqrt(2 * 40 ** 2), 4, "#827876"),
+            # Don't plot this, but the following was uncommented and printed
+            # out later in the code to get the points for the design:
+            # (7, (60, 60), 40, 1.5 * np.pi, "#1B1818"),  # to print for points
+        ],
+    ),
+    "Blue Circle": (
         [],
         [],
         (
@@ -158,6 +193,33 @@ def draw_from_point_to_line_segment(
         plot_line_segment(
             point, y, colour=colour, linewidth=linewidth, alpha=alpha
         )
+
+
+def draw_regular_polygon(
+    number_sides, centre, radius, rotation_no, colour, lw, alpha, ax
+):
+    """TODO."""
+    # First get the vertex coordinates
+    polygon_coors = []
+    # Taken and adapted from some code in the 'repolygon' project of this repo
+    for vertex in range(1, number_sides + 2):
+        factor = 2 * vertex * np.pi / number_sides + np.pi / rotation_no
+        # Note: radius == repolygon scale
+        polygon_coors.append(
+            radius * np.array([np.cos(factor), np.sin(factor)])
+            + np.array(centre)
+        )
+
+    # Now draw those vertices forming the regular polygon
+    polygon = Polygon(
+        polygon_coors, fill=False, edgecolor=colour, linewidth=lw, alpha=alpha
+    )
+    ax.add_patch(polygon)
+
+    # Use this to get the points required for replication The Eternal Band
+    # if number_sides == 7:  # to find the heptagon vertices for The Eternal Band
+    #    print("Centre is at:", centre)
+    #    print("Vertices are at:", polygon_coors)
 
 
 def format_grids(ax, grid_colour):
@@ -256,18 +318,25 @@ def plot_overall_design(
     line_coors, coor_pairs_to_join = design_to_draw[:2]
     # Unpack style parameters
     dims, line_params, colour_params, *num_lines_to_draw = design_to_draw[2]
+
     figsize, scale_factor = dims
     linewidth, line_alpha, sketch_rcparams = line_params
     background_colour, grid_colour, default_line_colour = colour_params
 
-    # Get change of colours for given pairs of coors to join, if specified:
-    change_of_colour = {}
-    if len(design_to_draw) == 4:
-        change_of_colour = design_to_draw[3]
-
     fig, ax = pre_format_plot(
         figsize, scale_factor, sketch_rcparams, background_colour, grid_colour
     )
+
+    # Get change of colours for given pairs of coors to join, if specified:
+    change_of_colour = {}
+    if len(design_to_draw) >= 4:
+        change_of_colour = design_to_draw[3]
+    # Get any optional polygons to draw and then draw them first
+    if len(design_to_draw) == 5:
+        polygons_to_draw = design_to_draw[4]
+        for polygon in polygons_to_draw:
+            # Plot with same line width and alpha as the rest of the design
+            draw_regular_polygon(*polygon, linewidth, line_alpha, ax)
 
     # Plot the lines comprising the design
     for index, line_coor in enumerate(line_coors):
@@ -321,6 +390,11 @@ for name in [
     "The Great Breath",
     "Wings of the Wind",
     "Union of Water and Fire II",
+    "The Eternal Band",
 ]:
     design_to_draw = REPLICATION_DESIGN_PARAMETERS[name]
-    plot_overall_design(design_to_draw, name.replace(" ", "_").lower())
+    plot_overall_design(
+        design_to_draw,
+        name.replace(" ", "_").lower(),
+        # view_axes_labels_as_guide=True
+    )
