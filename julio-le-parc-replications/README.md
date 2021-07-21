@@ -9,9 +9,6 @@
 Julio Le Parc (1928+)
 [is an Argentinian artist](http://www.julioleparc.org/bio.html).
 
-This mini-project is under development, so further replications will be
-incrementally coded up and added to the gallery below.
-
 
 ## Outputs Gallery
 
