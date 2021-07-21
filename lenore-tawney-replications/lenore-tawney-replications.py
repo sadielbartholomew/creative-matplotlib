@@ -156,7 +156,160 @@ REPLICATION_DESIGN_PARAMETERS = {
     ),
 }
 
-VARIATION_DESIGN_PARAMETERS = {}
+# SADIE TODO
+VARIATION_DESIGN_PARAMETERS = {
+    "Treble Clef": (
+        [
+            ((0, 30), (60, 80)),
+            ((50, 0), (100, 0)),
+            ((30, 70), (100, 20)),
+            ((0, 0), (50, 0)),
+            ((100, 70), (40, 20)),
+            ((50, 100), (0, 100)),
+            ((70, 30), (0, 80)),
+            ((100, 100), (50, 100)),
+            ((40, 20), (50, 0)),
+            ((50, 100), (60, 80)),
+        ],
+        [
+            (0, 3),
+            (1, 2),
+            (4, 7),
+            (5, 6),
+            (8, 9),
+        ],
+        (
+            ((8, 8), 100),
+            (1.0, 0.7, False),
+            ("#D7DEE4", "#7C86B9", "#0C2027"),
+        ),
+    ),
+    "Softening": (
+        [
+            # Lines of the *outermost* octagon:
+            ((15, 5), (35, 5)),
+            ((35, 45), (15, 45)),
+            ((5, 15), (5, 35)),
+            ((45, 35), (45, 15)),
+            ((15, 45), (5, 35)),
+            ((35, 45), (45, 35)),
+            ((15, 5), (5, 15)),
+            ((35, 5), (45, 15)),
+            # Lines of the octagon next-in from the outermost:
+            ((10, 30), (10, 20)),
+            ((10, 30), (20, 40)),
+            ((20, 40), (30, 40)),
+            ((40, 30), (30, 40)),
+            ((40, 20), (40, 30)),
+            ((40, 20), (30, 10)),
+            ((30, 10), (20, 10)),
+            ((10, 20), (20, 10)),
+            # Lines of the octagon twice-in from the outermost, and next-out
+            # from the innermost.
+            # Note: created by changing from above eight 10 -> 15, 40 -> 35.
+            ((15, 30), (15, 20)),
+            ((15, 30), (20, 35)),
+            ((20, 35), (30, 35)),
+            ((35, 30), (30, 35)),
+            ((35, 20), (35, 30)),
+            ((35, 20), (30, 15)),
+            ((30, 15), (20, 15)),
+            ((15, 20), (20, 15)),
+            # Lines of the *innermost* octagon.
+            # Note: similar (and further) transformations made as with above.
+            ((17.5, 27.5), (17.5, 22.5)),
+            ((17.5, 27.5), (22.5, 32.5)),
+            ((22.5, 32.5), (27.5, 32.5)),
+            ((32.5, 27.5), (27.5, 32.5)),
+            ((32.5, 22.5), (32.5, 27.5)),
+            ((32.5, 22.5), (27.5, 17.5)),
+            ((27.5, 17.5), (22.5, 17.5)),
+            ((17.5, 22.5), (22.5, 17.5)),
+        ],
+        [
+            # Inter-connections between the lines of the *outermost* octagon:
+            (0, 3),
+            (1, 2),
+            (0, 2),
+            (1, 3),
+            (4, 5),
+            (6, 7),
+            (4, 6),
+            (5, 7),
+            # Inter-connections between the lines of the octagon next-in from
+            # the outermost:
+            (8, 10),
+            (8, 14),
+            (10, 12),
+            (12, 14),
+            (9, 11),
+            (11, 13),
+            (13, 15),
+            (9, 15),
+            # Inter-connections between the lines of the octagon twice-in from
+            # the outermost, and next-out from the innermost:
+            (16, 18),
+            (16, 22),
+            (18, 20),
+            (20, 22),
+            (17, 19),
+            (19, 21),
+            (21, 23),
+            (17, 23),
+            # Inter-connections between the lines of the *innermost* octagon:
+            (24, 26),
+            (24, 30),
+            (26, 28),
+            (28, 30),
+            (25, 27),
+            (27, 29),
+            (29, 31),
+            (25, 31),
+        ],
+        (
+            ((8, 8), 50),
+            (0.6, 0.6, False),
+            ("#FBF4EA", "powderblue", "#180202"),
+            50,
+        ),
+    ),
+    "Crosses on our Eyes": (
+        [
+            ((60, 20), (60, 80)),
+            ((0, 0), (20, 80)),
+            ((100, 100), (20, 80)),
+            ((80, 40), (20, 40)),
+            ((40, 80), (40, 20)),
+            ((100, 100), (80, 20)),
+            ((0, 0), (80, 20)),
+            ((20, 60), (80, 60)),
+            ((40, 20), (60, 20)),
+            ((40, 80), (60, 80)),
+            ((20, 40), (20, 60)),
+            ((80, 40), (80, 60)),
+        ],
+        [
+            (0, 1),
+            (2, 3),
+            (4, 5),
+            (6, 7),
+            (0, 7),
+            (3, 4),
+            (1, 6),
+            (2, 5),
+        ],
+        (
+            ((6, 6), 100),
+            (0.3, 0.5, False),
+            ("#F3FAF1", "#7BCBEE", "#313036"),
+            70,
+        ),
+        {},
+        [
+            (1000, (50, 50), 6, 1, "#313036", True),
+        ],
+    ),
+}
 
 
 def plot_line_segment(
@@ -344,7 +497,7 @@ def post_format_plot(ax, background_colour, view_axes_labels_as_guide=False):
 
 
 def plot_overall_design(
-    design_to_draw, output_name, view_axes_labels_as_guide=False
+    design_to_draw, output_name, output_dir, view_axes_labels_as_guide=False
 ):
     """TODO."""
     # Unpack geometrical parameters
@@ -425,7 +578,7 @@ def plot_overall_design(
         view_axes_labels_as_guide=view_axes_labels_as_guide,
     )
     plt.savefig(
-        f"img/replications/{output_name}.png",
+        f"img/{output_dir}/{output_name}.png",
         format="png",
         bbox_inches="tight",
         dpi=1000,
@@ -446,5 +599,20 @@ for name in [
     plot_overall_design(
         design_to_draw,
         name.replace(" ", "_").lower(),
+        "replications",
+        # view_axes_labels_as_guide=True
+    )
+
+# Then plot all of my own variation designs (also separately)
+for name in [
+    "Treble Clef",
+    "Softening",
+    "Crosses on our Eyes",
+]:
+    design_to_draw = VARIATION_DESIGN_PARAMETERS[name]
+    plot_overall_design(
+        design_to_draw,
+        name.replace(" ", "_").lower(),
+        "variations",
         # view_axes_labels_as_guide=True
     )
