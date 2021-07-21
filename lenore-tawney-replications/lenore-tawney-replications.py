@@ -46,8 +46,9 @@ REPLICATION_DESIGN_PARAMETERS = {
         # Optional dict to override colour for given coor pair (by index).
         {},
         # Optional list to plot a regular polygon, as required for some designs
-        # where the 5-tuple gives:
-        # (number of sides, centre position, radius, rotational factor, colour)
+        # where the 6-tuple gives:
+        # (number of sides, centre position, radius, rotational factor, colour,
+        # optional Bool for whether or not to plot lines across assumed False)
         [],
     ),
     "Wings of the Wind": (
@@ -142,14 +143,15 @@ REPLICATION_DESIGN_PARAMETERS = {
         [(0, 1), (2, 3)],
         (
             ((8.5, 6), 550),
-            (0.4, 0.5, False),
-            ("#E1D9CC", "#B4AD9D", "#342D19"),
+            (0.5, 0.6, False),
+            ("#E1D9CC", "#B4AD9D", "#2D2306"),
             120,
         ),
         {},
         [
-            # approximates a circle with high enough N of sides
-            (1000, (390, 275), 70, 1, "#0C2172"),
+            # Approximates a circle with high enough N of sides but here the
+            # N approximation is also the number of lines used to join circle
+            (4 * 120, (390, 275), 70, 1, "#2541C1", True),
         ],
     ),
 }
@@ -231,6 +233,26 @@ def draw_regular_polygon(
     # if number_sides == 7:  # to find the heptagon vertices for The Eternal Band
     #    print("Centre is at:", centre)
     #    print("Vertices are at:", polygon_coors)
+
+    return polygon_coors
+
+
+def draw_across_regular_polygon(
+    polygon_centre, polygon_coors, colour, lw, alpha, ax
+):
+    """TODO."""
+    # Note: if polygon is an approximated circle, must approximate circle
+    # with the effective number of lines to draw divided by two to get the
+    # desired spacing.
+
+    # First strip the final coor. which is the first one duplicated:
+    polygon_coors = polygon_coors[:-1]
+
+    # Draw from the centre out to the vertices of the polygon:
+    for c in polygon_coors:
+        plot_line_segment(
+            polygon_centre, c, colour=colour, linewidth=lw, alpha=alpha
+        )
 
 
 def format_grids(ax, grid_colour):
@@ -345,9 +367,25 @@ def plot_overall_design(
     # Get any optional polygons to draw and then draw them first
     if len(design_to_draw) == 5:
         polygons_to_draw = design_to_draw[4]
+
+        join_across = False  # default
+
         for polygon in polygons_to_draw:
-            # Plot with same line width and alpha as the rest of the design
-            draw_regular_polygon(*polygon, linewidth, line_alpha, ax)
+            if len(polygon) > 5:
+                join_across = polygon[5]
+                polygon = polygon[:5]
+
+            if join_across:
+                coors = draw_regular_polygon(
+                    *polygon, linewidth, line_alpha, ax
+                )
+                # where, as specified below, index 1 is centre and 4 is colour
+                draw_across_regular_polygon(
+                    polygon[1], coors, polygon[4], linewidth, line_alpha, ax
+                )
+            else:
+                # Plot with same line width and alpha as rest of the design
+                draw_regular_polygon(*polygon, linewidth, line_alpha, ax)
 
     # Plot the lines comprising the design
     for index, line_coor in enumerate(line_coors):
