@@ -91,11 +91,13 @@ bare (leafless) form.
 
 ### [lenore-tawney-replications](lenore-tawney-replications)
 
-Status: *early development stage*
+Status: *mostly completed*
 
 Replication of, and variations on, linear drawings by Lenore Tawney.
 
-[*Preview images to be added when the mini-project is more mature*.]
+|     |     |     |
+|:---:|:---:|:---:|
+| ![The Great Breath replication](lenore-tawney-replications/img/replications/the_great_breath.png) | ![The Eternal Band](lenore-tawney-replications/img/replications/the_eternal_band.png) | ![From Its Center replication](lenore-tawney-replications/img/replications/from_its_center.png) |
 
 
 ***
