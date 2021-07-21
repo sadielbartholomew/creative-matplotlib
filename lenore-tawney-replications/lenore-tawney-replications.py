@@ -122,7 +122,7 @@ REPLICATION_DESIGN_PARAMETERS = {
             30,
         ),
         {},
-        # Second polygon approximates a circle with high enough N of sides
+        # First polygon approximates a circle with high enough N of sides
         [
             (1000, (60, 60), 40, 1, "#C8431E"),
             # Use Pythagoras' theorem to have square sides tangential to circle
@@ -133,13 +133,24 @@ REPLICATION_DESIGN_PARAMETERS = {
         ],
     ),
     "Blue Circle": (
-        [],
-        [],
+        [
+            ((195, 80), (585, 80)),
+            ((195, 470), (585, 470)),
+            ((195, 80), (195, 470)),
+            ((585, 80), (585, 470)),
+        ],
+        [(0, 1), (2, 3)],
         (
-            (),
-            (),
-            (),
+            ((8.5, 6), 550),
+            (0.4, 0.5, False),
+            ("#E1D9CC", "#B4AD9D", "#342D19"),
+            120,
         ),
+        {},
+        [
+            # approximates a circle with high enough N of sides
+            (1000, (390, 275), 70, 1, "#0C2172"),
+        ],
     ),
 }
 
@@ -391,6 +402,7 @@ for name in [
     "Wings of the Wind",
     "Union of Water and Fire II",
     "The Eternal Band",
+    "Blue Circle",
 ]:
     design_to_draw = REPLICATION_DESIGN_PARAMETERS[name]
     plot_overall_design(
