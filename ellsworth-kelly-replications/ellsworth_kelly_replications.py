@@ -247,7 +247,9 @@ def plot_one_image(name, image, cmap, border_params=False):
     fig, ax = plt.subplots()
     ax.imshow(image, cmap=cmap)
     format_axes(ax, border_params)
-    plt.savefig("img/%s.png" % name, format="png", bbox_inches="tight", dpi=1000)
+    plt.savefig(
+        "img/%s.png" % name, format="png", bbox_inches="tight", dpi=1000
+    )
     plt.show()
 
 
@@ -269,7 +271,9 @@ def plot_NS(ns_data):
     )
     for pos_i in range(*range_args):
         for pos_j in range(*range_args):
-            image[pos_i : sq_len + pos_i, pos_j : sq_len + pos_j] = indiv_square
+            image[
+                pos_i : sq_len + pos_i, pos_j : sq_len + pos_j
+            ] = indiv_square
             indiv_square += 1.0  # increments *all* elements in the array
 
     # Map colours to data values in order. Note: relies on Py3 dict ordering:
@@ -299,7 +303,10 @@ def create_by_chance_image(tuning_params, backgr_colour, colours):
     # of random colours:
     for i in range(squares_per_side):
         for j in range(squares_per_side):
-            centre_dist = ((squares_per_side / 2 - i) ** 2 + (squares_per_side / 2 - j) ** 2) ** circularity_param
+            centre_dist = (
+                (squares_per_side / 2 - i) ** 2
+                + (squares_per_side / 2 - j) ** 2
+            ) ** circularity_param
             centre_prob = 2 * centre_dist / squares_per_side - offset_param
             if np.random.random_sample() < centre_prob:
                 image[i, j] = 0.0
@@ -314,11 +321,15 @@ def plot_by_chance(design_choice, plot_four_subplots=True):
     if plot_four_subplots:
         plots_per_side, size, spacing = BY_CHANCE_SHARED_PLOTTING_CONFIG
         # Force figure to be square with a 4x4 grid of very close subplots:
-        fig, ax = plt.subplots(plots_per_side, plots_per_side, figsize=(size, size))
+        fig, ax = plt.subplots(
+            plots_per_side, plots_per_side, figsize=(size, size)
+        )
         plt.subplots_adjust(wspace=spacing, hspace=spacing)
         for i in range(plots_per_side):
             for j in range(plots_per_side):
-                ax[i, j].imshow(*create_by_chance_image(tuning, backgr_col, col))
+                ax[i, j].imshow(
+                    *create_by_chance_image(tuning, backgr_col, col)
+                )
                 border_on_extent = None
                 if grid_on:
                     border_on_extent = tuning[0]  # the squares per side
@@ -335,7 +346,9 @@ def plot_by_chance(design_choice, plot_four_subplots=True):
         )
         plt.show()
     else:
-        plot_one_image(design_choice, *create_by_chance_image(tuning, backgr_col, col))
+        plot_one_image(
+            design_choice, *create_by_chance_image(tuning, backgr_col, col)
+        )
 
 
 def plot_cite(design_params):
