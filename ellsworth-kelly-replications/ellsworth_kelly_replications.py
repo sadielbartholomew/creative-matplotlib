@@ -18,6 +18,8 @@ TODO for this mini-project:
 
 
 from matplotlib.colors import ListedColormap
+from matplotlib.patches import Polygon
+from matplotlib.collections import PatchCollection
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -167,6 +169,15 @@ BY_CHANCE_DESIGNS = {
     ),
 }
 
+# 'Cité', source: https://www.artsy.net/artwork/ellsworth-kelly-cite
+CITE_DESIGN = {
+    "n_rows": 4,
+    "n_cols": 5,
+    "lines_per_plot": 4,
+    "face_colour": "#E7E3DE",
+    "line_colour": "#1D1D1F",
+}
+
 
 def convert_rgb_tuple(tuple_256):
     """Convert R,G,B Decimal Code from 8-bit integers to [0, 1] floats.
@@ -188,7 +199,13 @@ def set_colours(colours_dict, background_colour=False):
     return ListedColormap(ns_cmap)
 
 
-def format_axes(ax, border_params, border_on_sqs_extent=None):
+def format_axes(
+    ax,
+    border_params,
+    border_on_sqs_extent=None,
+    face_colour=None,
+    equal_aspect=True,
+):
     """Customise the graphical decoration aspects for a given subplot.
 
     Notably hide the ticks and tick labels so it looks like a canvas
@@ -196,7 +213,8 @@ def format_axes(ax, border_params, border_on_sqs_extent=None):
     subtle lines separating each square plotted within the subplot.
 
     """
-    ax.set_aspect("equal")
+    if equal_aspect:
+        ax.set_aspect("equal")
     # Hide labels and ticks but keep grid viewable if desired (border_on_sqs):
     ax.set_xticklabels([])
     ax.set_yticklabels([])
@@ -218,6 +236,8 @@ def format_axes(ax, border_params, border_on_sqs_extent=None):
         ax.set_yticks(squares_array)
         ax.xaxis.grid(which="major", color="darkgrey", alpha=0.4)
         ax.yaxis.grid(which="major", color="darkgrey", alpha=0.4)
+    if face_colour:
+        ax.set_facecolor(face_colour)
 
 
 def plot_one_image(name, image, cmap, border_params=False):
@@ -331,8 +351,96 @@ def plot_by_chance(design_choice, plot_four_subplots=True):
         )
 
 
+def plot_cite(design_params):
+    """Draw a set of lines at given angles on a square
+
+    design_params is a dictionary containing:
+        n_rows: how many rows of squares,
+        n_cols: how many columns of squares,
+        lines_per_plot: how many lines per square,
+        face_colour: the background colour,
+        line_colour: colours for each line,
+    """
+
+    def sample_offset_slopes_thickness():
+        # random offset for starting height
+        y_offset = np.random.normal(0, 0.02)
+
+        # slopes of top and bottom lines of rectangle
+        top_slope = 0.01 + np.random.normal(0, 0.05)
+        bottom_slope = top_slope + np.random.normal(0, 0.05)
+
+        # random line thickness
+        line_thickness = np.random.uniform(0.05, 0.25)
+
+        return y_offset, top_slope, bottom_slope, line_thickness
+
+    def add_N_patches_to_ax(N, ax, patch_colour):
+        patches = []
+
+        left_wall = 0
+        right_wall = 1
+
+        for start_y in np.linspace(0, 1, N):
+
+            (
+                y_offset,
+                top_slope,
+                bottom_slope,
+                line_thickness,
+            ) = sample_offset_slopes_thickness()
+
+            # randomly offset the starting y location
+            start_y += y_offset
+
+            top_left = [left_wall, start_y]
+            top_right = [right_wall, start_y + top_slope]
+
+            bottom_left = [left_wall, start_y + line_thickness]
+            bottom_right = [
+                right_wall,
+                start_y + line_thickness + bottom_slope,
+            ]
+
+            polygon = Polygon(
+                [top_left, bottom_left, bottom_right, top_right],
+                closed=True,
+                color=patch_colour,
+            )
+            patches.append(polygon)
+
+        ax.add_collection(PatchCollection(patches, match_original=True))
+
+    fig, axs = plt.subplots(
+        design_params["n_rows"],
+        design_params["n_cols"],
+        figsize=(design_params["n_cols"] * 2, design_params["n_rows"] * 2),
+    )
+
+    axs = axs.ravel()
+
+    for ax in axs:
+        format_axes(
+            ax,
+            border_params=(0.0, "white"),
+            equal_aspect=False,
+            face_colour=design_params["face_colour"],
+        )
+        add_N_patches_to_ax(
+            design_params["lines_per_plot"],
+            ax,
+            patch_colour=design_params["line_colour"],
+        )
+
+    plt.subplots_adjust(wspace=0, hspace=0)
+    plt.savefig("img/cité.png", format="png", bbox_inches="tight", dpi=1000)
+    plt.show()
+
+
 # Run functions on the relevant data to plot all defined designs:
 plot_NS(NS_DESIGN)
 plot_S1(S1_DESIGN)
 for design in BY_CHANCE_DESIGNS.keys():
     plot_by_chance(design)
+
+plot_cite(CITE_DESIGN)
