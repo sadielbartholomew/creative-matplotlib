@@ -364,10 +364,10 @@ def plot_cite(design_params):
 
     def sample_offset_slopes_thickness():
         # random offset for starting height
-        y_offset = np.random.normal(0, 0.02, size=1)
+        y_offset = np.random.normal(0, 0.02)
 
         # slopes of top and bottom lines of rectangle
-        top_slope = 0.01 + np.random.normal(0, 0.05, size=1)
+        top_slope = 0.01 + np.random.normal(0, 0.05)
         bottom_slope = top_slope + np.random.normal(0, 0.05)
 
         # random line thickness
