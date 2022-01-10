@@ -79,16 +79,6 @@ Polar views of simulated Brownian motion resembling spinning yarn.
 | ![Spindle design with parameter set 1](spindles/outputs/parameter_set_1/spindles-instance-in-terrain.png) | ![Spindle design with parameter set 2](spindles/outputs/parameter_set_2/spindles-instance-in-OrRd.png) | ![Spindle design with parameter set 3](spindles/outputs/parameter_set_3/spindles-instance-in-twilight.png) |
 
 
-### [tree-profiles](tree-profiles)
-
-Status: *early development stage*
-
-Attempts to recreate the side profile of a range of common trees in their
-bare (leafless) form.
-
-[*Preview images to be added when the mini-project is more mature*.]
-
-
 ### [lenore-tawney-replications](lenore-tawney-replications)
 
 Status: *mostly completed*
