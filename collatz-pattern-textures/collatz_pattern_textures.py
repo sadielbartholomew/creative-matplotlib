@@ -28,7 +28,7 @@ the plot pattern by applying chosen, static, values for the:
 * colours used for the background and for the various plot sets in each figure.
 
 
-Created by Sadie L. Bartholomew, February 2021.
+Created by Sadie L. Bartholomew, February 2022.
 
 """
 

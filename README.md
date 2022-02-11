@@ -90,6 +90,17 @@ Replication of, and variations on, linear drawings by Lenore Tawney.
 | ![The Great Breath replication](lenore-tawney-replications/img/replications/the_great_breath.png) | ![The Eternal Band](lenore-tawney-replications/img/replications/the_eternal_band.png) | ![From Its Center replication](lenore-tawney-replications/img/replications/from_its_center.png) |
 
 
+### [collatz-pattern-textures](collatz-pattern-textures)
+
+Status: *completed*
+
+Graphic designs based on a plot concerning the Collatz conjecture.
+
+|     |     |     |
+|:---:|:---:|:---:|
+| ![Collatz Design 1](collatz-pattern-textures/designs/collatz_design_1.png) | ![Collatz Design 4](collatz-pattern-textures/designs/collatz_design_4.png) | ![Collatz Design 8](collatz-pattern-textures/designs/collatz_design_8.png) |
+
+
 ***
 
 ### Repository organisation and status
