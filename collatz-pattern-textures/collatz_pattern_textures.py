@@ -32,9 +32,10 @@ Created by Sadie L. Bartholomew, February 2021.
 
 """
 
-import matplotlib.pyplot as plt
-
 from itertools import cycle
+from os.path import join
+
+import matplotlib.pyplot as plt
 
 
 # Define three colour schemes to use across all nine designs (three uses each)
@@ -164,7 +165,11 @@ def create_and_save_design(
             markersize=marker_size,
             alpha=marker_alpha,
         )
-    fig.savefig(f"collatz_textile_{index}.png", bbox_inches="tight", dpi=600)
+    fig.savefig(
+        join("designs", f"collatz_design_{index}.png"),
+        bbox_inches="tight",
+        dpi=600,
+    )
 
 
 # For efficiency, calculate this only once, to re-use, since it is static.
