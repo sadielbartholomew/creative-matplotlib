@@ -130,7 +130,8 @@ def shift_sequence(seq, m, c):
 
 def create_formatted_figure(xy_limits, background_col):
     """TODO."""
-    fig = plt.figure(figsize=(6, 6))
+    side_size = 6
+    fig = plt.figure(figsize=(side_size, side_size))
     fig.tight_layout()
     fig.patch.set_facecolor(background_col)
 
@@ -139,7 +140,7 @@ def create_formatted_figure(xy_limits, background_col):
     ax.set_yticks([])
     ax.set_xlim(xy_limits[0])
     ax.set_ylim(xy_limits[1])
-    ax.set_facecolor(background_col)
+    ax.set_axis_off()
 
     return fig, ax
 
@@ -168,7 +169,7 @@ def create_and_save_design(
     fig.savefig(
         join("designs", f"collatz_design_{index}.png"),
         bbox_inches="tight",
-        dpi=600,
+        dpi=1000,
     )
 
 
