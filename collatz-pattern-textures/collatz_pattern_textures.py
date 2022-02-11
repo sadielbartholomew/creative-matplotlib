@@ -154,5 +154,39 @@ for pattern_shift in PATTERN_SHIFT_1:
 fig.savefig("collatz_textile_6.png", bbox_inches="tight", dpi=600)
 
 
+# Design 7: very transparent with many shifts and oversized markers too.
+fig, axes = create_formatted_figure(
+    ((9150, 11200), (20, 120)), BACKGROUND_COL_1)
+for pattern_shift in PATTERN_SHIFT_1 + PATTERN_SHIFT_2 + PATTERN_SHIFT_3:
+    axes.plot(
+        shift_sequence(collatz(), *pattern_shift), "x",
+        color=next(FOREGOUND_COLOURS_1), markersize=60, alpha=0.06
+    )
+fig.savefig("collatz_textile_7.png", bbox_inches="tight", dpi=600)
+
+
+# Design 8: ditto to above, except without oversized markers.
+fig, axes = create_formatted_figure(
+    ((13500, 15500), (20, 80)), BACKGROUND_COL_3)
+for pattern_shift in PATTERN_SHIFT_1 + PATTERN_SHIFT_2 + PATTERN_SHIFT_3:
+    axes.plot(
+        shift_sequence(collatz(), *pattern_shift), "H",
+        color=next(FOREGOUND_COLOURS_3), markersize=20, alpha=0.03
+    )
+fig.savefig("collatz_textile_8.png", bbox_inches="tight", dpi=600)
+
+
+# Design 9: many many patterns but only slighty transparent markers like
+# a paint smudge effect.
+fig, axes = create_formatted_figure(
+    ((13000, 19000), (10, 80)), BACKGROUND_COL_1)
+for pattern_shift in PATTERN_SHIFT_1 + PATTERN_SHIFT_2 + PATTERN_SHIFT_3:
+    axes.plot(
+        shift_sequence(collatz(), *pattern_shift), "4",
+        color=next(FOREGOUND_COLOURS_1), markersize=18, alpha=0.4
+    )
+fig.savefig("collatz_textile_9.png", bbox_inches="tight", dpi=600)
+
+
 # Show all
 plt.show()
