@@ -118,16 +118,16 @@ DESIGNS = {
     "6_lattice": (
         lambda u, v: (v ** 2 / np.sin(u ** 2) - u ** 2 / np.cos(v ** 2))
         * np.tanh(u * v),
-        lambda u, v: -(u ** 1.15) * v ** 1.15
+        lambda u, v: -(u ** 1.8) * v
         - u ** 1.1 / v ** 1.1
         + v ** 1.1 / u ** 1.1,
         1000,
         (-21.5, 21.5, -21.5, 21.5),
         (15, 21.5, 15, 21.5),
         (-21.5, 21.5, -21.5, 21.5),
-        (1, 3, 0.5),
-        "PRGn",
-        "gnuplot2_r",
+        (1, 1.5, 0.5),
+        "tab20_r",
+        "magma",
     ),
     "7_warped": (
         lambda u, v: v ** 2 * np.tan(u) - u ** 2 * np.sin(v),
@@ -219,7 +219,7 @@ DESIGNS = {
 
 
 # Define a chosen design to plot and unpack its data to use.
-design_choice = "13_interlocking"
+design_choice = "6_lattice"
 (
     contour_function,
     background_function,
