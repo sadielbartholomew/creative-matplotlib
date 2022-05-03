@@ -81,7 +81,7 @@ Polar views of simulated Brownian motion resembling spinning yarn.
 
 ### [lenore-tawney-replications](lenore-tawney-replications)
 
-Status: *mostly completed*
+Status: *mostly completed (done except for ~5 new variations to add)*
 
 Replication of, and variations on, linear drawings by Lenore Tawney.
 
@@ -99,6 +99,16 @@ Graphic designs based on a plot concerning the Collatz conjecture.
 |     |     |     |
 |:---:|:---:|:---:|
 | ![Collatz Design 1](collatz-pattern-textures/designs/collatz_design_1.png) | ![Collatz Design 4](collatz-pattern-textures/designs/collatz_design_4.png) | ![Collatz Design 8](collatz-pattern-textures/designs/collatz_design_8.png) |
+
+### [bold-gradation](bold-gradation)
+
+Status: *partially completed (first designs completed, many to add)*
+
+Bold designs produced by subtle colour variation.
+
+|     |     |     |
+|:---:|:---:|:---:|
+| ![Bold Gradation: Forth](bold-gradation/designs/Forth.png) | ![Bold Gradation: Vicinity](bold-gradation/designs/Vicinity.png) | ![Bold Gradation: Union](bold-gradation/designs/Union.png) |
 
 
 ***
