@@ -5,6 +5,7 @@ Created by Sadie L. Bartholomew, May 2022.
 """
 
 from os.path import join
+from os import makedirs
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -53,35 +54,55 @@ final_designs_done = {
     ],
 }
 
+final_designs_tubular_forms = {}
+
+
+def plot_design(design_name, design, save_path):
+    """Configures, plots and saves each design on a clean canvas."""
+    fig, ax = plt.subplots(figsize=(6, 6))
+
+    # Create design
+    xlims, ylims, R, a, colourmap = design
+    a_R = a(R)
+    # Note: the use of image antialiasing was important for finding nice
+    # designs from exploration of mathematical functions which could
+    # produce areas of high complexity/detail, but it probably has little
+    # if any effect on the outcomes from the final designs, as they focus
+    # in on areas which vary only very gradually by manual selection.
+    ax.imshow(a_R, interpolation="antialiased", cmap=colourmap)
+    ax.set_xlim(*xlims)
+    ax.set_ylim(*ylims)
+
+    # Customise plot to hide all text then save to a dedicated directory
+    ax.set_xticks([])
+    ax.set_yticks([])
+    ax.set_axis_off()
+
+    fig.savefig(
+        save_path,
+        bbox_inches="tight",
+        dpi=1000,
+    )
+
 
 def plot_and_save_all_designs():
-    """Configures, plots and saves each design on a clean canvas."""
+    """Plots and saves all chosen designs."""
+    parent_dir_name = "designs"
+
+    # Top-level designs
     for design_name, design in final_designs_done.items():
-        fig, ax = plt.subplots(figsize=(6, 6))
-
-        # Create design
-        xlims, ylims, R, a, colourmap = design
-        a_R = a(R)
-        # Note: the use of image antialiasing was important for finding nice
-        # designs from exploration of mathematical functions which could
-        # produce areas of high complexity/detail, but it probably has little
-        # if any effect on the outcomes from the final designs, as they focus
-        # in on areas which vary only very gradually by manual selection.
-        ax.imshow(a_R, interpolation="antialiased", cmap=colourmap)
-        ax.set_xlim(*xlims)
-        ax.set_ylim(*ylims)
-
-        # Customise plot to hide all text then save to a dedicated directory
-        ax.set_xticks([])
-        ax.set_yticks([])
-        ax.set_axis_off()
-
-        fig.savefig(
-            join("designs", f"{design_name}.png"),
-            bbox_inches="tight",
-            dpi=1000,
+        plot_design(
+            design_name, design, join(parent_dir_name, f"{design_name}.png")
         )
 
+    # Designs for a sub-project called 'Tubular Forms'
+    for design_name, design in final_designs_tubular_forms.items():
+        sub_dir_name = "tubular_forms"
+        makedirs(join(parent_dir_name, sub_dir_name), exist_ok=True)
+        save_dir = join(parent_dir_name, sub_dir_name, f"{design_name}.png")
+        plot_design(design_name, design, save_dir)
+
+    # Show all designs once generated and saved
     plt.show()
 
 
