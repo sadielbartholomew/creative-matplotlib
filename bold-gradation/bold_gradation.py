@@ -54,7 +54,63 @@ final_designs_done = {
     ],
 }
 
-final_designs_tubular_forms = {}
+final_designs_tubular_forms = {
+    "Sharp Left": [
+        (3300, 4200),
+        (3800, 4700),
+        np.power(
+            (500 * X ** 7 - 10 * X ** 2) ** 4
+            + (1000 * Y ** 7 - 3 * Y ** 4 - 5 * Y ** 2) ** 2,
+            1 / 5,
+        ),
+        lambda R: np.cos(np.pi * ((5 * R ** 3 - 3 * R ** 2 + 20 * R))),
+        "Reds",
+    ],
+    "Change of Motion": [
+        (500, 2500),
+        (1500, 3500),
+        np.power(
+            (500 * X ** 6 - 10 * X ** 2) ** 4
+            + (1000 * Y ** 7 - 3 * Y ** 4 - 5 * Y ** 2) ** 2,
+            1 / 5,
+        ),
+        lambda R: np.cos(np.pi * ((5 * R ** 3 - 3 * R ** 2 + 20 * R))),
+        "Purples",
+    ],
+    "Object in the Foreground": [
+        (280, 920),
+        (560, 1200),
+        np.power(
+            (-100 * X ** 6 + 3 * X ** 2) ** 4
+            + (200 * Y ** 7 - 15 * Y ** 4 - 10 * Y ** 3) ** 2,
+            1 / 7,
+        ),
+        lambda R: np.cos(np.pi * ((5 * R ** 3 + 5 * R ** 2 + 20 * R))),
+        "Blues",
+    ],
+    "Direct Approach": [
+        (2200, 2800),
+        (3500, 4100),
+        np.power(
+            (3000 * X ** 6 - 13 * X ** 2) ** 2
+            + (800 * Y ** 5 - 133 * Y ** 4 - 5 * Y ** 2) ** 4,
+            1 / 5,
+        ),
+        lambda R: np.sin(np.pi * ((R ** 3 - 3 * R ** 2 + 30 * R))),
+        "Greens",
+    ],
+    "Sun to Plain": [
+        (100, 1000),
+        (1240, 2140),
+        np.power(
+            (4000 * Y ** 6 + 20 * Y ** 2) ** 2
+            + (200 * X ** 6 - 77 * X ** 4 - 5 * X) ** 4,
+            1 / 5,
+        ),
+        lambda R: np.sin(np.pi * ((R ** 7 - 3 * R ** 4 - 10 * R))),
+        "Oranges",
+    ],
+}
 
 
 def plot_design(design_name, design, save_path):
