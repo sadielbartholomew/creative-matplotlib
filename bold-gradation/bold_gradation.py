@@ -27,7 +27,7 @@ Design name key with value being a list of all design parameters, in order:
     colourmap: the built-in matplotlib colormap to use to supply colouring.
 
 """
-final_designs_done = {
+final_designs_top_level = {
     "Union": [
         (1400, 3600),
         (1400, 3600),
@@ -146,7 +146,7 @@ def plot_and_save_all_designs():
     parent_dir_name = "designs"
 
     # Top-level designs
-    for design_name, design in final_designs_done.items():
+    for design_name, design in final_designs_top_level.items():
         plot_design(
             design_name, design, join(parent_dir_name, f"{design_name}.png")
         )
