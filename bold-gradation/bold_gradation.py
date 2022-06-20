@@ -148,14 +148,20 @@ def plot_and_save_all_designs():
     # Top-level designs
     for design_name, design in final_designs_top_level.items():
         plot_design(
-            design_name, design, join(parent_dir_name, f"{design_name}.png")
+            design_name,
+            design,
+            join(parent_dir_name, f"{design_name}.png".replace(" ", "_")),
         )
 
     # Designs for a sub-project called 'Tubular Forms'
     for design_name, design in final_designs_tubular_forms.items():
         sub_dir_name = "tubular_forms"
         makedirs(join(parent_dir_name, sub_dir_name), exist_ok=True)
-        save_dir = join(parent_dir_name, sub_dir_name, f"{design_name}.png")
+        save_dir = join(
+            parent_dir_name,
+            sub_dir_name,
+            f"{design_name}.png".replace(" ", "_"),
+        )
         plot_design(design_name, design, save_dir)
 
     # Show all designs once generated and saved
