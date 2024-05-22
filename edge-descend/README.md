@@ -44,14 +44,6 @@ Parameter set (colours and ratio between shape sizes) 1:
 <img src="img/without-random-edge-alignment-closeups/single_design_with_5_sides_closeup.png" width="400" height="400">  |  <img src="img/without-random-edge-alignment-closeups/single_design_with_7_sides_closeup.png" width="400" height="400">
 <img src="img/without-random-edge-alignment-closeups/single_design_with_12_sides_closeup.png" width="400" height="400">  |  <img src="img/without-random-edge-alignment-closeups/single_design_with_1_sides_closeup.png" width="400" height="400">
 
-Parameter set 2:
-
-|            |    |
-:-------------------------:|:-------------------------:
-<img src="img/without-random-edge-alignment-alt-closeups/single_design_with_3_sides_closeup_alt.png" width="400" height="400">  |  <img src="img/without-random-edge-alignment-alt-closeups/single_design_with_4_sides_closeup_alt.png" width="400" height="400">
-<img src="img/without-random-edge-alignment-alt-closeups/single_design_with_5_sides_closeup_alt.png" width="400" height="400">  |  <img src="img/without-random-edge-alignment-alt-closeups/single_design_with_7_sides_closeup_alt.png" width="400" height="400">
-<img src="img/without-random-edge-alignment-alt-closeups/single_design_with_12_sides_closeup_alt.png" width="400" height="400">  |  <img src="img/without-random-edge-alignment-alt-closeups/single_design_with_1_sides_closeup_alt.png" width="400" height="400">
-
 
 ### Full container shape with background
 
@@ -63,24 +55,12 @@ Parameter set 1:
 <img src="img/without-random-edge-alignment/single_design_with_5_sides.png" width="400" height="400">  |  <img src="img/without-random-edge-alignment/single_design_with_7_sides.png" width="400" height="400">
 <img src="img/without-random-edge-alignment/single_design_with_12_sides.png" width="400" height="400">  |  <img src="img/without-random-edge-alignment/single_design_with_1_sides.png" width="400" height="400">
 
-Parameter set 2:
-
-|            |    |
-:-------------------------:|:-------------------------:
-<img src="img/without-random-edge-alignment-alt/single_design_with_3_sides_alt.png" width="400" height="400">  |  <img src="img/without-random-edge-alignment-alt/single_design_with_4_sides_alt.png" width="400" height="400">
-<img src="img/without-random-edge-alignment-alt/single_design_with_5_sides_alt.png" width="400" height="400">  |  <img src="img/without-random-edge-alignment-alt/single_design_with_7_sides_alt.png" width="400" height="400">
-<img src="img/without-random-edge-alignment-alt/single_design_with_12_sides_alt.png" width="400" height="400">  |  <img src="img/without-random-edge-alignment-alt/single_design_with_1_sides_alt.png" width="400" height="400">
-
 
 ### A compound design showing multiple container shapes together:
 
 Parameter set 1:
 
 ![Compound design without random edge alignment](img/without-random-edge-alignment/compound_design.png)
-
-Parameter set 2:
-
-![Compound design without random edge alignment (alternative design)](img/without-random-edge-alignment-alt/compound_design_alt.png)
 
 
 ## Variants (other changes to the centre of the nested shapes)
