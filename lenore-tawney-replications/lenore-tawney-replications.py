@@ -156,7 +156,7 @@ REPLICATION_DESIGN_PARAMETERS = {
     ),
 }
 
-# SADIE TODO
+
 VARIATION_DESIGN_PARAMETERS = {
     "Treble Clef": (
         [
@@ -340,10 +340,15 @@ def draw_between_line_segments(
     linewidth,
     number_lines_to_draw=68,
     alpha=1.0,
+    reverse=False,
 ):
     """TODO."""
-    xs = np.linspace(line_seg_1[0], line_seg_1[1], num=number_lines_to_draw)
+    if reverse:
+        xs = np.linspace(line_seg_1[1], line_seg_1[0], num=number_lines_to_draw)
+    else:
+        xs = np.linspace(line_seg_1[0], line_seg_1[1], num=number_lines_to_draw)
     ys = np.linspace(line_seg_2[1], line_seg_2[0], num=number_lines_to_draw)
+
     for x, y in zip(xs, ys):
         plot_line_segment(
             x, y, colour=colour, linewidth=linewidth, alpha=alpha
@@ -502,12 +507,22 @@ def plot_overall_design(
     """TODO."""
     # Unpack geometrical parameters
     line_coors, coor_pairs_to_join = design_to_draw[:2]
+
     # Unpack style parameters
     dims, line_params, colour_params, *num_lines_to_draw = design_to_draw[2]
 
     figsize, scale_factor = dims
     linewidth, line_alpha, sketch_rcparams = line_params
-    background_colour, grid_colour, default_line_colour = colour_params
+
+    # TODO add fourth value to all for colour params eventually
+    ghost_lines = False
+    if len(colour_params) == 4 and colour_params[3]:
+        # Option to plot only connections, not lines themselves
+        background_colour, grid_colour, default_line_colour = colour_params[:-1]
+        ghost_lines = True
+    else:
+        background_colour, grid_colour, default_line_colour = colour_params
+
 
     fig, ax = pre_format_plot(
         figsize, scale_factor, sketch_rcparams, background_colour, grid_colour
@@ -546,11 +561,21 @@ def plot_overall_design(
         if index in change_of_colour.keys():
             colour = change_of_colour[index]
 
-        plot_line_segment(*line_coor, colour, linewidth, line_alpha)
+        # TODO ghost lines code may need extending
+        if not ghost_lines:
+            plot_line_segment(*line_coor, colour, linewidth, line_alpha)
 
     # Drawing of equally-spaced lines between given pairs of segments
     for index, pairs in enumerate(coor_pairs_to_join):
         coor_1, coor_2 = pairs
+
+        reverse = False
+        if coor_1 < 0:
+            coor_1 = abs(coor_1)
+            reverse = True
+        if coor_2 < 0:
+            coor_2 = abs(coor_2)
+            reverse = True
 
         colour = default_line_colour
         if index in change_of_colour.keys():
@@ -564,11 +589,13 @@ def plot_overall_design(
                 coor_1, line_coors[coor_2], colour, linewidth, **kwargs
             )
         else:
+            ### TODO MAY NEED TO APPLY REVERSE elsewhere too for generality
             draw_between_line_segments(
                 line_coors[coor_1],
                 line_coors[coor_2],
                 colour,
                 linewidth,
+                reverse=reverse,
                 **kwargs,
             )
 
@@ -586,6 +613,7 @@ def plot_overall_design(
     plt.show()
 
 
+"""
 # Plot all replication designs (separately)
 for name in [
     "From Its Center",
@@ -602,6 +630,7 @@ for name in [
         "replications",
         # view_axes_labels_as_guide=True
     )
+"""
 
 # Then plot all of my own variation designs (also separately)
 for name in [
