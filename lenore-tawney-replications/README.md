@@ -50,6 +50,9 @@ gallery below.
 
 ### My own variations using the same (digitised) technique
 
+These nine designs are all my original work and form a collection I call **Emergent Curves**.
+
+
 #### Treble Clef
 
 ![Variation called Treble Clef](img/variations/treble_clef.png)
@@ -63,3 +66,33 @@ gallery below.
 #### Crosses on our Eyes
 
 ![Variation called Crosses on our Eyes](img/variations/crosses_on_our_eyes.png)
+
+
+#### Jaws of Resonance
+
+![Variation called Treble Clef](img/variations/jaws_of_resonance.png)
+
+
+#### Owl
+
+![Variation called Treble Clef](img/variations/owl.png)
+
+
+#### Always the Hourglass
+
+![Variation called Treble Clef](img/variations/always_the_hourglass.png)
+
+
+#### Angry Eyes and Mouth of a God
+
+![Variation called Treble Clef](img/variations/angry_eyes_and_mouth_of_a_god.png)
+
+
+#### Primitive Surveillance
+
+![Variation called Treble Clef](img/variations/primitive_surveillance.png)
+
+
+#### Phototaxis
+
+![Variation called Treble Clef](img/variations/phototaxis.png)

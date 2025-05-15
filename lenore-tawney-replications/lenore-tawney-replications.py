@@ -1184,7 +1184,7 @@ for name in [
     "From Its Center",
     "The Great Breath",
     "Wings of the Wind",
-    "Union of Water and Fire II",  # fails here
+    "Union of Water and Fire II",
     "The Eternal Band",
     "Blue Circle",
 ]:
