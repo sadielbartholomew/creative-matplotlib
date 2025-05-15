@@ -88,7 +88,7 @@ REPLICATION_DESIGN_PARAMETERS = {
         ],
         [((80, 40), 0), ((80, 160), 1)],
         (
-            ((5, 6.25), 160),  # 20 by 16 (TODO: thicker half grid lines too)
+            ((5, 6.25), 160),
             (0.5, 0.4, False),
             ("#E8E3DD", "#E0A66C", "#464476"),
             100,
@@ -116,7 +116,7 @@ REPLICATION_DESIGN_PARAMETERS = {
             ((91.43549043, 84.73479212), 5),
         ],
         (
-            ((8, 8), 120),  # 20 by 16 (TODO: thicker half grid lines too)
+            ((8, 8), 120),
             (0.5, 0.7, False),
             # Fake having no gridlines by plotting in background colour!
             ("#ECEDEF", "#ECEDEF", "#C8431E"),
@@ -430,7 +430,7 @@ VARIATION_DESIGN_PARAMETERS = {
             ((440, 440), (460, 460)),
             ((460, 460), (480, 480)),
             ((480, 480), (500, 500)),
-            ((500, 500), (520, 520)), # np 25 - 1 = 24 (25 in total)
+            ((500, 500), (520, 520)), # no 25 - 1 = 24 (25 in total)
             # Horizontal line at top
             ((20, 20), (40, 20)), # no 25
             ((40, 20), (60, 20)),
@@ -577,7 +577,7 @@ VARIATION_DESIGN_PARAMETERS = {
             (20, 45),
             (22, 47),
             (24, 49),
-            # next level
+            # Next level
             (1, 51),
             (3, 53),
             (5, 55),
@@ -604,7 +604,7 @@ VARIATION_DESIGN_PARAMETERS = {
             (95, 45),
             (97, 47),
             (99, 49),
-            # next level
+            # Next level
             (76, 51),
             (78, 53),
             (80, 55),
@@ -619,10 +619,6 @@ VARIATION_DESIGN_PARAMETERS = {
             (98, 73),
         ],
         (
-            # ((8.5, 8.5), 540),
-            # (0.5, 0.7, False),
-            # ("#faffff", "#6bc7c7", "#333333", True),
-            # 18,
             ((8.5, 8.5), 540),
             (0.40, 0.65, False),
             ("#faffff", "#6bc7c7", "#333333", True),
@@ -644,41 +640,40 @@ VARIATION_DESIGN_PARAMETERS = {
             # Smallest/core (1 x size) tris
             ((0, 180 - 12), (60, 180 - 12)),
             ((0, 180 - 12), (30, 180 - (12 + 10*np.sqrt(27)))),
-            ((60, 180 - 12), (30, 180 - (12 + 10*np.sqrt(27)))), # no2
+            ((60, 180 - 12), (30, 180 - (12 + 10*np.sqrt(27)))),
             ((60, 180 - 12), (90, 180 - (12 + 10*np.sqrt(27)))),
-            ((30, 180 - (12 + 10*np.sqrt(27))), (90, 180 - (12 + 10*np.sqrt(27)))), # no4
+            ((30, 180 - (12 + 10*np.sqrt(27))), (90, 180 - (12 + 10*np.sqrt(27)))),
             ((60, 180 - 12), (120, 180 - 12)),
-            ((120, 180 - 12), (90, 180 - (12 + 10*np.sqrt(27)))), # no6
+            ((120, 180 - 12), (90, 180 - (12 + 10*np.sqrt(27)))),
             ((120, 180 - 12), (150, 180 - (12 + 10*np.sqrt(27)))),
-            ((90, 180 - (12 + 10*np.sqrt(27))), (150, 180 - (12 + 10*np.sqrt(27)))), # no8
-            ((120, 180 - 12), (180, 180 - 12)),
-            ((180, 180 - 12), (150, 180 - (12 + 10*np.sqrt(27)))), # no10
-            ((30, 180 - (12 + 10*np.sqrt(27))), (60, 180 - (12 + 20*np.sqrt(27)))),
-            ((90, 180 - (12 + 10*np.sqrt(27))), (60, 180 - (12 + 20*np.sqrt(27)))), # no12
-            ((90, 180 - (12 + 10*np.sqrt(27))), (120, 180 - (12 + 20*np.sqrt(27)))),
-            ((60, 180 - (12 + 20*np.sqrt(27))), (120, 180 - (12 + 20*np.sqrt(27)))), # no14
             ((90, 180 - (12 + 10*np.sqrt(27))), (150, 180 - (12 + 10*np.sqrt(27)))),
-            ((150, 180 - (12 + 10*np.sqrt(27))), (120, 180 - (12 + 20*np.sqrt(27)))), # no16
+            ((120, 180 - 12), (180, 180 - 12)),
+            ((180, 180 - 12), (150, 180 - (12 + 10*np.sqrt(27)))),
+            ((30, 180 - (12 + 10*np.sqrt(27))), (60, 180 - (12 + 20*np.sqrt(27)))),
+            ((90, 180 - (12 + 10*np.sqrt(27))), (60, 180 - (12 + 20*np.sqrt(27)))),
+            ((90, 180 - (12 + 10*np.sqrt(27))), (120, 180 - (12 + 20*np.sqrt(27)))),
+            ((60, 180 - (12 + 20*np.sqrt(27))), (120, 180 - (12 + 20*np.sqrt(27)))),
+            ((90, 180 - (12 + 10*np.sqrt(27))), (150, 180 - (12 + 10*np.sqrt(27)))),
+            ((150, 180 - (12 + 10*np.sqrt(27))), (120, 180 - (12 + 20*np.sqrt(27)))),
             ((60, 180 - (12 + 20*np.sqrt(27))), (90, 180 - (12 + 30*np.sqrt(27)))),
-            ((120, 180 - (12 + 20*np.sqrt(27))), (90, 180 - (12 + 30*np.sqrt(27)))), # no18
-            #
+            ((120, 180 - (12 + 20*np.sqrt(27))), (90, 180 - (12 + 30*np.sqrt(27)))),
             # Bigger (2 and 3 x) size tris
             # 2 x size tri 0
-            ((0, 180 - 12), (120, 180 - 12)),  # no19
+            ((0, 180 - 12), (120, 180 - 12)),
             ((0, 180 - 12), (60, 180 - (12 + 20*np.sqrt(27)))),
-            ((120, 180 - 12), (60, 180 - (12 + 20*np.sqrt(27)))),  # no21
+            ((120, 180 - 12), (60, 180 - (12 + 20*np.sqrt(27)))),
             # 2 x size tri 1
             ((60, 180 - 12), (180, 180 - 12)),
             ((60, 180 - 12), (120, 180 - (12 + 20*np.sqrt(27)))),
-            ((180, 180 - 12), (120, 180 - (12 + 20*np.sqrt(27)))),  # no24
+            ((180, 180 - 12), (120, 180 - (12 + 20*np.sqrt(27)))),
             # 2 x size tri 2
             ((30, 180 - (12 + 10*np.sqrt(27))), (150, 180 - (12 + 10*np.sqrt(27)))),
             ((30, 180 - (12 + 10*np.sqrt(27))), (90, 180 - (12 + 30*np.sqrt(27)))),
-            ((150, 180 - (12 + 10*np.sqrt(27))), (90, 180 - (12 + 30*np.sqrt(27)))),  #no27
+            ((150, 180 - (12 + 10*np.sqrt(27))), (90, 180 - (12 + 30*np.sqrt(27)))),
             # 3 x size (max, outline) tri 0
             ((0, 180 - 12), (180, 180 - 12)),
             ((0, 180 - 12), (90, 180 - (12 + 30*np.sqrt(27)))),
-            ((180, 180 - 12), (90, 180 - (12 + 30*np.sqrt(27)))),  #no30
+            ((180, 180 - 12), (90, 180 - (12 + 30*np.sqrt(27)))),
         ],
         [
             # Same size tris:
@@ -742,7 +737,7 @@ VARIATION_DESIGN_PARAMETERS = {
             ((100, 100), (70, 130)),
             ((70, 130), (100, 160)),
             ((100, 160), (70, 190)),
-            # and more... - with switch to reflect in y axis
+            # and more - with switch to reflect in y axis
             ((130, 10), (100, 40)),
             ((100, 40), (130, 70)),
             ((130, 70), (100, 100)),
@@ -1141,14 +1136,6 @@ def plot_overall_design(
     for index, pairs in enumerate(coor_pairs_to_join):
         coor_1, coor_2 = pairs
 
-        reverse = False
-        if coor_1 < 0:
-            coor_1 = abs(coor_1)
-            reverse = True
-        if coor_2 < 0:
-            coor_2 = abs(coor_2)
-            reverse = True
-
         colour = default_line_colour
         if index in change_of_colour.keys():
             colour = change_of_colour[index]
@@ -1161,7 +1148,14 @@ def plot_overall_design(
                 coor_1, line_coors[coor_2], colour, linewidth, **kwargs
             )
         else:
-            ### TODO MAY NEED TO APPLY REVERSE elsewhere too for generality
+            reverse = False
+            if coor_1 < 0:
+                coor_1 = abs(coor_1)
+                reverse = True
+            if coor_2 < 0:
+                coor_2 = abs(coor_2)
+                reverse = True
+            # TODO may need to apply reverse elsewhere too for generality
             draw_between_line_segments(
                 line_coors[coor_1],
                 line_coors[coor_2],
@@ -1185,13 +1179,12 @@ def plot_overall_design(
     plt.show()
 
 
-"""
 # Plot all replication designs (separately)
 for name in [
     "From Its Center",
     "The Great Breath",
     "Wings of the Wind",
-    "Union of Water and Fire II",
+    "Union of Water and Fire II",  # fails here
     "The Eternal Band",
     "Blue Circle",
 ]:
@@ -1202,13 +1195,12 @@ for name in [
         "replications",
         # view_axes_labels_as_guide=True
     )
-"""
 
 # Then plot all of my own variation designs (also separately)
 for name in [
-    #"Treble Clef",
-    #"Softening",
-    #"Crosses on our Eyes",
+    "Treble Clef",
+    "Softening",
+    "Crosses on our Eyes",
     "Jaws of Resonance",
     "Owl",
     "Always the Hourglass",
