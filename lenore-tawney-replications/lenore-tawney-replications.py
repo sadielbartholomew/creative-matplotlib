@@ -632,6 +632,93 @@ VARIATION_DESIGN_PARAMETERS = {
         [
         ],
     ),
+    "Angry Eyes and Mouth of a God": (
+        [
+            # Note pattern in general for each triangle 'tri') coords
+            # (a, b)
+            # (a, c)
+            # (b, c)
+            # and note that '180 - ' is to flip horizontally from original
+            # exploratory work to create 'face' like design
+            #
+            # Smallest/core (1 x size) tris
+            ((0, 180 - 12), (60, 180 - 12)),
+            ((0, 180 - 12), (30, 180 - (12 + 10*np.sqrt(27)))),
+            ((60, 180 - 12), (30, 180 - (12 + 10*np.sqrt(27)))), # no2
+            ((60, 180 - 12), (90, 180 - (12 + 10*np.sqrt(27)))),
+            ((30, 180 - (12 + 10*np.sqrt(27))), (90, 180 - (12 + 10*np.sqrt(27)))), # no4
+            ((60, 180 - 12), (120, 180 - 12)),
+            ((120, 180 - 12), (90, 180 - (12 + 10*np.sqrt(27)))), # no6
+            ((120, 180 - 12), (150, 180 - (12 + 10*np.sqrt(27)))),
+            ((90, 180 - (12 + 10*np.sqrt(27))), (150, 180 - (12 + 10*np.sqrt(27)))), # no8
+            ((120, 180 - 12), (180, 180 - 12)),
+            ((180, 180 - 12), (150, 180 - (12 + 10*np.sqrt(27)))), # no10
+            ((30, 180 - (12 + 10*np.sqrt(27))), (60, 180 - (12 + 20*np.sqrt(27)))),
+            ((90, 180 - (12 + 10*np.sqrt(27))), (60, 180 - (12 + 20*np.sqrt(27)))), # no12
+            ((90, 180 - (12 + 10*np.sqrt(27))), (120, 180 - (12 + 20*np.sqrt(27)))),
+            ((60, 180 - (12 + 20*np.sqrt(27))), (120, 180 - (12 + 20*np.sqrt(27)))), # no14
+            ((90, 180 - (12 + 10*np.sqrt(27))), (150, 180 - (12 + 10*np.sqrt(27)))),
+            ((150, 180 - (12 + 10*np.sqrt(27))), (120, 180 - (12 + 20*np.sqrt(27)))), # no16
+            ((60, 180 - (12 + 20*np.sqrt(27))), (90, 180 - (12 + 30*np.sqrt(27)))),
+            ((120, 180 - (12 + 20*np.sqrt(27))), (90, 180 - (12 + 30*np.sqrt(27)))), # no18
+            #
+            # Bigger (2 and 3 x) size tris
+            # 2 x size tri 0
+            ((0, 180 - 12), (120, 180 - 12)),  # no19
+            ((0, 180 - 12), (60, 180 - (12 + 20*np.sqrt(27)))),
+            ((120, 180 - 12), (60, 180 - (12 + 20*np.sqrt(27)))),  # no21
+            # 2 x size tri 1
+            ((60, 180 - 12), (180, 180 - 12)),
+            ((60, 180 - 12), (120, 180 - (12 + 20*np.sqrt(27)))),
+            ((180, 180 - 12), (120, 180 - (12 + 20*np.sqrt(27)))),  # no24
+            # 2 x size tri 2
+            ((30, 180 - (12 + 10*np.sqrt(27))), (150, 180 - (12 + 10*np.sqrt(27)))),
+            ((30, 180 - (12 + 10*np.sqrt(27))), (90, 180 - (12 + 30*np.sqrt(27)))),
+            ((150, 180 - (12 + 10*np.sqrt(27))), (90, 180 - (12 + 30*np.sqrt(27)))),  #no27
+            # 3 x size (max, outline) tri 0
+            ((0, 180 - 12), (180, 180 - 12)),
+            ((0, 180 - 12), (90, 180 - (12 + 30*np.sqrt(27)))),
+            ((180, 180 - 12), (90, 180 - (12 + 30*np.sqrt(27)))),  #no30
+        ],
+        [
+            # Same size tris:
+            (0, 1),
+            (17, 18),
+            (-9, 10),
+            # Corners of 2 x size tris:
+            # Bottom left corner
+            (0, 20),
+            (0, 29),
+            (1, 19),
+            (1, 28),
+            # Bottom right corner
+            (17, 30),
+            (17, 27),
+            (18, 29),
+            (18, 26),
+            # Top corner
+            (-9, 24),
+            (-9, 30),
+            (-10, 28),
+            (-10, 22),
+            # Spike in middle - use 2 x triangles but not on corners:
+            (20, 21),
+            (-19, 21),
+            (22, 23),
+            (24, 23),
+            (26, 25),
+            (-27, 25),
+            (12, 13),
+            (3, 4),
+            (-6, 8),
+        ],
+        (
+            ((12, 12), 180),
+            (0.3, 0.4, False),
+            ("#fffcfc", "#ff8080", "#3b443f", True),
+            201,
+        ),
+    ),
 }
 
 
@@ -963,6 +1050,7 @@ for name in [
     "Jaws of Resonance",
     "Owl",
     "Always the Hourglass",
+    "Angry Eyes and Mouth of a God",
 ]:
     design_to_draw = VARIATION_DESIGN_PARAMETERS[name]
     plot_overall_design(
