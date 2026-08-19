@@ -8,6 +8,12 @@ of this repository, as linked to, with a brief summary and preview images,
 below. For further details on the repository, please see the foot of this
 document.
 
+**If you find this repository interesting, consider also checking out my repository
+['high-res-art'](https://github.com/sadielbartholomew/high-res-art) which
+contains further creative coding outputs I have designed and produced using
+`matplotlib`** (these pieces are in a separate location because they are produced
+as 4K-resolution images with a large, lossless PNG file size).
+
 ***
 
 
